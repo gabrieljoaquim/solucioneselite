@@ -12,8 +12,8 @@
       </div>
       <SpecialtySelector :specialties.sync="profile.specialty" />
       <div>
-        <label for="profilePicture">Foto de Perfil:</label>
-        <input type="file" id="profilePicture" @change="onFileChange" />
+        <label for="profilePhoto">Foto de Perfil:</label>
+        <input type="file" id="profilePhoto" @change="onFileChange" />
       </div>
       <div>
         <label for="experience">Años de Experiencia:</label>
@@ -36,10 +36,10 @@
       </div>
       <button type="submit">Actualizar Perfil</button>
     </form>
-    <div v-if="profile.picture">
+    <div v-if="profile.profilePhoto">
       <h2>Vista Previa de la Foto:</h2>
       <img
-        :src="profile.picture"
+        :src="profile.profilePhoto"
         alt="Foto de Perfil"
         style="max-width: 200px"
       />
@@ -61,7 +61,7 @@ export default {
         phone: "",
         address: "",
         specialty: [],
-        picture: null,
+        profilePhoto: null,
         experience: 0,
         description: "",
       },
@@ -73,7 +73,7 @@ export default {
       if (file) {
         const reader = new FileReader();
         reader.onload = (e) => {
-          this.profile.picture = e.target.result;
+          this.profile.profilePhoto = e.target.result;
         };
         reader.readAsDataURL(file);
       }
@@ -83,6 +83,9 @@ export default {
         const email = this.$store.state.currentUser?.email;
         const profileData = { ...this.profile, email };
         await axios.put("http://localhost:5000/api/users/profile", profileData);
+        this.$store.commit("updateCurrentUserProfile", {
+          profilePhoto: this.profile.profilePhoto,
+        });
         alert("Perfil actualizado con éxito");
       } catch (err) {
         alert(
@@ -91,21 +94,28 @@ export default {
         );
       }
     },
-  },
-  mounted() {
-    // Load user data from the store or backend
-    const user = this.$store.state.users.find(
-      (u) => u.email === this.$store.state.currentUserEmail
-    );
-    if (user) {
-      this.profile = {
-        ...user,
-        picture: null,
-        specialty: [],
-        experience: 0,
-        description: "",
-      };
-    }
+    async mounted() {
+      try {
+        const email = this.$store.state.currentUser?.email;
+        if (!email) return;
+        const res = await axios.get(
+          `http://localhost:5000/api/users?email=${encodeURIComponent(email)}`
+        );
+        if (res.data && res.data.length > 0) {
+          const user = res.data[0];
+          this.profile = {
+            phone: user.phone || "",
+            address: user.address || "",
+            specialty: user.specialty || [],
+            profilePhoto: user.profilePhoto || null,
+            experience: user.experience || 0,
+            description: user.description || "",
+          };
+        }
+      } catch (err) {
+        // Si hay error, deja el perfil vacío
+      }
+    },
   },
 };
 </script>

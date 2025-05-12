@@ -3,7 +3,10 @@ import { createStore } from 'vuex'
 export default createStore({
   state: {
     users: [],
-    services: [] // Add services state
+    services: [],
+    user: {
+      profilePhoto: '' // Placeholder for the user's profile photo
+    }
   },
   getters: {
   },
@@ -15,6 +18,9 @@ export default createStore({
     addService(state, service) {
       state.services.push(service); // Update services state
       console.log('Servicio agregado:', service);
+    },
+    setProfilePhoto(state, photoUrl) {
+      state.user.profilePhoto = photoUrl;
     },
   },
   actions: {

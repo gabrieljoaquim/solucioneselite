@@ -21,8 +21,27 @@ const routes = [
     path: '/login',
     name: 'login',
     component: () => import( '../views/LoginView.vue')
+  },
+  {
+    path: '/profile',
+    name: 'profile',
+    component: () => import( '../views/ProfileView.vue')
+  },
+  {
+    path: '/add-service',
+    name: 'add-service',
+    component: () => import('../views/AddServiceView.vue')
+  },
+  {
+    path: '/list-services',
+    name: 'list-services',
+    component: () => import('../views/ListServicesView.vue')
+  },
+  {
+    path: '/service-details',
+    name: 'service-details',
+    component: () => import('../views/ServiceDetailsView.vue')
   }
-  
 ]
 
 const router = createRouter({

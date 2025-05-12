@@ -73,6 +73,7 @@ export default {
             confirmPassword: "",
             role: "cliente",
           };
+          this.$router.push({ name: "login" });
         })
         .catch((err) => {
           if (err.response?.data?.error?.includes("duplicate key")) {

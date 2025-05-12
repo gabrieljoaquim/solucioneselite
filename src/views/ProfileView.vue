@@ -49,6 +49,7 @@
 
 <script>
 import SpecialtySelector from "@/components/SpecialtySelector.vue";
+import axios from "axios";
 
 export default {
   components: {
@@ -77,9 +78,18 @@ export default {
         reader.readAsDataURL(file);
       }
     },
-    updateProfile() {
-      // Save profile data to the store or send to backend
-      alert("Perfil actualizado con éxito");
+    async updateProfile() {
+      try {
+        const email = this.$store.state.currentUser?.email;
+        const profileData = { ...this.profile, email };
+        await axios.put("http://localhost:5000/api/users/profile", profileData);
+        alert("Perfil actualizado con éxito");
+      } catch (err) {
+        alert(
+          "Error al actualizar el perfil: " +
+            (err.response?.data?.error || err.message)
+        );
+      }
     },
   },
   mounted() {

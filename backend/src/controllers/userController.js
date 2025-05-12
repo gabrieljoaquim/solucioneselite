@@ -43,3 +43,21 @@ exports.loginUser = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+exports.updateProfile = async (req, res) => {
+  try {
+    const { email, ...profileData } = req.body;
+    const user = await User.findOneAndUpdate(
+      { email },
+      { $set: profileData },
+      { new: true }
+    );
+    if (!user) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+    console.log('Perfil actualizado en la BD:', user);
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};

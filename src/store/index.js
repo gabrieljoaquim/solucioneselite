@@ -22,6 +22,14 @@ export default createStore({
     setProfilePhoto(state, photoUrl) {
       state.user.profilePhoto = photoUrl;
     },
+    setCurrentUser(state, user) {
+      state.currentUser = user;
+    },
+    updateCurrentUserProfile(state, profile) {
+      if (state.currentUser) {
+        state.currentUser = { ...state.currentUser, ...profile };
+      }
+    },
   },
   actions: {
   },

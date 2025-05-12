@@ -18,21 +18,30 @@
             </li>
           </ul>
         </li>
-        <li v-if="isLoggedIn">
+        <!-- <li v-if="isLoggedIn">
           <router-link to="/profile">Perfil</router-link>
-        </li>
+        </li> -->
       </ul>
     </div>
     <div class="navbar-right">
       <img
-        :src="$store.state.user.profilePhoto || '/default-user-photo.jpg'"
-        @click="$router.push('/profile')"
+        :src="
+          $store.state.currentUser?.profilePhoto || '/default-user-photo.jpg'
+        "
         alt="User Photo"
         class="user-photo"
       />
       <div class="user-info">
-        <span class="user-email">usuario@correo.com</span>
-        <span class="current-date">11 de mayo de 2025</span>
+        <span class="user-email" @click="$router.push('/profile')">{{
+          $store.state.currentUser?.email || "usuario@correo.com"
+        }}</span>
+        <!-- <span class="current-date">{{
+          new Date().toLocaleDateString("es-ES", {
+            day: "2-digit",
+            month: "long",
+            year: "numeric",
+          })
+        }}</span> -->
         <div class="auth-buttons">
           <router-link to="/register" class="small-button"
             >Registro</router-link

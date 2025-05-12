@@ -1,0 +1,14 @@
+{
+  "name": "solucioneselite-backend",
+  "version": "1.0.0",
+  "description": "Backend for Soluciones Elite",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongoose": "^6.7.0",
+    "dotenv": "^16.0.3"
+  }
+}

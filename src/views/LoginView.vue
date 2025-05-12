@@ -28,6 +28,8 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   data() {
     return {
@@ -38,19 +40,17 @@ export default {
     };
   },
   methods: {
-    loginUser() {
-      // Ensure credentials are trimmed and compared correctly
-      const user = this.$store.state.users.find(
-        (u) =>
-          u.email.trim().toLowerCase() ===
-            this.credentials.email.trim().toLowerCase() &&
-          u.password === this.credentials.password
-      );
-      if (user) {
-        alert(`Bienvenido, ${user.name}`);
+    async loginUser() {
+      try {
+        const response = await axios.post(
+          "http://localhost:5000/api/users/login",
+          this.credentials
+        );
+        alert(`Bienvenido, ${response.data.name}`);
+        // Aquí puedes guardar el usuario en el store si lo deseas
         this.$router.push({ name: "home" });
-      } else {
-        alert("Credenciales incorrectas");
+      } catch (err) {
+        alert(err.response?.data?.error || "Credenciales incorrectas");
       }
     },
     forgotPassword() {

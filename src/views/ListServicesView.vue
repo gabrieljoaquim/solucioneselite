@@ -43,11 +43,23 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   computed: {
     services() {
       return this.$store.state.services;
     },
+  },
+  mounted() {
+    axios.get("http://localhost:5000/api/services").then((res) => {
+      // Reemplaza el contenido del store con los servicios del backend
+      this.$store.state.services.splice(
+        0,
+        this.$store.state.services.length,
+        ...res.data
+      );
+    });
   },
   methods: {
     toggleDetails(index) {

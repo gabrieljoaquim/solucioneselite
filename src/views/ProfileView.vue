@@ -34,6 +34,27 @@
           placeholder="Describe tus habilidades y experiencia"
         ></textarea>
       </div>
+      <div>
+        <label for="zone">Zona de Trabajo:</label>
+        <input
+          type="text"
+          id="zone"
+          v-model="profile.zone"
+          placeholder="Ej: Medellín, Bogotá, etc."
+        />
+      </div>
+      <div>
+        <label for="rating">Calificación (0-5):</label>
+        <input
+          type="number"
+          id="rating"
+          v-model.number="profile.rating"
+          min="0"
+          max="5"
+          step="0.1"
+          placeholder="Ej: 4.8"
+        />
+      </div>
       <button type="submit">Actualizar Perfil</button>
     </form>
     <div v-if="profile.profilePhoto">
@@ -64,6 +85,8 @@ export default {
         profilePhoto: null,
         experience: 0,
         description: "",
+        zone: "",
+        rating: null,
       },
     };
   },
@@ -110,6 +133,8 @@ export default {
             profilePhoto: user.profilePhoto || null,
             experience: user.experience || 0,
             description: user.description || "",
+            zone: user.zone || "",
+            rating: user.rating || null,
           };
         }
       } catch (err) {

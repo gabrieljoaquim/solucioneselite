@@ -37,6 +37,8 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   data() {
     return {
@@ -55,17 +57,33 @@ export default {
         alert("Las contraseñas no coinciden");
         return;
       }
-      // Save user data to the store
-      this.$store.commit("addUser", this.user);
-      alert("Usuario registrado con éxito");
-      // Reset form
-      this.user = {
-        name: "",
-        email: "",
-        password: "",
-        confirmPassword: "",
-        role: "cliente",
+      const userToSend = {
+        name: this.user.name,
+        email: this.user.email,
+        password: this.user.password,
       };
+      axios
+        .post("http://localhost:5000/api/users", userToSend)
+        .then(() => {
+          alert("Usuario registrado con éxito");
+          this.user = {
+            name: "",
+            email: "",
+            password: "",
+            confirmPassword: "",
+            role: "cliente",
+          };
+        })
+        .catch((err) => {
+          if (err.response?.data?.error?.includes("duplicate key")) {
+            alert("El correo ya está registrado, intenta con otro.");
+          } else {
+            alert(
+              "Error al registrar usuario: " +
+                (err.response?.data?.error || err.message)
+            );
+          }
+        });
     },
   },
 };

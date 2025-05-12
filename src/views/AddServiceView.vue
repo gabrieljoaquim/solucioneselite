@@ -53,6 +53,8 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   data() {
     return {
@@ -87,22 +89,28 @@ export default {
   },
   methods: {
     submitService() {
-      this.$store.commit("addService", this.service);
-      alert("Servicio agregado correctamente");
-      this.service = {
-        requester: "",
-        phone: "",
-        address: "",
-        workingHours: "",
-        serviceType: "",
-        details: "",
-        reportDate: new Date().toISOString().split("T")[0],
-        observations: "",
-        estimatedDuration: "",
-      };
-      this.$nextTick(() => {
-        this.$refs.requester.focus();
-      });
+      axios
+        .post("http://localhost:5000/api/services", this.service)
+        .then(() => {
+          alert("Servicio agregado correctamente");
+          this.service = {
+            requester: "",
+            phone: "",
+            address: "",
+            workingHours: "",
+            serviceType: "",
+            details: "",
+            reportDate: new Date().toISOString().split("T")[0],
+            observations: "",
+            estimatedDuration: "",
+          };
+          this.$nextTick(() => {
+            this.$refs.requester.focus();
+          });
+        })
+        .catch(() => {
+          alert("Error al agregar el servicio");
+        });
     },
   },
 };

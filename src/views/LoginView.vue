@@ -49,13 +49,8 @@ export default {
         alert(`Bienvenido, ${response.data.name}`);
         // Guardar usuario en el store
         this.$store.commit("setCurrentUser", response.data);
-        // Verificar datos de contacto
-        if (!response.data.phone || !response.data.address) {
-          alert("Por favor, agrega tus datos de contacto en tu perfil.");
-          this.$router.push({ name: "profile" });
-        } else {
-          this.$router.push({ name: "home" });
-        }
+        // Redirigir siempre al home después de iniciar sesión
+        this.$router.push({ name: "home" });
       } catch (err) {
         alert(err.response?.data?.error || "Credenciales incorrectas");
       }

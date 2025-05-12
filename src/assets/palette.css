@@ -1,0 +1,38 @@
+:root {
+  --color-primary: #2a9d8f;
+  --color-secondary: #264653;
+  --color-accent: #e76f51;
+  --color-background: #f4f4f4;
+  --color-surface: #ffffff;
+  --color-text: #222222;
+  --color-text-light: #f9f9f9;
+  --color-success: #43aa8b;
+  --color-warning: #f4a261;
+  --color-error: #e63946;
+  --color-info: #457b9d;
+  /* Nuevos colores solicitados */
+  --color-bright-green: #00FF00;
+  --color-deep-black: #000000;
+  --color-pure-white: #FFFFFF;
+  --color-neutral-gray: #808080;
+  --color-dark-gray: #333333;
+  --color-intense-red: #FF4500;
+  --color-golden-yellow: #FFD700;
+  --color-electric-blue: #0077FF;
+
+  /* Colores principales de la app */
+  --color-main-green: #00FF00;
+  --color-main-black: #000000;
+  --color-main-white: #FFFFFF;
+  --color-main-gray: #808080;
+
+  /* Fondos de tarjetas de servicios según estado */
+  --card-bg-pendiente: #FFFBEA;      /* Amarillo suave para pendiente */
+  --card-bg-enprogreso: #E3FCEC;     /* Verde muy claro para en progreso */
+  --card-bg-completado: #E6F0FF;     /* Azul muy claro para completado */
+  --card-bg-cancelado: #FFEAEA;      /* Rojo muy claro para cancelado */
+  --card-border-pendiente: #FFD700;  /* Amarillo dorado */
+  --card-border-enprogreso: #00FF00; /* Verde brillante */
+  --card-border-completado: #0077FF; /* Azul eléctrico */
+  --card-border-cancelado: #FF4500;  /* Rojo intenso */
+}

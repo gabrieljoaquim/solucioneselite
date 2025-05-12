@@ -18,9 +18,6 @@
             </li>
           </ul>
         </li>
-        <!-- <li v-if="isLoggedIn">
-          <router-link to="/profile">Perfil</router-link>
-        </li> -->
       </ul>
     </div>
     <div class="navbar-right">
@@ -35,20 +32,27 @@
         <span class="user-email" @click="$router.push('/profile')">{{
           $store.state.currentUser?.email || "usuario@correo.com"
         }}</span>
-        <!-- <span class="current-date">{{
-          new Date().toLocaleDateString("es-ES", {
-            day: "2-digit",
-            month: "long",
-            year: "numeric",
-          })
-        }}</span> -->
+
         <div class="auth-buttons">
-          <router-link to="/register" class="small-button"
+          <router-link
+            v-if="!$store.state.currentUser"
+            to="/register"
+            class="small-button"
             >Registro</router-link
           >
-          <router-link to="/login" class="small-button"
+          <router-link
+            v-if="!$store.state.currentUser"
+            to="/login"
+            class="small-button"
             >Iniciar Sesión</router-link
           >
+          <button
+            v-if="$store.state.currentUser"
+            class="small-button"
+            @click="logout"
+          >
+            Cerrar Sesión
+          </button>
         </div>
       </div>
     </div>
@@ -58,10 +62,15 @@
 <script>
 export default {
   name: "navbar",
+  methods: {
+    logout() {
+      this.$store.commit("setCurrentUser", null);
+      this.$router.push({ name: "home" });
+    },
+  },
   computed: {
     isLoggedIn() {
-      // Replace this with actual logic to check if the user is logged in
-      return this.$store.state.user && this.$store.state.user.isLoggedIn;
+      return !!this.$store.state.currentUser;
     },
   },
 };

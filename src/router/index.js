@@ -46,6 +46,11 @@ const routes = [
     path: '/list-experts',
     name: 'list-experts',
     component: () => import('../views/ListExpertsView.vue')
+  },
+  {
+    path: '/expert/:id',
+    name: 'ExpertDetail',
+    component: () => import('../views/ExpertDetailView.vue')
   }
 ]
 

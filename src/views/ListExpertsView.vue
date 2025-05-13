@@ -39,6 +39,11 @@
             }}</span>
           </div>
         </div>
+        <div class="expert-actions">
+          <button class="chat-expert-btn" @click.stop="goToChat(expert._id)">
+            Chatear
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -75,6 +80,9 @@ export default {
   methods: {
     goToExpert(id) {
       this.$router.push({ name: "ExpertDetail", params: { id } });
+    },
+    goToChat(expertId) {
+      this.$router.push({ name: "chat-user", params: { userId: expertId } });
     },
   },
 };
@@ -151,5 +159,25 @@ export default {
   margin-left: 6px;
   font-size: 0.95em;
   color: var(--color-dark-gray);
+}
+.expert-actions {
+  margin-top: 16px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.chat-expert-btn {
+  background: var(--color-electric-blue);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 24px;
+  font-weight: 700;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.chat-expert-btn:hover {
+  background: var(--color-bright-green);
 }
 </style>

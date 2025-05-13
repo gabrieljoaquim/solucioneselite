@@ -8,7 +8,13 @@
       </p>
     </div>
     <div class="experts-list">
-      <div v-for="expert in experts" :key="expert._id" class="expert-card">
+      <div
+        v-for="expert in experts"
+        :key="expert._id"
+        class="expert-card"
+        @click="goToExpert(expert._id)"
+        style="cursor: pointer"
+      >
         <img
           :src="expert.profilePhoto || '/default-user-photo.jpg'"
           alt="Foto de perfil"
@@ -65,6 +71,11 @@ export default {
     } catch (err) {
       this.experts = [];
     }
+  },
+  methods: {
+    goToExpert(id) {
+      this.$router.push({ name: "ExpertDetail", params: { id } });
+    },
   },
 };
 </script>

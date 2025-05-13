@@ -49,7 +49,9 @@
 
     <footer class="cta-footer">
       <h2>Encuentra un profesional ahora</h2>
-      <button class="cta">Solicita tu servicio</button>
+      <button class="cta" @click="$router.push('/add-service')">
+        Solicita tu servicio
+      </button>
     </footer>
   </div>
 </template>

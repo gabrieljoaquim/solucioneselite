@@ -1,6 +1,12 @@
 <template>
   <div class="experts-view">
     <h1>Encuentra un Experto</h1>
+    <div v-if="experts.length === 0" class="no-experts">
+      <p>
+        No hay expertos disponibles en este momento. Actualiza tu perfil o
+        espera a que otros trabajadores completen sus datos.
+      </p>
+    </div>
     <div class="experts-list">
       <div v-for="expert in experts" :key="expert._id" class="expert-card">
         <img
@@ -45,8 +51,17 @@ export default {
   async mounted() {
     try {
       const res = await axios.get("http://localhost:5000/api/users");
-      // Filtrar solo usuarios con profesión/zona (puedes ajustar la lógica)
-      this.experts = res.data.filter((u) => u.specialty && u.specialty.length);
+      // Mapear los usuarios a un array de expertos con los campos requeridos
+      this.experts = res.data
+        .filter((u) => u.specialty && u.specialty.length && u.zone && u.name)
+        .map((u) => ({
+          _id: u._id,
+          name: u.name,
+          profilePhoto: u.profilePhoto,
+          zone: u.zone,
+          specialty: u.specialty,
+          rating: u.rating,
+        }));
     } catch (err) {
       this.experts = [];
     }

@@ -10,7 +10,19 @@
         <label for="address">Dirección:</label>
         <input type="text" id="address" v-model="profile.address" required />
       </div>
-      <SpecialtySelector :specialties.sync="profile.specialty" />
+      <div>
+        <label for="specialty">Especialidad:</label>
+        <input
+          type="text"
+          id="specialty"
+          v-model="profile.specialty"
+          placeholder="Ej: Plomería, Electricidad, Pintura, etc."
+          required
+          autocomplete="on"
+          autocorrect="on"
+          spellcheck="true"
+        />
+      </div>
       <div>
         <label for="profilePhoto">Foto de Perfil:</label>
         <input type="file" id="profilePhoto" @change="onFileChange" />
@@ -69,19 +81,15 @@
 </template>
 
 <script>
-import SpecialtySelector from "@/components/SpecialtySelector.vue";
 import axios from "axios";
 
 export default {
-  components: {
-    SpecialtySelector,
-  },
   data() {
     return {
       profile: {
         phone: "",
         address: "",
-        specialty: [],
+        specialty: "",
         profilePhoto: null,
         experience: 0,
         description: "",
@@ -105,6 +113,12 @@ export default {
       try {
         const email = this.$store.state.currentUser?.email;
         const profileData = { ...this.profile, email };
+        // Guardar especialidad como array de un solo valor (autocorrección)
+        if (typeof profileData.specialty === "string") {
+          profileData.specialty = [profileData.specialty.trim()];
+        }
+        profileData.zone = profileData.zone || "";
+        profileData.name = this.$store.state.currentUser?.name || "";
         await axios.put("http://localhost:5000/api/users/profile", profileData);
         this.$store.commit("updateCurrentUserProfile", {
           profilePhoto: this.profile.profilePhoto,
@@ -129,7 +143,7 @@ export default {
           this.profile = {
             phone: user.phone || "",
             address: user.address || "",
-            specialty: user.specialty || [],
+            specialty: user.specialty || "",
             profilePhoto: user.profilePhoto || null,
             experience: user.experience || 0,
             description: user.description || "",

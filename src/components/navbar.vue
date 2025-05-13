@@ -18,6 +18,14 @@
             </li>
           </ul>
         </li>
+        <li>
+          <router-link to="/inbox" class="messages-link">
+            Mensajes
+            <span v-if="unreadCount > 0" class="unread-badge">{{
+              unreadCount
+            }}</span>
+          </router-link>
+        </li>
       </ul>
     </div>
     <div class="navbar-right">
@@ -60,17 +68,34 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   name: "navbar",
+  data() {
+    return {
+      unreadCount: 0,
+    };
+  },
   methods: {
     logout() {
       this.$store.commit("setCurrentUser", null);
       this.$router.push({ name: "home" });
     },
+    updateUnread(count) {
+      this.unreadCount = count;
+    },
   },
   computed: {
-    isLoggedIn() {
-      return !!this.$store.state.currentUser;
+    ...mapState({ currentUser: (state) => state.currentUser }),
+    userId() {
+      return this.currentUser?._id;
+    },
+    userName() {
+      return this.currentUser?.name;
+    },
+    unreadCount() {
+      // Si el componente es usado dentro de App.vue, toma el prop
+      return this.$root.unreadCount || 0;
     },
   },
 };
@@ -192,5 +217,19 @@ export default {
 }
 .small-button:hover {
   background-color: #079f14;
+}
+.unread-badge {
+  background: #e53935;
+  color: #fff;
+  border-radius: 50%;
+  font-size: 0.8em;
+  padding: 2px 7px;
+  margin-left: 4px;
+  vertical-align: top;
+  font-weight: bold;
+}
+.messages-link {
+  position: relative;
+  display: inline-block;
 }
 </style>

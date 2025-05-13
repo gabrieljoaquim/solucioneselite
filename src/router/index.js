@@ -51,6 +51,11 @@ const routes = [
     path: '/expert/:id',
     name: 'ExpertDetail',
     component: () => import('../views/ExpertDetailView.vue')
+  },
+  {
+    path: '/inbox',
+    name: 'inbox',
+    component: () => import('../views/InboxView.vue')
   }
 ]
 

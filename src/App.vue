@@ -1,7 +1,7 @@
 <template>
   <div>
     <navbar />
-    <router-view />
+    <router-view @update-unread="unreadCount = $event" />
   </div>
 </template>
 
@@ -11,6 +11,11 @@ export default {
   name: "App",
   components: {
     navbar,
+  },
+  data() {
+    return {
+      unreadCount: 0,
+    };
   },
 };
 </script>

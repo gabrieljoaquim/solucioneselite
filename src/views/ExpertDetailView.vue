@@ -26,12 +26,16 @@
     <div v-if="!userId" class="chat-login-warning">
       <p>Debes iniciar sesión para contactar al experto.</p>
     </div>
-    <ChatBox
-      v-else-if="expert"
-      :user-id="userId"
-      :user-name="userName"
-      :expert="expert"
-    />
+    <div v-else class="expert-actions">
+      <button
+        class="chat-expert-btn"
+        @click="
+          $router.push({ name: 'chat-user', params: { userId: expert._id } })
+        "
+      >
+        Chatear con este experto
+      </button>
+    </div>
   </div>
   <div v-else class="loading">Cargando experto...</div>
 </template>
@@ -39,11 +43,9 @@
 <script>
 import axios from "axios";
 import { mapState } from "vuex";
-import ChatBox from "../components/ChatBox.vue";
 
 export default {
   name: "ExpertDetailView",
-  components: { ChatBox },
   data() {
     return {
       expert: null,
@@ -162,6 +164,27 @@ export default {
   transition: background 0.2s;
 }
 .chat-input button:hover {
+  background: var(--color-bright-green);
+}
+.expert-actions {
+  background: #034803;
+  color: black;
+  margin-top: 24px;
+  display: flex;
+  justify-content: center;
+}
+.chat-expert-btn {
+  background: var(--color-electric-blue);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 28px;
+  font-weight: 700;
+  font-size: 1.1em;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.chat-expert-btn:hover {
   background: var(--color-bright-green);
 }
 .loading {

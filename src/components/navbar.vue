@@ -19,8 +19,8 @@
           </ul>
         </li>
         <li>
-          <router-link to="/inbox" class="messages-link">
-            Mensajes
+          <router-link to="/chat" class="chat-link">
+            Chat
             <span v-if="unreadCount > 0" class="unread-badge">{{
               unreadCount
             }}</span>
@@ -228,7 +228,7 @@ export default {
   vertical-align: top;
   font-weight: bold;
 }
-.messages-link {
+.chat-link {
   position: relative;
   display: inline-block;
 }

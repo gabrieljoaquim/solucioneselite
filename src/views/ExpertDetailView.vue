@@ -23,28 +23,15 @@
         </p>
       </div>
     </div>
-    <div class="chat-section">
-      <h2>Chat con {{ expert.name }}</h2>
-      <div class="chat-box">
-        <div
-          v-for="msg in messages"
-          :key="msg._id"
-          :class="['chat-message', { own: msg.senderId === userId }]"
-        >
-          <span class="msg-user">{{ msg.senderName }}:</span>
-          <span class="msg-text">{{ msg.text }}</span>
-          <span class="msg-date">{{ formatDate(msg.createdAt) }}</span>
-        </div>
-      </div>
-      <form class="chat-input" @submit.prevent="sendMessage">
-        <input
-          v-model="newMessage"
-          placeholder="Escribe tu mensaje..."
-          autocomplete="off"
-        />
-        <button type="submit">Enviar</button>
-      </form>
+    <div v-if="!userId" class="chat-login-warning">
+      <p>Debes iniciar sesión para contactar al experto.</p>
     </div>
+    <ChatBox
+      v-else-if="expert"
+      :user-id="userId"
+      :user-name="userName"
+      :expert="expert"
+    />
   </div>
   <div v-else class="loading">Cargando experto...</div>
 </template>
@@ -52,23 +39,23 @@
 <script>
 import axios from "axios";
 import { mapState } from "vuex";
+import ChatBox from "../components/ChatBox.vue";
 
 export default {
   name: "ExpertDetailView",
+  components: { ChatBox },
   data() {
     return {
       expert: null,
-      messages: [],
-      newMessage: "",
     };
   },
   computed: {
-    ...mapState(["user"]),
+    ...mapState({ currentUser: (state) => state.currentUser }),
     userId() {
-      return this.user?._id;
+      return this.currentUser?._id;
     },
     userName() {
-      return this.user?.name;
+      return this.currentUser?.name;
     },
   },
   async created() {
@@ -78,41 +65,9 @@ export default {
         `http://localhost:5000/api/users/${expertId}`
       );
       this.expert = res.data;
-      await this.fetchMessages();
     } catch (err) {
       this.expert = null;
     }
-  },
-  methods: {
-    async fetchMessages() {
-      if (!this.userId || !this.expert?._id) return;
-      try {
-        const res = await axios.get(
-          `http://localhost:5000/api/messages/${this.userId}/${this.expert._id}`
-        );
-        this.messages = res.data;
-      } catch (err) {
-        this.messages = [];
-      }
-    },
-    async sendMessage() {
-      if (!this.newMessage.trim()) return;
-      try {
-        const payload = {
-          senderId: this.userId,
-          senderName: this.userName,
-          receiverId: this.expert._id,
-          text: this.newMessage.trim(),
-        };
-        await axios.post("http://localhost:5000/api/messages", payload);
-        this.newMessage = "";
-        await this.fetchMessages();
-      } catch (err) {}
-    },
-    formatDate(dateStr) {
-      const d = new Date(dateStr);
-      return d.toLocaleString();
-    },
   },
 };
 </script>

@@ -26,6 +26,10 @@ mongoose.connect(process.env.MONGO_URI, {
 app.use('/api/users', require('./routes/userRoutes'));
 app.use('/api/services', require('./routes/serviceRoutes'));
 app.use('/api/messages', require('./routes/messageRoutes'));
+app.get('/api/test', (req, res) => {
+  console.log('TEST ENDPOINT CALLED');
+  res.json({ ok: true });
+});
 
 // Start Server
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

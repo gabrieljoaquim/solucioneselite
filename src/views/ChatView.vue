@@ -2,6 +2,13 @@
   <div class="chat-view">
     <div class="sidebar">
       <div class="sidebar-header">Chats</div>
+      <div class="selected-user-info" v-if="selectedUser">
+        <img
+          :src="selectedUser.profilePhoto || '/default-user-photo.jpg'"
+          class="selected-user-photo"
+        />
+        <div class="selected-user-name">{{ selectedUser.name }}</div>
+      </div>
       <div class="conversation-list">
         <div
           v-for="conv in conversations"
@@ -16,9 +23,12 @@
             :src="conv.profilePhoto || '/default-user-photo.jpg'"
             class="user-photo"
           />
-          <div>
+          <div style="position: relative">
             <div class="user-name">{{ conv.name }}</div>
             <div class="last-message">{{ conv.lastMessage }}</div>
+            <span v-if="conv.unreadCount > 0" class="unread-badge">{{
+              conv.unreadCount
+            }}</span>
           </div>
         </div>
       </div>
@@ -26,6 +36,7 @@
     <div class="chat-panel" v-if="selectedUser">
       <div class="chat-messages-container">
         <ChatBox
+          ref="chatBox"
           :user-id="userId"
           :user-name="userName"
           :expert="{
@@ -36,15 +47,6 @@
           key="selectedUser.userId"
         />
       </div>
-      <form class="chat-input-bar" @submit.prevent="sendMessage">
-        <input
-          v-model="newMessage"
-          placeholder="Escribe tu mensaje..."
-          class="chat-input-field"
-          autocomplete="off"
-        />
-        <button type="submit" class="chat-send-btn">Enviar</button>
-      </form>
     </div>
     <div class="chat-panel empty" v-else>
       <p>Selecciona un chat para comenzar a conversar.</p>
@@ -83,6 +85,9 @@ export default {
     if (this.$route.params.userId) {
       this.selectById(this.$route.params.userId);
       this.moveSelectedToTop();
+      this.$nextTick(() => {
+        if (this.$refs.chatInput) this.$refs.chatInput.focus();
+      });
     }
     this.intervalId = setInterval(this.fetchConversations, 5000);
   },
@@ -97,6 +102,17 @@ export default {
           `http://localhost:5000/api/messages/inbox/${this.userId}`
         );
         this.conversations = res.data;
+        // Mantener la selección actual si existe en la nueva lista
+        if (this.selectedUser) {
+          const found = res.data.find(
+            (c) => c.userId === this.selectedUser.userId
+          );
+          if (found) {
+            this.selectedUser = found;
+          } else {
+            this.selectedUser = null;
+          }
+        }
         // Si hay userId en la ruta, selecciona y mueve al tope
         if (this.$route.params.userId) {
           this.selectById(this.$route.params.userId);
@@ -111,6 +127,23 @@ export default {
     selectConversation(conv) {
       this.selectedUser = conv;
       this.moveSelectedToTop();
+      // Actualiza la URL al cambiar de chat
+      if (this.$route.name === "chat-user") {
+        if (this.$route.params.userId !== conv.userId) {
+          this.$router.push({
+            name: "chat-user",
+            params: { userId: conv.userId },
+          });
+        }
+      } else {
+        this.$router.push({
+          name: "chat-user",
+          params: { userId: conv.userId },
+        });
+      }
+      this.$nextTick(() => {
+        if (this.$refs.chatInput) this.$refs.chatInput.focus();
+      });
     },
     selectById(id) {
       const found = this.conversations.find((c) => c.userId === id);
@@ -142,6 +175,9 @@ export default {
         if (this.$refs.chatBox && this.$refs.chatBox.fetchMessages) {
           this.$refs.chatBox.fetchMessages();
         }
+        this.$nextTick(() => {
+          if (this.$refs.chatInput) this.$refs.chatInput.focus();
+        });
       } catch (err) {}
     },
   },
@@ -181,6 +217,26 @@ export default {
   border-bottom: 1px solid #e0e0e0;
   background: #fff;
 }
+.selected-user-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #fff;
+  padding: 12px 18px 8px 18px;
+  border-bottom: 1px solid #e0e0e0;
+}
+.selected-user-photo {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--color-bright-green);
+}
+.selected-user-name {
+  font-weight: 700;
+  font-size: 1.1em;
+  color: #117e2c;
+}
 .conversation-list {
   flex: 1;
   overflow-y: auto;
@@ -216,6 +272,21 @@ export default {
 .last-message {
   color: #666;
   font-size: 0.95em;
+}
+.unread-badge {
+  position: absolute;
+  top: 0;
+  right: -12px;
+  background: #e53935;
+  color: #fff;
+  border-radius: 50%;
+  padding: 2px 8px;
+  font-size: 0.85em;
+  font-weight: bold;
+  min-width: 22px;
+  text-align: center;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+  z-index: 2;
 }
 .chat-panel {
   flex: 1;

@@ -55,6 +55,9 @@ export default {
           `http://localhost:5000/api/messages/${this.userId}/${this.expert._id}`
         );
         this.messages = res.data;
+        this.$nextTick(() => {
+          this.scrollToBottom();
+        });
       } catch (err) {
         this.messages = [];
       }
@@ -71,7 +74,16 @@ export default {
         await axios.post("http://localhost:5000/api/messages", payload);
         this.newMessage = "";
         await this.fetchMessages();
+        this.$nextTick(() => {
+          this.scrollToBottom();
+        });
       } catch (err) {}
+    },
+    scrollToBottom() {
+      const chatBox = this.$el.querySelector(".chat-box");
+      if (chatBox) {
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }
     },
     formatDate(dateStr) {
       const d = new Date(dateStr);

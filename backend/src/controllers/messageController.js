@@ -1,6 +1,6 @@
 const Message = require('../models/messageModel');
 
-// Obtener mensajes entre dos usuarios
+// Obtener mensajes entre dos usuarios y marcar como leídos los mensajes recibidos
 exports.getMessages = async (req, res) => {
   const { userId, expertId } = req.params;
   try {
@@ -10,6 +10,11 @@ exports.getMessages = async (req, res) => {
         { senderId: expertId, receiverId: userId },
       ],
     }).sort({ createdAt: 1 });
+    // Marcar como leídos los mensajes recibidos por el usuario actual
+    await Message.updateMany(
+      { senderId: expertId, receiverId: userId, read: false },
+      { $set: { read: true } }
+    );
     res.json(messages);
   } catch (err) {
     res.status(500).json({ error: 'Error al obtener mensajes' });
@@ -19,17 +24,26 @@ exports.getMessages = async (req, res) => {
 // Obtener conversaciones donde el usuario es receptor o remitente (ambos sentidos)
 exports.getInbox = async (req, res) => {
   const { userId } = req.params;
+  console.log('getInbox CALLED', userId); // <-- LOG INICIO
   try {
     // Buscar todos los mensajes donde el usuario es receptor o remitente
+    console.log('userId typeof:', typeof userId, userId);
     const messages = await Message.find({
       $or: [
         { receiverId: userId },
         { senderId: userId },
       ],
     }).sort({ createdAt: -1 });
+    // DEBUG LOG
+    console.log('userId:', userId);
+    console.log('messages:', messages);
     // Agrupar por el otro participante (ignorando mensajes a sí mismo)
     const userMap = new Map();
     for (const msg of messages) {
+      if (!msg.senderId || !msg.receiverId) {
+        console.error('Mensaje con senderId o receiverId nulo:', msg);
+        continue;
+      }
       const senderIdStr = msg.senderId.toString();
       const receiverIdStr = msg.receiverId.toString();
       const userIdStr = userId.toString();
@@ -46,19 +60,39 @@ exports.getInbox = async (req, res) => {
     // Obtener datos de usuario para cada participante
     const conversations = await Promise.all(
       Array.from(userMap.values()).map(async ({ msg, otherId }) => {
-        const user = await require('../models/userModel').findById(otherId);
-        return {
-          userId: otherId,
-          name: user ? user.name : 'Usuario',
-          profilePhoto: user ? user.profilePhoto : '',
-          lastMessage: msg.text,
-          lastSenderId: msg.senderId.toString(),
-        };
+        try {
+          const user = await require('../models/userModel').findById(otherId);
+          // Contar mensajes no leídos de este usuario hacia el usuario actual
+          const unreadCount = await Message.countDocuments({ senderId: otherId, receiverId: userId, read: false });
+          return {
+            userId: otherId,
+            name: user ? user.name : 'Usuario',
+            profilePhoto: user ? user.profilePhoto : '',
+            lastMessage: msg.text,
+            lastSenderId: msg.senderId.toString(),
+            unreadCount,
+          };
+        } catch (e) {
+          console.error('Error buscando usuario', otherId, e);
+          // Contar mensajes no leídos de este usuario hacia el usuario actual
+          const unreadCount = await Message.countDocuments({ senderId: otherId, receiverId: userId, read: false });
+          return {
+            userId: otherId,
+            name: 'Usuario',
+            profilePhoto: '',
+            lastMessage: msg.text,
+            lastSenderId: msg.senderId.toString(),
+            unreadCount,
+          };
+        }
       })
     );
+    // DEBUG LOG
+    console.log('conversations:', conversations);
     res.json(conversations);
   } catch (err) {
-    res.status(500).json({ error: 'Error al obtener la bandeja de entrada' });
+    console.error('Error en getInbox:', err);
+    res.status(500).json({ error: 'Error al obtener la bandeja de entrada', details: err.message });
   }
 };
 

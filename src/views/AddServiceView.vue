@@ -89,8 +89,21 @@ export default {
   },
   methods: {
     submitService() {
+      let observations = this.service.observations;
+      if (typeof observations === "string" && observations.trim() !== "") {
+        observations = observations
+          .split("\n")
+          .map((o) => o.trim())
+          .filter(Boolean);
+      } else {
+        observations = [];
+      }
+      const payload = {
+        ...this.service,
+        observations,
+      };
       axios
-        .post("http://localhost:5000/api/services", this.service)
+        .post("http://localhost:5000/api/services", payload)
         .then(() => {
           alert("Servicio agregado correctamente");
           this.service = {

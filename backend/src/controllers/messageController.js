@@ -9,7 +9,7 @@ exports.getMessages = async (req, res) => {
         { senderId: userId, receiverId: expertId },
         { senderId: expertId, receiverId: userId },
       ],
-    }).sort({ createdAt: 1 });
+    }).sort({ createdAt: 1 }).lean();
     // Marcar como leídos los mensajes recibidos por el usuario actual
     await Message.updateMany(
       { senderId: expertId, receiverId: userId, read: false },
@@ -24,19 +24,14 @@ exports.getMessages = async (req, res) => {
 // Obtener conversaciones donde el usuario es receptor o remitente (ambos sentidos)
 exports.getInbox = async (req, res) => {
   const { userId } = req.params;
-  console.log('getInbox CALLED', userId); // <-- LOG INICIO
   try {
     // Buscar todos los mensajes donde el usuario es receptor o remitente
-    console.log('userId typeof:', typeof userId, userId);
     const messages = await Message.find({
       $or: [
         { receiverId: userId },
         { senderId: userId },
       ],
-    }).sort({ createdAt: -1 });
-    // DEBUG LOG
-    console.log('userId:', userId);
-    console.log('messages:', messages);
+    }).sort({ createdAt: -1 }).lean();
     // Agrupar por el otro participante (ignorando mensajes a sí mismo)
     const userMap = new Map();
     for (const msg of messages) {
@@ -87,8 +82,6 @@ exports.getInbox = async (req, res) => {
         }
       })
     );
-    // DEBUG LOG
-    console.log('conversations:', conversations);
     res.json(conversations);
   } catch (err) {
     console.error('Error en getInbox:', err);

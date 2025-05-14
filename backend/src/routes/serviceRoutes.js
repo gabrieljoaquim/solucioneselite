@@ -4,5 +4,6 @@ const serviceController = require('../controllers/serviceController');
 
 router.post('/', serviceController.createService);
 router.get('/', serviceController.getServices);
+router.put('/:id', serviceController.updateService);
 
 module.exports = router;

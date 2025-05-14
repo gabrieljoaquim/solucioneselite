@@ -8,6 +8,9 @@
         :style="{ backgroundColor: service.backgroundColor || 'white' }"
       >
         <span>{{ service.requester }} - {{ service.serviceType }}</span>
+        <span v-if="service.takenBy" class="taken-by"
+          >Tomado por: {{ service.takenBy }}</span
+        >
         <button @click="toggleDetails(index)">
           {{ service.showDetails ? "Ocultar Detalles" : "Ver Detalles" }}
         </button>
@@ -17,17 +20,24 @@
           <p><strong>Horario:</strong> {{ service.workingHours }}</p>
           <p><strong>Detalles:</strong> {{ service.details }}</p>
           <p><strong>Fecha del reporte:</strong> {{ service.reportDate }}</p>
-          <p><strong>Observaciones:</strong> {{ service.observations }}</p>
+          <div v-if="getObservations(service).length">
+            <strong>Observaciones:</strong>
+            <ul>
+              <li v-for="(obs, i) in getObservations(service)" :key="i">
+                {{ obs }}
+              </li>
+            </ul>
+          </div>
           <p>
             <strong>Duración estimada:</strong> {{ service.estimatedDuration }}
           </p>
           <button class="btn-tomar" @click="markAsTaken(index)">
             Marcar como tomado
           </button>
-          <button class="btn-completado" @click="markAsCompleted(index)">
-            Completado
-          </button>
-          <button class="btn-observacion" @click="markWithObservation(index)">
+          <button
+            class="btn-observacion"
+            @click="toggleObservationInput(index)"
+          >
             Con Observación
           </button>
           <button class="btn-terminado" @click="markAsFinalized(index)">
@@ -36,6 +46,21 @@
           <button class="btn-cerrado" @click="sendToClosed(index)">
             Enviar a Cerrados
           </button>
+          <div v-if="service.showObservationInput">
+            <input
+              v-model="service.observationsDraft"
+              ref="observationInput"
+              :disabled="false"
+              placeholder="Agrega una observación"
+              @keyup.enter="saveObservation(index)"
+            />
+            <button
+              @click="saveObservation(index)"
+              :disabled="!canEditObservation(service)"
+            >
+              Agregar
+            </button>
+          </div>
         </div>
       </li>
     </ul>
@@ -66,13 +91,28 @@ export default {
       this.services[index].showDetails = !this.services[index].showDetails;
     },
     markAsTaken(index) {
-      const userName = prompt(
-        "Ingrese el nombre del usuario que tomó el servicio:"
-      );
-      if (userName) {
-        this.services[index].backgroundColor = "lightgreen";
-        this.services[index].takenBy = userName;
+      const currentUser = this.$store.state.currentUser;
+      if (!currentUser) {
+        alert("Debes iniciar sesión para tomar un servicio.");
+        return;
       }
+      this.services[index].backgroundColor = "lightgreen";
+      this.services[index].takenBy =
+        currentUser.name || currentUser.email || currentUser._id;
+      this.services[index].takenById = currentUser._id;
+      this.services[index].takenByEmail = currentUser.email;
+      // Guardar en backend
+      axios
+        .put(`http://localhost:5000/api/services/${this.services[index]._id}`, {
+          backgroundColor: "lightgreen",
+          takenBy: this.services[index].takenBy,
+          takenById: this.services[index].takenById,
+          takenByEmail: this.services[index].takenByEmail,
+        })
+        .then((res) => {
+          // Actualiza el servicio en el store con la respuesta del backend
+          Object.assign(this.services[index], res.data);
+        });
     },
     markAsCompleted(index) {
       this.services[index].backgroundColor = "lightyellow";
@@ -86,6 +126,61 @@ export default {
     sendToClosed(index) {
       const closedService = this.services.splice(index, 1)[0];
       this.$store.commit("addClosedService", closedService);
+    },
+    toggleObservationInput(index) {
+      this.services[index].showObservationInput =
+        !this.services[index].showObservationInput;
+      this.services[index].observationsDraft = "";
+      this.$nextTick(() => {
+        // Selecciona el input correcto si hay varios
+        const inputs = this.$refs.observationInput;
+        if (Array.isArray(inputs)) {
+          if (this.services[index].showObservationInput && inputs[index]) {
+            inputs[index].focus();
+          }
+        } else if (inputs && this.services[index].showObservationInput) {
+          inputs.focus();
+        }
+      });
+    },
+    saveObservation(index) {
+      const currentUser = this.$store.state.currentUser;
+      if (!this.canEditObservation(this.services[index])) return;
+      if (this.services[index].observationsDraft.trim()) {
+        // Guarda en backend SOLO la nueva observación (append)
+        axios
+          .put(
+            `http://localhost:5000/api/services/${this.services[index]._id}`,
+            {
+              $push: {
+                observations: this.services[index].observationsDraft.trim(),
+              },
+            }
+          )
+          .then((res) => {
+            Object.assign(this.services[index], res.data);
+            this.services[index].showObservationInput = false;
+            this.services[index].observationsDraft = "";
+          });
+      }
+    },
+    canEditObservation(service) {
+      const currentUser = this.$store.state.currentUser;
+      // Permitir editar si el usuario tomó el servicio
+      return currentUser && service.takenById === currentUser._id;
+    },
+    getObservations(service) {
+      // Always return an array for observations
+      if (Array.isArray(service.observations)) {
+        return service.observations;
+      } else if (
+        typeof service.observations === "string" &&
+        service.observations.trim() !== ""
+      ) {
+        return [service.observations];
+      } else {
+        return [];
+      }
     },
   },
 };
@@ -141,5 +236,10 @@ button:hover {
   border: 1px solid #ddd;
   border-radius: 5px;
   background-color: #f9f9f9;
+}
+.taken-by {
+  font-size: 0.95em;
+  color: #117e2c;
+  margin-left: 10px;
 }
 </style>

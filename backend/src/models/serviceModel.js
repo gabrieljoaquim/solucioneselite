@@ -8,7 +8,7 @@ const serviceSchema = new mongoose.Schema({
   serviceType: String,
   details: String,
   reportDate: String,
-  observations: String,
+  observations: { type: [String], default: [] },
   estimatedDuration: String,
   backgroundColor: String,
   takenBy: String

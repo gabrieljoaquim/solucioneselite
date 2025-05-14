@@ -69,17 +69,45 @@
 
 <script>
 import { mapState } from "vuex";
+import axios from "axios";
+
 export default {
   name: "navbar",
   data() {
     return {
       unreadCount: 0,
+      intervalId: null,
     };
+  },
+  mounted() {
+    this.fetchUnreadCount();
+    this.intervalId = setInterval(this.fetchUnreadCount, 5000);
+  },
+  beforeUnmount() {
+    if (this.intervalId) clearInterval(this.intervalId);
   },
   methods: {
     logout() {
       this.$store.commit("setCurrentUser", null);
       this.$router.push({ name: "home" });
+    },
+    async fetchUnreadCount() {
+      if (!this.userId) {
+        this.unreadCount = 0;
+        return;
+      }
+      try {
+        const res = await axios.get(
+          `http://localhost:5000/api/messages/inbox/${this.userId}`
+        );
+        // Suma todos los mensajes no leídos de todas las conversaciones
+        this.unreadCount = res.data.reduce(
+          (acc, conv) => acc + (conv.unreadCount || 0),
+          0
+        );
+      } catch (err) {
+        this.unreadCount = 0;
+      }
     },
     updateUnread(count) {
       this.unreadCount = count;
@@ -92,10 +120,6 @@ export default {
     },
     userName() {
       return this.currentUser?.name;
-    },
-    unreadCount() {
-      // Si el componente es usado dentro de App.vue, toma el prop
-      return this.$root.unreadCount || 0;
     },
   },
 };

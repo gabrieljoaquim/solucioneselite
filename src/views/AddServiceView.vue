@@ -20,14 +20,19 @@
       <input id="workingHours" v-model="service.workingHours" required />
 
       <label for="serviceType">Tipo de servicio:</label>
-      <select id="serviceType" v-model="service.serviceType" required>
-        <option v-for="type in serviceTypes" :key="type" :value="type">
-          {{ type }}
-        </option>
-      </select>
+      <input id="serviceType" v-model="service.serviceType" required />
 
       <label for="details">Detalles del arreglo:</label>
       <textarea id="details" v-model="service.details" required></textarea>
+
+      <label for="puntoVentaCodigo">Punto de venta código:</label>
+      <input id="puntoVentaCodigo" v-model="service.puntoVentaCodigo" />
+
+      <label for="proveedorAsignado">Proveedor asignado:</label>
+      <input id="proveedorAsignado" v-model="service.proveedorAsignado" />
+
+      <label for="nombreOficina">Nombre de Oficina:</label>
+      <input id="nombreOficina" v-model="service.nombreOficina" />
 
       <label for="reportDate">Fecha del reporte:</label>
       <input
@@ -40,15 +45,21 @@
       <label for="observations">Observaciones:</label>
       <textarea id="observations" v-model="service.observations"></textarea>
 
-      <label for="estimatedDuration">Duración estimada:</label>
-      <input
-        id="estimatedDuration"
-        v-model="service.estimatedDuration"
-        required
-      />
-
       <button type="submit">Agregar Servicio</button>
     </form>
+    <form @submit.prevent="uploadPdf" style="margin-top: 24px">
+      <label for="pdf">O subir PDF de servicio:</label>
+      <input
+        type="file"
+        id="pdf"
+        ref="pdfInput"
+        accept="application/pdf"
+        required
+      />
+      <button type="submit">Cargar PDF y Autocompletar</button>
+    </form>
+    <div v-if="loading">Procesando PDF...</div>
+    <div v-if="error" style="color: red">{{ error }}</div>
   </div>
 </template>
 
@@ -65,23 +76,14 @@ export default {
         workingHours: "",
         serviceType: "",
         details: "",
+        puntoVentaCodigo: "",
+        proveedorAsignado: "",
+        nombreOficina: "",
         reportDate: "",
         observations: "",
-        estimatedDuration: "",
       },
-      serviceTypes: [
-        "Pintura",
-        "Plomería",
-        "Electricidad",
-        "Driwall",
-        "Enchapes",
-        "Cocinas",
-        "Ventanerías",
-        "Calentadores",
-        "Puertas",
-        "Pisos PVC",
-        "Otros",
-      ],
+      loading: false,
+      error: "",
     };
   },
   mounted() {
@@ -113,9 +115,11 @@ export default {
             workingHours: "",
             serviceType: "",
             details: "",
+            puntoVentaCodigo: "",
+            proveedorAsignado: "",
+            nombreOficina: "",
             reportDate: new Date().toISOString().split("T")[0],
             observations: "",
-            estimatedDuration: "",
           };
           this.$nextTick(() => {
             this.$refs.requester.focus();
@@ -124,6 +128,37 @@ export default {
         .catch(() => {
           alert("Error al agregar el servicio");
         });
+    },
+    async uploadPdf() {
+      this.error = "";
+      this.loading = true;
+      const file = this.$refs.pdfInput.files[0];
+      if (!file) {
+        this.error = "Selecciona un archivo PDF";
+        this.loading = false;
+        return;
+      }
+      const formData = new FormData();
+      formData.append("pdf", file);
+      try {
+        const res = await axios.post(
+          "http://localhost:5000/api/services/upload-pdf",
+          formData,
+          { headers: { "Content-Type": "multipart/form-data" } }
+        );
+        // Solo autocompleta el formulario, NO guarda en la BD
+        this.service = {
+          ...this.service,
+          ...res.data,
+          observations: Array.isArray(res.data.observations)
+            ? res.data.observations.join("\n")
+            : res.data.observations || "",
+        };
+      } catch (err) {
+        this.error = err.response?.data?.error || "Error al procesar el PDF";
+      } finally {
+        this.loading = false;
+      }
     },
   },
 };

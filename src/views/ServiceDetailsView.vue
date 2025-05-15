@@ -1,6 +1,19 @@
 <template>
   <div class="service-details">
     <h1>Detalles del Servicio</h1>
+    <form @submit.prevent="uploadPdf" style="margin-bottom: 24px">
+      <label for="pdf">Subir PDF de servicio:</label>
+      <input
+        type="file"
+        id="pdf"
+        ref="pdfInput"
+        accept="application/pdf"
+        required
+      />
+      <button type="submit">Cargar PDF</button>
+    </form>
+    <div v-if="loading">Procesando PDF...</div>
+    <div v-if="error" style="color: red">{{ error }}</div>
     <p><strong>Solicitante:</strong> {{ service.requester }}</p>
     <p><strong>Teléfono:</strong> {{ service.phone }}</p>
     <p><strong>Dirección:</strong> {{ service.address }}</p>
@@ -15,6 +28,7 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   data() {
     return {
@@ -30,7 +44,35 @@ export default {
         estimatedDuration: "2 horas",
         status: "En espera",
       },
+      loading: false,
+      error: "",
     };
+  },
+  methods: {
+    async uploadPdf() {
+      this.error = "";
+      this.loading = true;
+      const file = this.$refs.pdfInput.files[0];
+      if (!file) {
+        this.error = "Selecciona un archivo PDF";
+        this.loading = false;
+        return;
+      }
+      const formData = new FormData();
+      formData.append("pdf", file);
+      try {
+        const res = await axios.post(
+          "http://localhost:5000/api/services/upload-pdf",
+          formData,
+          { headers: { "Content-Type": "multipart/form-data" } }
+        );
+        this.service = res.data;
+      } catch (err) {
+        this.error = err.response?.data?.error || "Error al procesar el PDF";
+      } finally {
+        this.loading = false;
+      }
+    },
   },
 };
 </script>

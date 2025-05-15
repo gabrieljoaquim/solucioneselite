@@ -11,7 +11,12 @@ const userSchema = new mongoose.Schema({
   experience: Number,
   description: String,
   zone: String,
-  rating: Number
+  rating: Number,
+  role: {
+    type: String,
+    enum: ['usuario', 'trabajador', 'administrador'],
+    default: 'usuario',
+  }
 }, { timestamps: true });
 
 module.exports = mongoose.model('User', userSchema);

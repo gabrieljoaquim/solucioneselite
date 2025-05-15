@@ -61,6 +61,7 @@ export default {
         name: this.user.name,
         email: this.user.email,
         password: this.user.password,
+        role: this.user.role, // Enviar el rol seleccionado
       };
       axios
         .post("http://localhost:5000/api/users", userToSend)

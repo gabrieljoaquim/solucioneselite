@@ -14,12 +14,33 @@
         <button @click="toggleDetails(index)">
           {{ service.showDetails ? "Ocultar Detalles" : "Ver Detalles" }}
         </button>
+        <button
+          v-if="canDeleteService(service)"
+          class="btn-eliminar"
+          @click="deleteService(index)"
+        >
+          Eliminar
+        </button>
         <div v-if="service.showDetails" class="service-details">
           <p><strong>Teléfono:</strong> {{ service.phone }}</p>
           <p><strong>Dirección:</strong> {{ service.address }}</p>
           <p><strong>Horario:</strong> {{ service.workingHours }}</p>
-          <p><strong>Detalles:</strong> {{ service.details }}</p>
+          <p v-if="service.details && !service.editingDetails">
+            <strong>Descripción del arreglo:</strong>
+            {{ service.details }}
+            <button v-if="canEditDetails(service)" @click="editDetails(index)">Editar</button>
+          </p>
+          <div v-if="service.editingDetails">
+            <strong>Descripción del arreglo:</strong>
+            <input v-model="service.detailsDraft" ref="detailsInput" style="width:80%" />
+            <button @click="saveDetails(index)">Guardar</button>
+            <button @click="cancelEditDetails(index)">Cancelar</button>
+          </div>
           <p><strong>Fecha del reporte:</strong> {{ service.reportDate }}</p>
+          <p v-if="service.puntoVentaCodigo"><strong>Código Punto de Venta:</strong> {{ service.puntoVentaCodigo }}</p>
+          <p v-if="service.proveedorAsignado"><strong>Proveedor Asignado:</strong> {{ service.proveedorAsignado }}</p>
+          <p v-if="service.nombreOficina"><strong>Nombre de Oficina:</strong> {{ service.nombreOficina }}</p>
+          <p v-if="service.status"><strong>Status:</strong> {{ service.status }}</p>
           <div v-if="getObservations(service).length">
             <strong>Observaciones:</strong>
             <ul>
@@ -28,39 +49,22 @@
               </li>
             </ul>
           </div>
-          <p>
-            <strong>Duración estimada:</strong> {{ service.estimatedDuration }}
-          </p>
-          <button class="btn-tomar" @click="markAsTaken(index)">
+          <button class="btn-tomar" @click="markAsTaken(index)" :disabled="!!service.takenById">
             Marcar como tomado
           </button>
           <button
             class="btn-observacion"
-            @click="toggleObservationInput(index)"
+            @click="markWithObservation(index)"
+            :disabled="!canEditDetails(service)"
           >
             Con Observación
           </button>
-          <button class="btn-terminado" @click="markAsFinalized(index)">
+          <button class="btn-terminado" @click="markAsFinalized(index)" :disabled="!canEditDetails(service)">
             Servicio Terminado
           </button>
           <button class="btn-cerrado" @click="sendToClosed(index)">
             Enviar a Cerrados
           </button>
-          <div v-if="service.showObservationInput">
-            <input
-              v-model="service.observationsDraft"
-              ref="observationInput"
-              :disabled="false"
-              placeholder="Agrega una observación"
-              @keyup.enter="saveObservation(index)"
-            />
-            <button
-              @click="saveObservation(index)"
-              :disabled="!canEditObservation(service)"
-            >
-              Agregar
-            </button>
-          </div>
         </div>
       </li>
     </ul>
@@ -79,10 +83,22 @@ export default {
   mounted() {
     axios.get("http://localhost:5000/api/services").then((res) => {
       // Reemplaza el contenido del store con los servicios del backend
+      const currentUser = this.$store.state.currentUser;
+      const services = res.data.map(service => {
+        // Si el servicio fue tomado por el usuario actual, asegura que takenById coincida
+        if (service.takenByEmail && currentUser && service.takenByEmail === currentUser.email) {
+          service.takenById = currentUser._id;
+        }
+        // Si el servicio fue tomado por el usuario actual pero el campo takenById no existe o no coincide
+        if (service.takenBy && currentUser && service.takenBy === (currentUser.name || currentUser.email) && service.takenById !== currentUser._id) {
+          service.takenById = currentUser._id;
+        }
+        return service;
+      });
       this.$store.state.services.splice(
         0,
         this.$store.state.services.length,
-        ...res.data
+        ...services
       );
     });
   },
@@ -108,6 +124,8 @@ export default {
           takenBy: this.services[index].takenBy,
           takenById: this.services[index].takenById,
           takenByEmail: this.services[index].takenByEmail,
+          currentUserId: currentUser._id,
+          currentUserRole: currentUser.role
         })
         .then((res) => {
           // Actualiza el servicio en el store con la respuesta del backend
@@ -118,51 +136,76 @@ export default {
       this.services[index].backgroundColor = "lightyellow";
     },
     markWithObservation(index) {
-      this.services[index].backgroundColor = "lightcoral";
+      const currentUser = this.$store.state.currentUser;
+      if (!currentUser) return;
+      this.services[index].backgroundColor = "#ffcccc"; // rojo claro
+      this.services[index].editingDetails = true;
+      this.services[index].detailsDraft = this.services[index].details;
+      this.$nextTick(() => {
+        const inputs = this.$refs.detailsInput;
+        if (Array.isArray(inputs)) {
+          if (inputs[index]) inputs[index].focus();
+        } else if (inputs && typeof inputs.focus === 'function') {
+          inputs.focus();
+        }
+      });
     },
     markAsFinalized(index) {
+      const currentUser = this.$store.state.currentUser;
+      if (!currentUser) return;
       this.services[index].backgroundColor = "lightblue";
+      axios
+        .put(`http://localhost:5000/api/services/${this.services[index]._id}`, {
+          backgroundColor: "lightblue",
+          currentUserId: currentUser._id,
+          currentUserRole: currentUser.role
+        })
+        .then((res) => {
+          Object.assign(this.services[index], res.data);
+        });
     },
     sendToClosed(index) {
       const closedService = this.services.splice(index, 1)[0];
       this.$store.commit("addClosedService", closedService);
     },
-    toggleObservationInput(index) {
-      this.services[index].showObservationInput =
-        !this.services[index].showObservationInput;
-      this.services[index].observationsDraft = "";
+    editDetails(index) {
+      this.services[index].editingDetails = true;
+      this.services[index].detailsDraft = this.services[index].details;
       this.$nextTick(() => {
-        // Selecciona el input correcto si hay varios
-        const inputs = this.$refs.observationInput;
+        const inputs = this.$refs.detailsInput;
         if (Array.isArray(inputs)) {
-          if (this.services[index].showObservationInput && inputs[index]) {
-            inputs[index].focus();
-          }
-        } else if (inputs && this.services[index].showObservationInput) {
+          if (inputs[index]) inputs[index].focus();
+        } else if (inputs && typeof inputs.focus === 'function') {
           inputs.focus();
         }
       });
     },
-    saveObservation(index) {
+    saveDetails(index) {
       const currentUser = this.$store.state.currentUser;
-      if (!this.canEditObservation(this.services[index])) return;
-      if (this.services[index].observationsDraft.trim()) {
-        // Guarda en backend SOLO la nueva observación (append)
+      const newDetails = this.services[index].detailsDraft.trim();
+      if (newDetails) {
+        this.services[index].details = newDetails;
+        this.services[index].editingDetails = false;
+        // Guardar en backend y persistir el color rojo claro
         axios
-          .put(
-            `http://localhost:5000/api/services/${this.services[index]._id}`,
-            {
-              $push: {
-                observations: this.services[index].observationsDraft.trim(),
-              },
-            }
-          )
+          .put(`http://localhost:5000/api/services/${this.services[index]._id}`, {
+            details: newDetails,
+            backgroundColor: "#ffcccc",
+            currentUserId: currentUser._id,
+            currentUserRole: currentUser.role
+          })
           .then((res) => {
             Object.assign(this.services[index], res.data);
-            this.services[index].showObservationInput = false;
-            this.services[index].observationsDraft = "";
           });
       }
+    },
+    cancelEditDetails(index) {
+      this.services[index].editingDetails = false;
+      this.services[index].detailsDraft = "";
+    },
+    canEditDetails(service) {
+      const currentUser = this.$store.state.currentUser;
+      return currentUser && (service.takenById === currentUser._id || currentUser.role === 'administrador');
     },
     canEditObservation(service) {
       const currentUser = this.$store.state.currentUser;
@@ -180,6 +223,29 @@ export default {
         return [service.observations];
       } else {
         return [];
+      }
+    },
+    canDeleteService(service) {
+      const currentUser = this.$store.state.currentUser;
+      return currentUser && currentUser.role === "administrador";
+    },
+    deleteService(index) {
+      const currentUser = this.$store.state.currentUser;
+      // Cambia la validación para usar el rol, no isAdmin
+      if (!currentUser || currentUser.role !== "administrador") {
+        alert("Solo un administrador puede eliminar servicios.");
+        return;
+      }
+      const serviceId = this.services[index]._id;
+      if (confirm("¿Estás seguro de que deseas eliminar este servicio?")) {
+        axios
+          .delete(`http://localhost:5000/api/services/${serviceId}`)
+          .then(() => {
+            this.services.splice(index, 1);
+          })
+          .catch(() => {
+            alert("Error al eliminar el servicio");
+          });
       }
     },
   },
@@ -229,6 +295,9 @@ button:hover {
 }
 .btn-cerrado {
   background-color: #9c27b0;
+}
+.btn-eliminar {
+  background-color: #e53935;
 }
 .service-details {
   margin-top: 10px;

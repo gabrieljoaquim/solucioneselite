@@ -10,8 +10,12 @@ const serviceSchema = new mongoose.Schema({
   reportDate: String,
   observations: { type: [String], default: [] },
   estimatedDuration: String,
-  backgroundColor: String,
-  takenBy: String
+  backgroundColor: { type: String, default: '' },
+  takenBy: String,
+  takenById: String,
+  puntoVentaCodigo: String,
+  proveedorAsignado: String,
+  nombreOficina: String
 }, { timestamps: true });
 
 module.exports = mongoose.model('Service', serviceSchema);

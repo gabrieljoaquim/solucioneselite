@@ -1,12 +1,12 @@
 const User = require('../models/userModel');
 
 exports.createUser = async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, role } = req.body;
   if (!name || !email || !password) {
     return res.status(400).json({ error: 'Todos los campos son obligatorios: nombre, correo y contraseña.' });
   }
   try {
-    const user = new User({ name, email, password });
+    const user = new User({ name, email, password, role });
     await user.save();
     res.status(201).json(user);
   } catch (err) {
@@ -38,6 +38,7 @@ exports.loginUser = async (req, res) => {
       name: user.name,
       email: user.email,
       profilePhoto: user.profilePhoto || '',
+      role: user.role || 'usuario',
     });
   } catch (err) {
     res.status(500).json({ error: err.message });

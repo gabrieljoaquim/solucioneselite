@@ -42,6 +42,11 @@ exports.updateService = async (req, res) => {
       const currentUserRole = req.body.currentUserRole;
       const service = await Service.findById(id);
       if (!service) return res.status(404).json({ error: 'Servicio no encontrado' });
+      // Permitir tomar el servicio si está libre
+      if (!service.takenById) {
+        const updated = await Service.findByIdAndUpdate(id, req.body, { new: true });
+        return res.json(updated);
+      }
       if (
         !currentUserId ||
         (!currentUserRole || (

@@ -28,19 +28,34 @@
           <p v-if="service.details && !service.editingDetails">
             <strong>Descripción del arreglo:</strong>
             {{ service.details }}
-            <button v-if="canEditDetails(service)" @click="editDetails(index)">Editar</button>
+            <button v-if="canEditDetails(service)" @click="editDetails(index)">
+              Editar
+            </button>
           </p>
           <div v-if="service.editingDetails">
             <strong>Descripción del arreglo:</strong>
-            <input v-model="service.detailsDraft" ref="detailsInput" style="width:80%" />
+            <input
+              v-model="service.detailsDraft"
+              ref="detailsInput"
+              style="width: 80%"
+            />
             <button @click="saveDetails(index)">Guardar</button>
             <button @click="cancelEditDetails(index)">Cancelar</button>
           </div>
           <p><strong>Fecha del reporte:</strong> {{ service.reportDate }}</p>
-          <p v-if="service.puntoVentaCodigo"><strong>Código Punto de Venta:</strong> {{ service.puntoVentaCodigo }}</p>
-          <p v-if="service.proveedorAsignado"><strong>Proveedor Asignado:</strong> {{ service.proveedorAsignado }}</p>
-          <p v-if="service.nombreOficina"><strong>Nombre de Oficina:</strong> {{ service.nombreOficina }}</p>
-          <p v-if="service.status"><strong>Status:</strong> {{ service.status }}</p>
+          <p v-if="service.puntoVentaCodigo">
+            <strong>Código Punto de Venta:</strong>
+            {{ service.puntoVentaCodigo }}
+          </p>
+          <p v-if="service.proveedorAsignado">
+            <strong>Proveedor Asignado:</strong> {{ service.proveedorAsignado }}
+          </p>
+          <p v-if="service.nombreOficina">
+            <strong>Nombre de Oficina:</strong> {{ service.nombreOficina }}
+          </p>
+          <p v-if="service.status">
+            <strong>Status:</strong> {{ service.status }}
+          </p>
           <div v-if="getObservations(service).length">
             <strong>Observaciones:</strong>
             <ul>
@@ -49,7 +64,11 @@
               </li>
             </ul>
           </div>
-          <button class="btn-tomar" @click="markAsTaken(index)" :disabled="!!service.takenById">
+          <button
+            class="btn-tomar"
+            @click="markAsTaken(index)"
+            :disabled="!!service.takenById"
+          >
             Marcar como tomado
           </button>
           <button
@@ -59,12 +78,22 @@
           >
             Con Observación
           </button>
-          <button class="btn-terminado" @click="markAsFinalized(index)" :disabled="!canEditDetails(service)">
+          <button
+            class="btn-terminado"
+            @click="markAsFinalized(index)"
+            :disabled="!canEditDetails(service)"
+          >
             Servicio Terminado
           </button>
           <button class="btn-cerrado" @click="sendToClosed(index)">
             Enviar a Cerrados
           </button>
+          <CerrarServicioCliente
+            v-if="service.showDetails"
+            :service="service"
+            :currentUser="$store.state.currentUser"
+            @cerrado="onClienteCerro(index, $event)"
+          />
         </div>
       </li>
     </ul>
@@ -73,8 +102,12 @@
 
 <script>
 import axios from "axios";
+import CerrarServicioCliente from "../views/CerrarServicioCliente.vue";
 
 export default {
+  components: {
+    CerrarServicioCliente,
+  },
   computed: {
     services() {
       return this.$store.state.services;
@@ -84,13 +117,22 @@ export default {
     axios.get("http://localhost:5000/api/services").then((res) => {
       // Reemplaza el contenido del store con los servicios del backend
       const currentUser = this.$store.state.currentUser;
-      const services = res.data.map(service => {
+      const services = res.data.map((service) => {
         // Si el servicio fue tomado por el usuario actual, asegura que takenById coincida
-        if (service.takenByEmail && currentUser && service.takenByEmail === currentUser.email) {
+        if (
+          service.takenByEmail &&
+          currentUser &&
+          service.takenByEmail === currentUser.email
+        ) {
           service.takenById = currentUser._id;
         }
         // Si el servicio fue tomado por el usuario actual pero el campo takenById no existe o no coincide
-        if (service.takenBy && currentUser && service.takenBy === (currentUser.name || currentUser.email) && service.takenById !== currentUser._id) {
+        if (
+          service.takenBy &&
+          currentUser &&
+          service.takenBy === (currentUser.name || currentUser.email) &&
+          service.takenById !== currentUser._id
+        ) {
           service.takenById = currentUser._id;
         }
         return service;
@@ -125,7 +167,7 @@ export default {
           takenById: this.services[index].takenById,
           takenByEmail: this.services[index].takenByEmail,
           currentUserId: currentUser._id,
-          currentUserRole: currentUser.role
+          currentUserRole: currentUser.role,
         })
         .then((res) => {
           // Actualiza el servicio en el store con la respuesta del backend
@@ -145,7 +187,7 @@ export default {
         const inputs = this.$refs.detailsInput;
         if (Array.isArray(inputs)) {
           if (inputs[index]) inputs[index].focus();
-        } else if (inputs && typeof inputs.focus === 'function') {
+        } else if (inputs && typeof inputs.focus === "function") {
           inputs.focus();
         }
       });
@@ -158,7 +200,7 @@ export default {
         .put(`http://localhost:5000/api/services/${this.services[index]._id}`, {
           backgroundColor: "lightblue",
           currentUserId: currentUser._id,
-          currentUserRole: currentUser.role
+          currentUserRole: currentUser.role,
         })
         .then((res) => {
           Object.assign(this.services[index], res.data);
@@ -175,7 +217,7 @@ export default {
         const inputs = this.$refs.detailsInput;
         if (Array.isArray(inputs)) {
           if (inputs[index]) inputs[index].focus();
-        } else if (inputs && typeof inputs.focus === 'function') {
+        } else if (inputs && typeof inputs.focus === "function") {
           inputs.focus();
         }
       });
@@ -188,12 +230,15 @@ export default {
         this.services[index].editingDetails = false;
         // Guardar en backend y persistir el color rojo claro
         axios
-          .put(`http://localhost:5000/api/services/${this.services[index]._id}`, {
-            details: newDetails,
-            backgroundColor: "#ffcccc",
-            currentUserId: currentUser._id,
-            currentUserRole: currentUser.role
-          })
+          .put(
+            `http://localhost:5000/api/services/${this.services[index]._id}`,
+            {
+              details: newDetails,
+              backgroundColor: "#ffcccc",
+              currentUserId: currentUser._id,
+              currentUserRole: currentUser.role,
+            }
+          )
           .then((res) => {
             Object.assign(this.services[index], res.data);
           });
@@ -205,7 +250,11 @@ export default {
     },
     canEditDetails(service) {
       const currentUser = this.$store.state.currentUser;
-      return currentUser && (service.takenById === currentUser._id || currentUser.role === 'administrador');
+      return (
+        currentUser &&
+        (service.takenById === currentUser._id ||
+          currentUser.role === "administrador")
+      );
     },
     canEditObservation(service) {
       const currentUser = this.$store.state.currentUser;
@@ -247,6 +296,10 @@ export default {
             alert("Error al eliminar el servicio");
           });
       }
+    },
+    onClienteCerro(index, updatedService) {
+      // Actualiza el servicio en la lista tras cierre por cliente
+      Object.assign(this.services[index], updatedService);
     },
   },
 };

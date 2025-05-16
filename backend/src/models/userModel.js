@@ -14,8 +14,8 @@ const userSchema = new mongoose.Schema({
   rating: Number,
   role: {
     type: String,
-    enum: ['usuario', 'trabajador', 'administrador'],
-    default: 'usuario',
+    enum: ['cliente', 'trabajador', 'administrador'],
+    default: 'cliente',
   }
 }, { timestamps: true });
 

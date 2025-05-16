@@ -46,6 +46,9 @@ exports.getInbox = async (req, res) => {
       if (senderIdStr === userIdStr && receiverIdStr === userIdStr) continue;
       // El otro participante es el que NO es el usuario actual
       let otherId = senderIdStr === userIdStr ? receiverIdStr : senderIdStr;
+      // FIX: Solo mostrar conversaciones con usuarios que existen
+      const user = await require('../models/userModel').findById(otherId);
+      if (!user) continue;
       // Para evitar duplicados, usa siempre el mismo par ordenado
       const key = [userIdStr, otherId].sort().join('-');
       if (!userMap.has(key)) {

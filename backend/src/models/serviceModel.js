@@ -15,7 +15,8 @@ const serviceSchema = new mongoose.Schema({
   takenById: String,
   puntoVentaCodigo: String,
   proveedorAsignado: String,
-  nombreOficina: String
+  nombreOficina: String,
+  clienteCerro: { type: Boolean, default: false }
 }, { timestamps: true });
 
 module.exports = mongoose.model('Service', serviceSchema);

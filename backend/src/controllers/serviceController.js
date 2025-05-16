@@ -22,6 +22,21 @@ exports.getServices = async (req, res) => {
   }
 };
 
+// Validación global: impedir que un trabajador tome un nuevo servicio si tiene uno pendiente de cierre por cliente
+exports.canWorkerTakeService = async (req, res, next) => {
+  try {
+    const { currentUserId, currentUserRole } = req.body;
+    if (currentUserRole !== 'trabajador') return next();
+    const openService = await Service.findOne({ takenById: currentUserId, clienteCerro: false });
+    if (openService) {
+      return res.status(400).json({ error: 'No puedes tomar un nuevo servicio hasta que el cliente cierre el anterior.' });
+    }
+    next();
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
+
 // Actualizar un servicio (por id)
 exports.updateService = async (req, res) => {
   try {
@@ -44,6 +59,16 @@ exports.updateService = async (req, res) => {
       if (!service) return res.status(404).json({ error: 'Servicio no encontrado' });
       // Permitir tomar el servicio si está libre
       if (!service.takenById) {
+        if (req.body.backgroundColor === 'lightgreen' && service.takenById == null) {
+          // Validar que el trabajador no tenga otro servicio abierto
+          const openService = await Service.findOne({
+            takenById: req.body.currentUserId,
+            clienteCerro: false
+          });
+          if (openService) {
+            return res.status(400).json({ error: 'No puedes tomar un nuevo servicio hasta que el cliente cierre el anterior.' });
+          }
+        }
         const updated = await Service.findByIdAndUpdate(id, req.body, { new: true });
         return res.json(updated);
       }
@@ -153,5 +178,32 @@ exports.uploadPdfAndCreateService = async (req, res) => {
     res.status(200).json(extractedData);
   } catch (err) {
     res.status(500).json({ error: 'Error al procesar el PDF', details: err.message });
+  }
+};
+
+// Endpoint para que el cliente cierre el servicio
+exports.closeByClient = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { currentUserId, currentUserRole, currentUserName } = req.body;
+    const service = await Service.findById(id);
+    if (!service) return res.status(404).json({ error: 'Servicio no encontrado' });
+    // Solo el creador puede cerrar
+    if (service.requester !== currentUserName && currentUserRole !== 'administrador') {
+      return res.status(403).json({ error: 'Solo el cliente creador o un administrador puede cerrar el servicio.' });
+    }
+    // Solo puede cerrar si el trabajador ya lo marcó como terminado (backgroundColor azul)
+    if (service.backgroundColor !== 'lightblue') {
+      return res.status(400).json({ error: 'El trabajador debe marcar el servicio como terminado antes de que el cliente lo cierre.' });
+    }
+    if (service.clienteCerro) {
+      return res.status(400).json({ error: 'El servicio ya fue cerrado por el cliente.' });
+    }
+    service.clienteCerro = true;
+    service.backgroundColor = '#b3e5fc'; // azul más claro para cerrado por cliente
+    await service.save();
+    res.json(service);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
   }
 };

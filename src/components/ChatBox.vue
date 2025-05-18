@@ -148,7 +148,7 @@ export default {
   border: 1px solid #ccc;
 }
 .chat-input button {
-  background: var(--color-electric-blue);
+  background: #117e2c; /* Verde fuerte, visible */
   color: #fff;
   border: none;
   border-radius: 6px;
@@ -158,6 +158,6 @@ export default {
   transition: background 0.2s;
 }
 .chat-input button:hover {
-  background: var(--color-bright-green);
+  background: #0b661c; /* Verde más oscuro al pasar el mouse */
 }
 </style>

@@ -65,6 +65,7 @@ export default {
   data() {
     return {
       conversations: [],
+      allUsers: [],
       selectedUser: null,
       intervalId: null,
       newMessage: "",
@@ -78,9 +79,12 @@ export default {
     userName() {
       return this.currentUser?.name;
     },
+    userRole() {
+      return this.currentUser?.role;
+    },
   },
   async mounted() {
-    await this.fetchConversations();
+    await Promise.all([this.fetchAllUsers(), this.fetchConversations()]);
     // Si viene un userId en la ruta, selecciona ese chat y lo pone primero
     if (this.$route.params.userId) {
       this.selectById(this.$route.params.userId);
@@ -89,22 +93,55 @@ export default {
         if (this.$refs.chatInput) this.$refs.chatInput.focus();
       });
     }
-    this.intervalId = setInterval(this.fetchConversations, 5000);
+    this.intervalId = setInterval(async () => {
+      await this.fetchConversations();
+      // No es necesario volver a cargar todos los usuarios cada vez
+    }, 5000);
   },
   beforeUnmount() {
     if (this.intervalId) clearInterval(this.intervalId);
   },
   methods: {
+    async fetchAllUsers() {
+      if (!this.userId) return;
+      try {
+        const res = await axios.get("http://localhost:5000/api/users");
+        // Exclude self
+        this.allUsers = res.data.filter((u) => u._id !== this.userId);
+      } catch (err) {
+        this.allUsers = [];
+      }
+    },
     async fetchConversations() {
       if (!this.userId) return;
       try {
         const res = await axios.get(
           `http://localhost:5000/api/messages/inbox/${this.userId}`
         );
-        this.conversations = res.data;
+        // Merge allUsers with conversations
+        const convMap = {};
+        for (const conv of res.data) {
+          convMap[conv.userId] = conv;
+        }
+        // For users with no conversation, create a placeholder
+        const merged = this.allUsers.map((u) => {
+          if (convMap[u._id]) {
+            return convMap[u._id];
+          } else {
+            return {
+              userId: u._id,
+              name: u.name,
+              profilePhoto: u.profilePhoto || "",
+              lastMessage: "",
+              lastSenderId: "",
+              unreadCount: 0,
+            };
+          }
+        });
+        this.conversations = merged;
         // Mantener la selección actual si existe en la nueva lista
         if (this.selectedUser) {
-          const found = res.data.find(
+          const found = merged.find(
             (c) => c.userId === this.selectedUser.userId
           );
           if (found) {
@@ -117,8 +154,8 @@ export default {
         if (this.$route.params.userId) {
           this.selectById(this.$route.params.userId);
           this.moveSelectedToTop();
-        } else if (!this.selectedUser && res.data.length > 0) {
-          this.selectedUser = res.data[0];
+        } else if (!this.selectedUser && merged.length > 0) {
+          this.selectedUser = merged[0];
         }
       } catch (err) {
         this.conversations = [];
@@ -178,7 +215,9 @@ export default {
         this.$nextTick(() => {
           if (this.$refs.chatInput) this.$refs.chatInput.focus();
         });
-      } catch (err) {}
+      } catch (err) {
+        alert("No se pudo enviar el mensaje. Intenta de nuevo.");
+      }
     },
   },
   watch: {
@@ -336,3 +375,9 @@ export default {
   background: var(--color-bright-green);
 }
 </style>
+
+.role-banner { width: 100%; text-align: center; padding: 10px 0; font-size:
+1.1em; margin-bottom: 8px; border-bottom: 1px solid #e0e0e0; }
+.role-administrador { background: #e3f2fd; color: #1565c0; } .role-trabajador {
+background: #fffde7; color: #f9a825; } .role-cliente { background: #e8f5e9;
+color: #117e2c; }

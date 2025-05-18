@@ -46,7 +46,6 @@ export default {
           "http://localhost:5000/api/users/login",
           this.credentials
         );
-        alert(`Bienvenido, ${response.data.name}`);
         // Guardar usuario en el store
         this.$store.commit("setCurrentUser", response.data);
         // Redirigir siempre al home después de iniciar sesión

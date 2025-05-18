@@ -110,7 +110,20 @@ export default {
   },
   computed: {
     services() {
-      return this.$store.state.services;
+      const currentUser = this.$store.state.currentUser;
+      if (!currentUser) return [];
+      if (
+        currentUser.role === "administrador" ||
+        currentUser.role === "trabajador"
+      ) {
+        return this.$store.state.services;
+      }
+      // Cliente: solo ve los servicios que él cargó (por nombre o email)
+      return this.$store.state.services.filter(
+        (service) =>
+          service.requester === currentUser.name ||
+          service.requester === currentUser.email
+      );
     },
   },
   mounted() {

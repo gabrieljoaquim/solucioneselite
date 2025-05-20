@@ -9,6 +9,8 @@
         ref="requester"
         required
       />
+      <label for="registrante">Registrante:</label>
+      <input id="registrante" v-model="registrante" disabled required />
 
       <label for="phone">Teléfono:</label>
       <input id="phone" v-model="service.phone" required />
@@ -82,12 +84,24 @@ export default {
         reportDate: "",
         observations: "",
       },
+      registrante: "",
       loading: false,
       error: "",
     };
   },
+  computed: {
+    isClient() {
+      const user = this.$store.state.currentUser;
+      return user && user.role === "cliente";
+    },
+  },
   mounted() {
     this.service.reportDate = new Date().toISOString().split("T")[0];
+    // Asigna automáticamente el registrante
+    const user = this.$store.state.currentUser;
+    if (user) {
+      this.registrante = user.name || user.email;
+    }
   },
   methods: {
     submitService() {
@@ -100,8 +114,10 @@ export default {
       } else {
         observations = [];
       }
+      // Agrega el registrante automáticamente
       const payload = {
         ...this.service,
+        registrante: this.registrante,
         observations,
       };
       axios
@@ -121,9 +137,6 @@ export default {
             reportDate: new Date().toISOString().split("T")[0],
             observations: "",
           };
-          this.$nextTick(() => {
-            this.$refs.requester.focus();
-          });
         })
         .catch(() => {
           alert("Error al agregar el servicio");

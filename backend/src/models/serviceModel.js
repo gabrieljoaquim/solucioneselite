@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 const serviceSchema = new mongoose.Schema({
   requester: String,
+  registrante: String,
   phone: String,
   address: String,
   workingHours: String,

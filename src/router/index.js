@@ -1,7 +1,25 @@
+import UserAdminView from '../views/UserAdminView.vue';
+import WorkerProfileView from '../views/WorkerProfileView.vue';
+import WorkerSearchView from '../views/WorkerSearchView.vue';
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 
 const routes = [
+  {
+    path: '/admin/users',
+    name: 'user-admin',
+    component: UserAdminView
+  },
+  {
+    path: '/worker/:id',
+    name: 'worker-profile',
+    component: WorkerProfileView
+  },
+  {
+    path: '/search-workers',
+    name: 'search-workers',
+    component: WorkerSearchView
+  },
   {
     path: '/',
     name: 'home',

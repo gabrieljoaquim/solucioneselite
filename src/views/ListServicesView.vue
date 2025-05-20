@@ -1,7 +1,11 @@
 <template>
   <div class="list-services">
     <h1>Lista de Servicios</h1>
-    <ul>
+    <div v-if="services.length === 0" class="no-services-msg">
+      No tienes servicios registrados. Si creaste un servicio con otro usuario,
+      inicia sesión con ese usuario para verlo.
+    </div>
+    <ul v-else>
       <li
         v-for="(service, index) in services"
         :key="index"
@@ -94,6 +98,33 @@
             :currentUser="$store.state.currentUser"
             @cerrado="onClienteCerro(index, $event)"
           />
+          <!-- Mensaje si el cliente no puede cerrar el servicio -->
+          <div
+            v-if="
+              service.showDetails &&
+              $store.state.currentUser &&
+              $store.state.currentUser.role === 'cliente'
+            "
+          >
+            <template
+              v-if="
+                service.requester ===
+                ($store.state.currentUser.name ||
+                  $store.state.currentUser.email)
+              "
+            >
+              <div v-if="service.clienteCerro" class="info-msg">
+                Este servicio ya fue cerrado por ti.
+              </div>
+              <div
+                v-else-if="service.backgroundColor !== 'lightblue'"
+                class="info-msg"
+              >
+                Solo puedes cerrar el servicio después de que el trabajador lo
+                marque como terminado (fondo azul).
+              </div>
+            </template>
+          </div>
         </div>
       </li>
     </ul>
@@ -118,11 +149,10 @@ export default {
       ) {
         return this.$store.state.services;
       }
-      // Cliente: solo ve los servicios que él cargó (por nombre o email)
+      // Cliente: solo ve los servicios donde él es el registrante
       return this.$store.state.services.filter(
         (service) =>
-          service.requester === currentUser.name ||
-          service.requester === currentUser.email
+          service.registrante === (currentUser.name || currentUser.email)
       );
     },
   },
@@ -185,6 +215,13 @@ export default {
         .then((res) => {
           // Actualiza el servicio en el store con la respuesta del backend
           Object.assign(this.services[index], res.data);
+        })
+        .catch((err) => {
+          const msg =
+            err.response?.data?.error ||
+            err.response?.data?.message ||
+            "Error al tomar el servicio";
+          alert(msg);
         });
     },
     markAsCompleted(index) {
@@ -319,6 +356,24 @@ export default {
 </script>
 
 <style scoped>
+.no-services-msg {
+  color: #d32f2f;
+  background: #fff3f3;
+  border: 1px solid #f8bbbb;
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 18px;
+  text-align: center;
+}
+.info-msg {
+  color: #0288d1;
+  background: #e1f5fe;
+  border: 1px solid #b3e5fc;
+  padding: 8px;
+  border-radius: 4px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
 .list-services {
   max-width: 600px;
   margin: 0 auto;

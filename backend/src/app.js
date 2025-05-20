@@ -33,10 +33,15 @@ mongoose.connect(process.env.MONGO_URI, {
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.error('MongoDB connection error:', err));
 
-// Routes
+
+// Rutas principales
 app.use('/api/users', require('./routes/userRoutes'));
 app.use('/api/services', require('./routes/serviceRoutes'));
 app.use('/api/messages', require('./routes/messageRoutes'));
+
+// Rutas especiales (funciones avanzadas)
+require('./registerSpecialRoutes')(app);
+
 app.get('/api/test', (req, res) => {
   console.log('TEST ENDPOINT CALLED');
   res.json({ ok: true });

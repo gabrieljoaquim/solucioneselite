@@ -1,3 +1,13 @@
+// Eliminar usuario por ID
+exports.deleteUser = async (req, res) => {
+  try {
+    const user = await User.findByIdAndDelete(req.params.id);
+    if (!user) return res.status(404).json({ error: 'Usuario no encontrado' });
+    res.json({ message: 'Usuario eliminado correctamente' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
 const User = require('../models/userModel');
 
 exports.createUser = async (req, res) => {

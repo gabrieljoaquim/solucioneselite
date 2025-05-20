@@ -188,9 +188,9 @@ exports.closeByClient = async (req, res) => {
     const { currentUserId, currentUserRole, currentUserName } = req.body;
     const service = await Service.findById(id);
     if (!service) return res.status(404).json({ error: 'Servicio no encontrado' });
-    // Solo el creador puede cerrar
-    if (service.requester !== currentUserName && currentUserRole !== 'administrador') {
-      return res.status(403).json({ error: 'Solo el cliente creador o un administrador puede cerrar el servicio.' });
+    // Solo el registrante puede cerrar
+    if (service.registrante !== currentUserName && currentUserRole !== 'administrador') {
+      return res.status(403).json({ error: 'Solo el registrante o un administrador puede cerrar el servicio.' });
     }
     // Solo puede cerrar si el trabajador ya lo marcó como terminado (backgroundColor azul)
     if (service.backgroundColor !== 'lightblue') {

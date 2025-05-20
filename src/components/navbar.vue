@@ -6,6 +6,14 @@
     </div>
     <div class="navbar-center">
       <ul class="menu">
+        <li
+          v-if="
+            $store.state.currentUser &&
+            $store.state.currentUser.role === 'administrador'
+          "
+        >
+          <router-link to="/admin/users">Usuarios</router-link>
+        </li>
         <li><router-link to="/about">Nosotros</router-link></li>
         <li class="dropdown">
           <button class="dropdown-button">Servicios</button>

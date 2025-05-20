@@ -27,10 +27,10 @@ export default {
   },
   computed: {
     canShow() {
-      // Solo el creador (o admin) puede cerrar, solo si el trabajador ya lo terminó y el cliente no ha cerrado
+      // Solo el registrante (o admin) puede cerrar, solo si el trabajador ya lo terminó y el cliente no ha cerrado
       return (
         this.currentUser &&
-        (this.service.requester ===
+        (this.service.registrante ===
           (this.currentUser.name || this.currentUser.email) ||
           this.currentUser.role === "administrador") &&
         this.service.backgroundColor === "lightblue" &&

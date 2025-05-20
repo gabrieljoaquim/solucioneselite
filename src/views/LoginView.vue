@@ -55,8 +55,7 @@ export default {
       }
     },
     forgotPassword() {
-      alert("Se ha enviado un enlace de recuperación a su correo electrónico.");
-      // Logic to send a password recovery email can be added here
+      this.$router.push({ name: "forgot-password" });
     },
   },
 };

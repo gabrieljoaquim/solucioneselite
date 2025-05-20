@@ -159,6 +159,7 @@ export default {
   flex-grow: 1;
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 .menu {
   list-style: none;
@@ -166,6 +167,7 @@ export default {
   gap: 20px;
   padding: 0;
   margin: 0;
+  align-items: center;
 }
 .menu li {
   position: relative;
@@ -209,7 +211,16 @@ export default {
   display: block;
 }
 .dropdown-menu li {
-  margin: 5px;
+  margin: 8px 0;
+  padding: 4px 12px;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+.dropdown-menu li:not(:last-child) {
+  margin-bottom: 8px;
+}
+.dropdown-menu li:hover {
+  background: #0bcf2e;
 }
 .navbar-right {
   display: flex;

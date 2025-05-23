@@ -13,8 +13,22 @@
       >
         <span>{{ service.requester }} - {{ service.serviceType }}</span>
         <span v-if="service.takenBy" class="taken-by"
-          >Tomado por: {{ service.takenBy }}</span
-        >
+          >Tomado por:
+          <span
+            :class="{
+              'yo-activo':
+                $store.state.currentUser &&
+                service.takenById === $store.state.currentUser._id &&
+                !service.clienteCerro,
+              'yo-terminado':
+                $store.state.currentUser &&
+                service.takenById === $store.state.currentUser._id &&
+                service.clienteCerro,
+            }"
+          >
+            {{ service.takenBy }}
+          </span>
+        </span>
         <button @click="toggleDetails(index)">
           {{ service.showDetails ? "Ocultar Detalles" : "Ver Detalles" }}
         </button>
@@ -48,12 +62,12 @@
           </div>
           <p><strong>Fecha del reporte:</strong> {{ service.reportDate }}</p>
           <!-- DEBUG: Mostrar IDs y roles para depuración -->
-          <p style="color: red; font-size: 0.9em">
+          <!-- <p style="color: red; font-size: 0.9em">
             Usuario actual: {{ $store.state.currentUser._id }} ({{
               $store.state.currentUser.role
             }})<br />
             Trabajador asignado: {{ service.takenById }}
-          </p>
+          </p> -->
           <ServicePriceEditor
             v-if="canShowPriceEditor(service)"
             :precio="service.precio"
@@ -72,6 +86,10 @@
           <p v-if="service.nombreOficina">
             <strong>Nombre de Oficina:</strong> {{ service.nombreOficina }}
           </p>
+          <p v-if="service.precio != null">
+            <strong>Precio:</strong> ${{ service.precio }}
+          </p>
+          <p v-else><strong>Precio:</strong> Sin asignar</p>
           <p v-if="service.status">
             <strong>Status:</strong> {{ service.status }}
           </p>
@@ -223,20 +241,15 @@ export default {
         alert("Debes iniciar sesión para tomar un servicio.");
         return;
       }
-      this.services[index].backgroundColor = "lightgreen";
-      this.services[index].takenBy =
-        currentUser.name || currentUser.email || currentUser._id;
-      this.services[index].takenById = currentUser._id;
-      this.services[index].takenByEmail = currentUser.email;
-      // Guardar en backend
+      // NO actualices la UI localmente antes de la respuesta
       try {
-        const res = await axios.put(
+        await axios.put(
           `http://localhost:5000/api/services/${this.services[index]._id}`,
           {
             backgroundColor: "lightgreen",
-            takenBy: this.services[index].takenBy,
-            takenById: this.services[index].takenById,
-            takenByEmail: this.services[index].takenByEmail,
+            takenBy: currentUser.name || currentUser.email || currentUser._id,
+            takenById: currentUser._id,
+            takenByEmail: currentUser.email,
             currentUserId: currentUser._id,
             currentUserRole: currentUser.role,
           }
@@ -277,15 +290,22 @@ export default {
     markAsFinalized(index) {
       const currentUser = this.$store.state.currentUser;
       if (!currentUser) return;
-      this.services[index].backgroundColor = "lightblue";
       axios
         .put(`http://localhost:5000/api/services/${this.services[index]._id}`, {
           backgroundColor: "lightblue",
           currentUserId: currentUser._id,
           currentUserRole: currentUser.role,
         })
-        .then((res) => {
-          Object.assign(this.services[index], res.data);
+        .then(async () => {
+          // Refresca la lista tras marcar como terminado
+          const refreshed = await axios.get(
+            "http://localhost:5000/api/services"
+          );
+          this.$store.state.services.splice(
+            0,
+            this.$store.state.services.length,
+            ...refreshed.data
+          );
         });
     },
     sendToClosed(index) {
@@ -463,5 +483,23 @@ button:hover {
   font-size: 0.95em;
   color: #117e2c;
   margin-left: 10px;
+}
+.yo-activo {
+  color: #fff;
+  background: #2196f3;
+  font-weight: bold;
+  font-size: 1.2em;
+  padding: 2px 10px;
+  border-radius: 8px;
+  margin-left: 6px;
+}
+.yo-terminado {
+  color: #fff;
+  background: #4caf50;
+  font-weight: bold;
+  font-size: 1.1em;
+  padding: 2px 10px;
+  border-radius: 8px;
+  margin-left: 6px;
 }
 </style>

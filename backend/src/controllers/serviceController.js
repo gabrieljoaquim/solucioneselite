@@ -51,6 +51,41 @@ exports.updateService = async (req, res) => {
       if (!updated) return res.status(404).json({ error: 'Servicio no encontrado' });
       return res.json(updated);
     }
+
+    // Control de edición de precio: solo trabajador asignado o admin
+    if (typeof req.body.precio !== 'undefined') {
+      const service = await Service.findById(id);
+      if (!service) return res.status(404).json({ error: 'Servicio no encontrado' });
+      const { currentUserId, currentUserRole } = req.body;
+      // Debug log for troubleshooting
+      console.log('[DEBUG] Precio edit request:', {
+        takenById: service.takenById,
+        currentUserId,
+        currentUserRole,
+        takenByIdType: typeof service.takenById,
+        currentUserIdType: typeof currentUserId
+      });
+      // Always compare as strings, and force takenById to string if possible
+      const takenByIdStr = service.takenById ? String(service.takenById) : '';
+      const currentUserIdStr = currentUserId ? String(currentUserId) : '';
+      if (
+        !currentUserIdStr ||
+        !currentUserRole ||
+        !(
+          currentUserRole === 'administrador' ||
+          (currentUserRole === 'trabajador' && takenByIdStr === currentUserIdStr)
+        )
+      ) {
+        return res.status(403).json({ error: 'No autorizado para editar el precio de este servicio' });
+      }
+      service.precio = req.body.precio;
+      // Always store takenById as string
+      if (service.takenById && typeof service.takenById !== 'string') {
+        service.takenById = String(service.takenById);
+      }
+      await service.save();
+      return res.json(service);
+    }
     // Solo permitir cambios de color/estado si el usuario es el que tomó el servicio o admin
     if (req.body.backgroundColor || req.body.status) {
       const currentUserId = req.body.currentUserId;

@@ -18,60 +18,65 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="user in users" :key="user._id">
-            <td>{{ user.name }}</td>
-            <td>{{ user.email }}</td>
-            <td>{{ user.role }}</td>
-            <td>
-              <button @click="editUser(user)">Editar</button>
-              <button @click="deleteUser(user._id)">Eliminar</button>
-            </td>
-          </tr>
-          <tr
-            v-if="editingUser && editingUser._id === user._id"
-            :key="user._id + '-edit'"
-            class="edit-row"
-          >
-            <td colspan="4">
-              <form @submit.prevent="saveEdit">
-                <div class="edit-fields">
-                  <label>Nombre: <input v-model="editingUser.name" /></label>
-                  <label>Email: <input v-model="editingUser.email" /></label>
-                  <label
-                    >Rol:
-                    <select v-model="editingUser.role">
-                      <option value="cliente">Cliente</option>
-                      <option value="trabajador">Trabajador</option>
-                      <option value="administrador">Administrador</option>
-                    </select>
-                  </label>
-                  <label>Teléfono: <input v-model="editingUser.phone" /></label>
-                  <label
-                    >Dirección: <input v-model="editingUser.address"
-                  /></label>
-                  <label>Zona: <input v-model="editingUser.zone" /></label>
-                  <label
-                    >Especialidad:
-                    <input
-                      v-model="editingUser.specialtyString"
-                      placeholder="Separadas por coma"
-                  /></label>
-                  <label
-                    >Experiencia (años):
-                    <input
-                      v-model.number="editingUser.experience"
-                      type="number"
-                      min="0"
-                  /></label>
-                  <label
-                    >Descripción: <input v-model="editingUser.description"
-                  /></label>
-                </div>
-                <button type="submit">Guardar</button>
-                <button type="button" @click="cancelEdit">Cancelar</button>
-              </form>
-            </td>
-          </tr>
+          <template v-for="user in users">
+            <tr
+              :key="user._id"
+              v-if="!editingUser || editingUser._id !== user._id"
+            >
+              <td>{{ user.name }}</td>
+              <td>{{ user.email }}</td>
+              <td>{{ user.role }}</td>
+              <td>
+                <button @click="editUser(user)">Editar</button>
+                <button @click="deleteUser(user._id)">Eliminar</button>
+              </td>
+            </tr>
+            <tr :key="user._id + '-edit'" v-else class="edit-row">
+              <td colspan="4">
+                <form @submit.prevent="saveEdit">
+                  <div class="edit-fields">
+                    <label>Nombre: <input v-model="editingUser.name" /></label>
+                    <label>Email: <input v-model="editingUser.email" /></label>
+                    <label>
+                      Rol:
+                      <select v-model="editingUser.role">
+                        <option value="cliente">Cliente</option>
+                        <option value="trabajador">Trabajador</option>
+                        <option value="administrador">Administrador</option>
+                      </select>
+                    </label>
+                    <label
+                      >Teléfono: <input v-model="editingUser.phone"
+                    /></label>
+                    <label
+                      >Dirección: <input v-model="editingUser.address"
+                    /></label>
+                    <label>Zona: <input v-model="editingUser.zone" /></label>
+                    <label>
+                      Especialidad:
+                      <input
+                        v-model="editingUser.specialtyString"
+                        placeholder="Separadas por coma"
+                      />
+                    </label>
+                    <label>
+                      Experiencia (años):
+                      <input
+                        v-model.number="editingUser.experience"
+                        type="number"
+                        min="0"
+                      />
+                    </label>
+                    <label
+                      >Descripción: <input v-model="editingUser.description"
+                    /></label>
+                  </div>
+                  <button type="submit">Guardar</button>
+                  <button type="button" @click="cancelEdit">Cancelar</button>
+                </form>
+              </td>
+            </tr>
+          </template>
         </tbody>
       </table>
     </template>

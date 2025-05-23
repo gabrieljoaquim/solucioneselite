@@ -47,6 +47,21 @@
             <button @click="cancelEditDetails(index)">Cancelar</button>
           </div>
           <p><strong>Fecha del reporte:</strong> {{ service.reportDate }}</p>
+          <!-- DEBUG: Mostrar IDs y roles para depuración -->
+          <p style="color: red; font-size: 0.9em">
+            Usuario actual: {{ $store.state.currentUser._id }} ({{
+              $store.state.currentUser.role
+            }})<br />
+            Trabajador asignado: {{ service.takenById }}
+          </p>
+          <ServicePriceEditor
+            v-if="canShowPriceEditor(service)"
+            :precio="service.precio"
+            :service-id="service._id"
+            :current-user="$store.state.currentUser"
+            :taken-by-id="service.takenById"
+            @updated="(val) => (service.precio = val)"
+          />
           <p v-if="service.puntoVentaCodigo">
             <strong>Código Punto de Venta:</strong>
             {{ service.puntoVentaCodigo }}
@@ -132,12 +147,14 @@
 </template>
 
 <script>
+import ServicePriceEditor from "../components/ServicePriceEditor.vue";
 import axios from "axios";
 import CerrarServicioCliente from "../views/CerrarServicioCliente.vue";
 
 export default {
   components: {
     CerrarServicioCliente,
+    ServicePriceEditor,
   },
   computed: {
     services() {
@@ -188,10 +205,19 @@ export default {
     });
   },
   methods: {
+    canShowPriceEditor(service) {
+      const user = this.$store.state.currentUser;
+      if (!user) return false;
+      // Solo mostrar si el usuario es admin o trabajador asignado Y el servicio ya fue tomado
+      if (user.role === "administrador") return true;
+      if (user.role === "trabajador" && service.takenById === user._id)
+        return true;
+      return false;
+    },
     toggleDetails(index) {
       this.services[index].showDetails = !this.services[index].showDetails;
     },
-    markAsTaken(index) {
+    async markAsTaken(index) {
       const currentUser = this.$store.state.currentUser;
       if (!currentUser) {
         alert("Debes iniciar sesión para tomar un servicio.");
@@ -203,26 +229,32 @@ export default {
       this.services[index].takenById = currentUser._id;
       this.services[index].takenByEmail = currentUser.email;
       // Guardar en backend
-      axios
-        .put(`http://localhost:5000/api/services/${this.services[index]._id}`, {
-          backgroundColor: "lightgreen",
-          takenBy: this.services[index].takenBy,
-          takenById: this.services[index].takenById,
-          takenByEmail: this.services[index].takenByEmail,
-          currentUserId: currentUser._id,
-          currentUserRole: currentUser.role,
-        })
-        .then((res) => {
-          // Actualiza el servicio en el store con la respuesta del backend
-          Object.assign(this.services[index], res.data);
-        })
-        .catch((err) => {
-          const msg =
-            err.response?.data?.error ||
-            err.response?.data?.message ||
-            "Error al tomar el servicio";
-          alert(msg);
-        });
+      try {
+        const res = await axios.put(
+          `http://localhost:5000/api/services/${this.services[index]._id}`,
+          {
+            backgroundColor: "lightgreen",
+            takenBy: this.services[index].takenBy,
+            takenById: this.services[index].takenById,
+            takenByEmail: this.services[index].takenByEmail,
+            currentUserId: currentUser._id,
+            currentUserRole: currentUser.role,
+          }
+        );
+        // Refresca toda la lista de servicios para forzar reactividad
+        const refreshed = await axios.get("http://localhost:5000/api/services");
+        this.$store.state.services.splice(
+          0,
+          this.$store.state.services.length,
+          ...refreshed.data
+        );
+      } catch (err) {
+        const msg =
+          err.response?.data?.error ||
+          err.response?.data?.message ||
+          "Error al tomar el servicio";
+        alert(msg);
+      }
     },
     markAsCompleted(index) {
       this.services[index].backgroundColor = "lightyellow";

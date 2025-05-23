@@ -1,7 +1,7 @@
 <template>
   <div class="home">
-    <img alt="logo" class="LogoPrin" src="../assets/logo.png" />
     <header class="hero">
+      <img alt="logo" class="LogoPrin" src="../assets/logo.png" />
       <h1>
         Encuentra a los mejores profesionales en reparación y construcción 🔨🏡
       </h1>

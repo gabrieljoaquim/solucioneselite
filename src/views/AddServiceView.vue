@@ -47,6 +47,11 @@
       <label for="observations">Observaciones:</label>
       <textarea id="observations" v-model="service.observations"></textarea>
 
+
+
+      <!-- El campo de precio solo lo edita el trabajador o administrador después de la creación -->
+      <!-- Por lo tanto, no se muestra el editor de precio aquí -->
+
       <button type="submit">Agregar Servicio</button>
     </form>
     <form @submit.prevent="uploadPdf" style="margin-top: 24px">
@@ -66,9 +71,12 @@
 </template>
 
 <script>
+
+import ServicePriceEditor from "../components/ServicePriceEditor.vue";
 import axios from "axios";
 
 export default {
+  components: { ServicePriceEditor },
   data() {
     return {
       service: {

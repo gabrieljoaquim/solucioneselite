@@ -3,14 +3,21 @@ import ForgotPasswordView from '../views/ForgotPasswordView.vue';
 import UserAdminView from '../views/UserAdminView.vue';
 import WorkerProfileView from '../views/WorkerProfileView.vue';
 import WorkerSearchView from '../views/WorkerSearchView.vue';
+import ServicesBoardView from '../views/ServicesBoardView.vue';
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
+
 
 const routes = [
   {
     path: '/reset-password/:token',
     name: 'reset-password',
     component: ResetPasswordView
+  },
+  {
+    path: '/services-board',
+    name: 'services-board',
+    component: ServicesBoardView
   },
   {
     path: '/forgot-password',

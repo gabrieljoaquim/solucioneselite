@@ -18,7 +18,9 @@ const serviceSchema = new mongoose.Schema({
   proveedorAsignado: String,
   nombreOficina: String,
   // clienteCerro removed: client closure logic deleted
-  precio: { type: Number, default: null }
+  precio: { type: Number, default: null },
+  precioAprobado: { type: Boolean, default: false },
+  precioAprobadoFecha: { type: Date, default: null }
 }, { timestamps: true });
 
 module.exports = mongoose.model('Service', serviceSchema);

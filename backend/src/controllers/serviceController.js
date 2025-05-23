@@ -105,6 +105,18 @@ exports.updateService = async (req, res) => {
       if (!updated) return res.status(404).json({ error: 'Servicio no encontrado' });
       return res.json(updated);
     }
+
+    // Si el cliente aprueba el precio
+    if (typeof req.body.precioAprobado !== 'undefined') {
+      const update = {
+        precioAprobado: !!req.body.precioAprobado,
+        precioAprobadoFecha: req.body.precioAprobado ? new Date() : null
+      };
+      const updated = await Service.findByIdAndUpdate(id, update, { new: true });
+      if (!updated) return res.status(404).json({ error: 'Servicio no encontrado' });
+      return res.json(updated);
+    }
+
     // Si no, actualizar normalmente
     const updated = await Service.findByIdAndUpdate(id, req.body, { new: true });
     if (!updated) return res.status(404).json({ error: 'Servicio no encontrado' });

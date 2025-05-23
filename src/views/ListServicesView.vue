@@ -12,18 +12,13 @@
         :style="{ backgroundColor: service.backgroundColor || 'white' }"
       >
         <span>{{ service.requester }} - {{ service.serviceType }}</span>
-        <span v-if="service.takenBy" class="taken-by"
-          >Tomado por:
+        <span v-if="service.takenBy" class="taken-by">
+          Tomado por:
           <span
             :class="{
               'yo-activo':
                 $store.state.currentUser &&
-                service.takenById === $store.state.currentUser._id &&
-                !service.clienteCerro,
-              'yo-terminado':
-                $store.state.currentUser &&
-                service.takenById === $store.state.currentUser._id &&
-                service.clienteCerro,
+                service.takenById === $store.state.currentUser._id
             }"
           >
             {{ service.takenBy }}
@@ -122,42 +117,7 @@
           >
             Servicio Terminado
           </button>
-          <button class="btn-cerrado" @click="sendToClosed(index)">
-            Enviar a Cerrados
-          </button>
-          <CerrarServicioCliente
-            v-if="service.showDetails"
-            :service="service"
-            :currentUser="$store.state.currentUser"
-            @cerrado="onClienteCerro(index, $event)"
-          />
-          <!-- Mensaje si el cliente no puede cerrar el servicio -->
-          <div
-            v-if="
-              service.showDetails &&
-              $store.state.currentUser &&
-              $store.state.currentUser.role === 'cliente'
-            "
-          >
-            <template
-              v-if="
-                service.requester ===
-                ($store.state.currentUser.name ||
-                  $store.state.currentUser.email)
-              "
-            >
-              <div v-if="service.clienteCerro" class="info-msg">
-                Este servicio ya fue cerrado por ti.
-              </div>
-              <div
-                v-else-if="service.backgroundColor !== 'lightblue'"
-                class="info-msg"
-              >
-                Solo puedes cerrar el servicio después de que el trabajador lo
-                marque como terminado (fondo azul).
-              </div>
-            </template>
-          </div>
+
         </div>
       </li>
     </ul>
@@ -167,11 +127,9 @@
 <script>
 import ServicePriceEditor from "../components/ServicePriceEditor.vue";
 import axios from "axios";
-import CerrarServicioCliente from "../views/CerrarServicioCliente.vue";
 
 export default {
   components: {
-    CerrarServicioCliente,
     ServicePriceEditor,
   },
   computed: {
@@ -290,12 +248,20 @@ export default {
     markAsFinalized(index) {
       const currentUser = this.$store.state.currentUser;
       if (!currentUser) return;
+      // Log para depuración
+      console.log('markAsFinalized PUT:', {
+        backgroundColor: "lightblue",
+        currentUserId: currentUser._id,
+        currentUserRole: currentUser.role,
+      });
       axios
-        .put(`http://localhost:5000/api/services/${this.services[index]._id}`, {
-          backgroundColor: "lightblue",
-          currentUserId: currentUser._id,
-          currentUserRole: currentUser.role,
-        })
+        .put(`http://localhost:5000/api/services/${this.services[index]._id}`,
+          {
+            backgroundColor: "lightblue",
+            currentUserId: currentUser._id,
+            currentUserRole: currentUser.role,
+          }
+        )
         .then(async () => {
           // Refresca la lista tras marcar como terminado
           const refreshed = await axios.get(
@@ -306,12 +272,16 @@ export default {
             this.$store.state.services.length,
             ...refreshed.data
           );
+        })
+        .catch((err) => {
+          alert(
+            err.response?.data?.error ||
+            err.response?.data?.message ||
+            "Error al marcar como terminado"
+          );
         });
     },
-    sendToClosed(index) {
-      const closedService = this.services.splice(index, 1)[0];
-      this.$store.commit("addClosedService", closedService);
-    },
+    // sendToClosed removed: client closure logic deleted
     editDetails(index) {
       this.services[index].editingDetails = true;
       this.services[index].detailsDraft = this.services[index].details;
@@ -326,11 +296,21 @@ export default {
     },
     saveDetails(index) {
       const currentUser = this.$store.state.currentUser;
+      if (!currentUser) {
+        alert("Debes iniciar sesión.");
+        return;
+      }
       const newDetails = this.services[index].detailsDraft.trim();
       if (newDetails) {
         this.services[index].details = newDetails;
         this.services[index].editingDetails = false;
-        // Guardar en backend y persistir el color rojo claro
+        // LOG para depuración
+        console.log('saveDetails PUT:', {
+          details: newDetails,
+          backgroundColor: "#ffcccc",
+          currentUserId: currentUser._id,
+          currentUserRole: currentUser.role,
+        });
         axios
           .put(
             `http://localhost:5000/api/services/${this.services[index]._id}`,
@@ -343,6 +323,13 @@ export default {
           )
           .then((res) => {
             Object.assign(this.services[index], res.data);
+          })
+          .catch((err) => {
+            alert(
+              err.response?.data?.error ||
+              err.response?.data?.message ||
+              "Error al guardar detalles"
+            );
           });
       }
     },
@@ -399,10 +386,7 @@ export default {
           });
       }
     },
-    onClienteCerro(index, updatedService) {
-      // Actualiza el servicio en la lista tras cierre por cliente
-      Object.assign(this.services[index], updatedService);
-    },
+    // onClienteCerro removed: client closure logic deleted
   },
 };
 </script>

@@ -4,8 +4,8 @@ import axios from 'axios';
 export async function getClosedServicesByClientAndWorker(client, worker) {
   const res = await axios.get('http://localhost:5000/api/services');
   // Filtra servicios cerrados por el cliente, tomados por el trabajador
+  // Client closure logic removed: return all services taken by worker for this client
   return res.data.filter(s =>
-    s.clienteCerro &&
     (s.requester === client.name || s.requester === client.email) &&
     (s.takenById === worker._id || s.takenBy === worker.name || s.takenBy === worker.email)
   );

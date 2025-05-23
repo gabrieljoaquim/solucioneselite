@@ -17,9 +17,7 @@ module.exports = async function reviewAuth(req, res, next) {
     if (!serviceDoc) {
       return res.status(400).json({ error: 'Servicio no encontrado.' });
     }
-    if (!serviceDoc.clienteCerro) {
-      return res.status(403).json({ error: 'Solo puedes dejar una reseña después de que el servicio haya sido cerrado.' });
-    }
+    // client closure logic removed: allow review after service completion
     if (
       (serviceDoc.requester !== user.name && serviceDoc.requester !== user.email)
       && String(serviceDoc.requester) !== String(user._id)

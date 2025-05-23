@@ -17,7 +17,7 @@ const serviceSchema = new mongoose.Schema({
   puntoVentaCodigo: String,
   proveedorAsignado: String,
   nombreOficina: String,
-  clienteCerro: { type: Boolean, default: false },
+  // clienteCerro removed: client closure logic deleted
   precio: { type: Number, default: null }
 }, { timestamps: true });
 

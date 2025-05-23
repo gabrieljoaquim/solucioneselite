@@ -15,16 +15,11 @@
           <router-link to="/admin/users">Usuarios</router-link>
         </li>
         <li><router-link to="/about">Nosotros</router-link></li>
-        <li class="dropdown">
-          <button class="dropdown-button">Servicios</button>
-          <ul class="dropdown-menu">
-            <li>
-              <router-link to="/add-service">Agregar</router-link>
-            </li>
-            <li>
-              <router-link to="/list-services">Lista</router-link>
-            </li>
-          </ul>
+        <li>
+          <router-link to="/add-service">Crear Serv.</router-link>
+        </li>
+        <li>
+          <router-link to="/list-services">Servicios</router-link>
         </li>
         <li>
           <router-link to="/chat" class="chat-link">

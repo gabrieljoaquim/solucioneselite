@@ -1,15 +1,20 @@
 <template>
   <div class="list-services">
     <h1>Lista de Servicios</h1>
-    <div v-if="services.length === 0" class="no-services-msg">
+    <div v-if="errorMsg" class="no-services-msg">
+      {{ errorMsg }}
+    </div>
+    <div v-else-if="services.length === 0" class="no-services-msg">
       No tienes servicios registrados. Si creaste un servicio con otro usuario,
       inicia sesión con ese usuario para verlo.
     </div>
-    <ul v-else>
+
+    <ul>
       <li
         v-for="(service, index) in services"
         :key="index"
         :style="{ backgroundColor: service.backgroundColor || 'white' }"
+        :ref="'serviceItem' + index"
       >
         <span>{{ service.requester }} - {{ service.serviceType }}</span>
         <span v-if="service.takenBy" class="taken-by">
@@ -18,7 +23,7 @@
             :class="{
               'yo-activo':
                 $store.state.currentUser &&
-                service.takenById === $store.state.currentUser._id
+                service.takenById === $store.state.currentUser._id,
             }"
           >
             {{ service.takenBy }}
@@ -56,13 +61,7 @@
             <button @click="cancelEditDetails(index)">Cancelar</button>
           </div>
           <p><strong>Fecha del reporte:</strong> {{ service.reportDate }}</p>
-          <!-- DEBUG: Mostrar IDs y roles para depuración -->
-          <!-- <p style="color: red; font-size: 0.9em">
-            Usuario actual: {{ $store.state.currentUser._id }} ({{
-              $store.state.currentUser.role
-            }})<br />
-            Trabajador asignado: {{ service.takenById }}
-          </p> -->
+
           <ServicePriceEditor
             v-if="canShowPriceEditor(service)"
             :precio="service.precio"
@@ -81,13 +80,47 @@
           <p v-if="service.nombreOficina">
             <strong>Nombre de Oficina:</strong> {{ service.nombreOficina }}
           </p>
-          <p v-if="service.precio != null">
+          <div
+            v-if="service.precio != null"
+            style="display: flex; align-items: center; gap: 10px"
+          >
             <strong>Precio:</strong> ${{ service.precio }}
-          </p>
-          <p v-else><strong>Precio:</strong> Sin asignar</p>
-          <p v-if="service.status">
-            <strong>Status:</strong> {{ service.status }}
-          </p>
+            <label
+              v-if="
+                $store.state.currentUser &&
+                $store.state.currentUser.role === 'cliente'
+              "
+            >
+              <input
+                type="checkbox"
+                v-model="service.precioAprobado"
+                @change="onAprobarPrecio(index)"
+              />
+              Apruebo el precio
+            </label>
+
+            <span
+              v-else-if="service.precioAprobado"
+              style="color: #4caf50; font-weight: bold"
+            >
+              Aprobado por el cliente
+              <span
+                v-if="service.precioAprobadoFecha"
+                style="
+                  font-weight: normal;
+                  color: #333;
+                  font-size: 0.95em;
+                  margin-left: 8px;
+                "
+              >
+                ({{ formatFecha(service.precioAprobadoFecha) }})
+              </span>
+            </span>
+
+            <p v-if="service.status">
+              <strong>Status:</strong> {{ service.status }}
+            </p>
+          </div>
           <div v-if="getObservations(service).length">
             <strong>Observaciones:</strong>
             <ul>
@@ -117,7 +150,13 @@
           >
             Servicio Terminado
           </button>
-
+          <button
+            class="btn-chat"
+            @click="goToChat(service)"
+            style="background-color: #117e2c; color: #fff; margin-left: 0"
+          >
+            Chat
+          </button>
         </div>
       </li>
     </ul>
@@ -150,37 +189,110 @@ export default {
     },
   },
   mounted() {
-    axios.get("http://localhost:5000/api/services").then((res) => {
-      // Reemplaza el contenido del store con los servicios del backend
-      const currentUser = this.$store.state.currentUser;
-      const services = res.data.map((service) => {
-        // Si el servicio fue tomado por el usuario actual, asegura que takenById coincida
-        if (
-          service.takenByEmail &&
-          currentUser &&
-          service.takenByEmail === currentUser.email
-        ) {
-          service.takenById = currentUser._id;
-        }
-        // Si el servicio fue tomado por el usuario actual pero el campo takenById no existe o no coincide
-        if (
-          service.takenBy &&
-          currentUser &&
-          service.takenBy === (currentUser.name || currentUser.email) &&
-          service.takenById !== currentUser._id
-        ) {
-          service.takenById = currentUser._id;
-        }
-        return service;
+    axios
+      .get("http://localhost:5000/api/services")
+      .then((res) => {
+        // Reemplaza el contenido del store con los servicios del backend
+        const currentUser = this.$store.state.currentUser;
+        const services = res.data.map((service) => {
+          // Si el servicio fue tomado por el usuario actual, asegura que takenById coincida
+          if (
+            service.takenByEmail &&
+            currentUser &&
+            service.takenByEmail === currentUser.email
+          ) {
+            service.takenById = currentUser._id;
+          }
+          // Si el servicio fue tomado por el usuario actual pero el campo takenById no existe o no coincide
+          if (
+            service.takenBy &&
+            currentUser &&
+            service.takenBy === (currentUser.name || currentUser.email) &&
+            service.takenById !== currentUser._id
+          ) {
+            service.takenById = currentUser._id;
+          }
+          return service;
+        });
+        this.$store.state.services.splice(
+          0,
+          this.$store.state.services.length,
+          ...services
+        );
+      })
+      .catch((err) => {
+        // Manejo de error de red o CORS
+        this.$store.state.services.splice(0, this.$store.state.services.length);
+        this.errorMsg =
+          (err.response &&
+            (err.response.data?.error || err.response.data?.message)) ||
+          (err.message
+            ? `Error de red: ${err.message}`
+            : "No se pudieron cargar los servicios. Verifica la conexión con el backend.");
       });
-      this.$store.state.services.splice(
-        0,
-        this.$store.state.services.length,
-        ...services
-      );
-    });
   },
   methods: {
+    async goToChat(service) {
+      const currentUser = this.$store.state.currentUser;
+      if (!currentUser) {
+        alert("Debes iniciar sesión para usar el chat.");
+        return;
+      }
+      let otherUserId = null;
+      if (currentUser.role === "cliente") {
+        // Chat with worker (takenById)
+        otherUserId = service.takenById;
+        if (!otherUserId) {
+          alert("El servicio aún no ha sido tomado por un trabajador.");
+          return;
+        }
+      } else if (currentUser.role === "trabajador") {
+        // Chat with client (buscar por email en el store o backend)
+        // 1. Intentar por ID directo si existe
+        otherUserId = service.registranteId || service.registranteUserId || service.registrante_id || service.registrante_id_cliente;
+        // 2. Si no hay ID, buscar por email/nombre en el store
+        if (!otherUserId && service.registrante) {
+          // Buscar en el store de usuarios
+          let user = null;
+          if (this.$store.state.users && this.$store.state.users.length > 0) {
+            user = this.$store.state.users.find(
+              u => u.email === service.registrante || u.name === service.registrante
+            );
+          }
+          if (user) {
+            otherUserId = user._id;
+          } else {
+            // Si no está en el store, buscar por API
+            try {
+              const res = await axios.get(`http://localhost:5000/api/users?email=${encodeURIComponent(service.registrante)}`);
+              if (Array.isArray(res.data) && res.data.length > 0) {
+                otherUserId = res.data[0]._id;
+              } else if (res.data && res.data._id) {
+                otherUserId = res.data._id;
+              }
+            } catch (e) {
+              // fallback: intentar por nombre si email no funcionó
+              try {
+                const res2 = await axios.get(`http://localhost:5000/api/users?name=${encodeURIComponent(service.registrante)}`);
+                if (Array.isArray(res2.data) && res2.data.length > 0) {
+                  otherUserId = res2.data[0]._id;
+                } else if (res2.data && res2.data._id) {
+                  otherUserId = res2.data._id;
+                }
+              } catch (e2) {}
+            }
+          }
+        }
+        if (!otherUserId) {
+          alert("No se pudo determinar el cliente para este servicio.");
+          return;
+        }
+      } else if (currentUser.role === "administrador") {
+        alert("El chat solo está disponible para clientes y trabajadores.");
+        return;
+      }
+      this.$router.push({ name: "chat-user", params: { userId: otherUserId } });
+    },
     canShowPriceEditor(service) {
       const user = this.$store.state.currentUser;
       if (!user) return false;
@@ -191,7 +303,21 @@ export default {
       return false;
     },
     toggleDetails(index) {
+      // Cierra todos los detalles excepto el seleccionado
+      this.services.forEach((s, i) => {
+        if (i !== index) s.showDetails = false;
+      });
+      // Alterna el seleccionado
       this.services[index].showDetails = !this.services[index].showDetails;
+      this.$nextTick(() => {
+        if (this.services[index].showDetails) {
+          // Centra la vista en el servicio abierto
+          const el = this.$refs["serviceItem" + index];
+          if (el && el.scrollIntoView) {
+            el.scrollIntoView({ behavior: "smooth", block: "center" });
+          }
+        }
+      });
     },
     async markAsTaken(index) {
       const currentUser = this.$store.state.currentUser;
@@ -249,19 +375,17 @@ export default {
       const currentUser = this.$store.state.currentUser;
       if (!currentUser) return;
       // Log para depuración
-      console.log('markAsFinalized PUT:', {
+      console.log("markAsFinalized PUT:", {
         backgroundColor: "lightblue",
         currentUserId: currentUser._id,
         currentUserRole: currentUser.role,
       });
       axios
-        .put(`http://localhost:5000/api/services/${this.services[index]._id}`,
-          {
-            backgroundColor: "lightblue",
-            currentUserId: currentUser._id,
-            currentUserRole: currentUser.role,
-          }
-        )
+        .put(`http://localhost:5000/api/services/${this.services[index]._id}`, {
+          backgroundColor: "lightblue",
+          currentUserId: currentUser._id,
+          currentUserRole: currentUser.role,
+        })
         .then(async () => {
           // Refresca la lista tras marcar como terminado
           const refreshed = await axios.get(
@@ -276,8 +400,8 @@ export default {
         .catch((err) => {
           alert(
             err.response?.data?.error ||
-            err.response?.data?.message ||
-            "Error al marcar como terminado"
+              err.response?.data?.message ||
+              "Error al marcar como terminado"
           );
         });
     },
@@ -305,7 +429,7 @@ export default {
         this.services[index].details = newDetails;
         this.services[index].editingDetails = false;
         // LOG para depuración
-        console.log('saveDetails PUT:', {
+        console.log("saveDetails PUT:", {
           details: newDetails,
           backgroundColor: "#ffcccc",
           currentUserId: currentUser._id,
@@ -327,8 +451,8 @@ export default {
           .catch((err) => {
             alert(
               err.response?.data?.error ||
-              err.response?.data?.message ||
-              "Error al guardar detalles"
+                err.response?.data?.message ||
+                "Error al guardar detalles"
             );
           });
       }
@@ -349,6 +473,40 @@ export default {
       const currentUser = this.$store.state.currentUser;
       // Permitir editar si el usuario tomó el servicio
       return currentUser && service.takenById === currentUser._id;
+    },
+    onAprobarPrecio(index) {
+      const currentUser = this.$store.state.currentUser;
+      if (!currentUser || currentUser.role !== "cliente") return;
+      const aprobado = !!this.services[index].precioAprobado;
+      axios
+        .put(`http://localhost:5000/api/services/${this.services[index]._id}`, {
+          precioAprobado: aprobado,
+          currentUserId: currentUser._id,
+          currentUserRole: currentUser.role,
+        })
+        .then((res) => {
+          // Actualiza también la fecha de aprobación en la UI
+          this.services[index].precioAprobadoFecha =
+            res.data.precioAprobadoFecha;
+        })
+        .catch((err) => {
+          alert(
+            err.response?.data?.error ||
+              err.response?.data?.message ||
+              "Error al actualizar aprobación de precio"
+          );
+          // Revertir en UI si falla
+          this.services[index].precioAprobado = !aprobado;
+        });
+    },
+    formatFecha(fecha) {
+      if (!fecha) return "";
+      const d = new Date(fecha);
+      return (
+        d.toLocaleDateString() +
+        " " +
+        d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+      );
     },
     getObservations(service) {
       // Always return an array for observations

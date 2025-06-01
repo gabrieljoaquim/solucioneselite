@@ -247,44 +247,12 @@ export default {
           return;
         }
       } else if (currentUser.role === "trabajador") {
-        // Chat with client (buscar por email en el store o backend)
-        // 1. Intentar por ID directo si existe
-        otherUserId = service.registranteId || service.registranteUserId || service.registrante_id || service.registrante_id_cliente;
-        // 2. Si no hay ID, buscar por email/nombre en el store
-        if (!otherUserId && service.registrante) {
-          // Buscar en el store de usuarios
-          let user = null;
-          if (this.$store.state.users && this.$store.state.users.length > 0) {
-            user = this.$store.state.users.find(
-              u => u.email === service.registrante || u.name === service.registrante
-            );
-          }
-          if (user) {
-            otherUserId = user._id;
-          } else {
-            // Si no está en el store, buscar por API
-            try {
-              const res = await axios.get(`http://localhost:5000/api/users?email=${encodeURIComponent(service.registrante)}`);
-              if (Array.isArray(res.data) && res.data.length > 0) {
-                otherUserId = res.data[0]._id;
-              } else if (res.data && res.data._id) {
-                otherUserId = res.data._id;
-              }
-            } catch (e) {
-              // fallback: intentar por nombre si email no funcionó
-              try {
-                const res2 = await axios.get(`http://localhost:5000/api/users?name=${encodeURIComponent(service.registrante)}`);
-                if (Array.isArray(res2.data) && res2.data.length > 0) {
-                  otherUserId = res2.data[0]._id;
-                } else if (res2.data && res2.data._id) {
-                  otherUserId = res2.data._id;
-                }
-              } catch (e2) {}
-            }
-          }
-        }
+        // Chat with client (usar solo registranteId)
+        otherUserId = service.registranteId;
         if (!otherUserId) {
-          alert("No se pudo determinar el cliente para este servicio.");
+          alert(
+            "No se pudo determinar el cliente para este servicio. (Falta registranteId)"
+          );
           return;
         }
       } else if (currentUser.role === "administrador") {

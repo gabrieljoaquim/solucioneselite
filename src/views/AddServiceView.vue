@@ -47,8 +47,6 @@
       <label for="observations">Observaciones:</label>
       <textarea id="observations" v-model="service.observations"></textarea>
 
-
-
       <!-- El campo de precio solo lo edita el trabajador o administrador después de la creación -->
       <!-- Por lo tanto, no se muestra el editor de precio aquí -->
 
@@ -71,7 +69,6 @@
 </template>
 
 <script>
-
 import ServicePriceEditor from "../components/ServicePriceEditor.vue";
 import axios from "axios";
 
@@ -122,10 +119,13 @@ export default {
       } else {
         observations = [];
       }
-      // Agrega el registrante automáticamente
+      // Agrega el registrante automáticamente y el registranteId
+      const currentUser = this.$store.state.currentUser;
       const payload = {
         ...this.service,
         registrante: this.registrante,
+        registranteId:
+          currentUser && currentUser._id ? currentUser._id : undefined,
         observations,
       };
       axios

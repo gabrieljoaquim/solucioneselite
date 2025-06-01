@@ -5,7 +5,12 @@ const pdfParse = require('pdf-parse');
 
 exports.createService = async (req, res) => {
   try {
-    const service = new Service(req.body);
+    // Always set registranteId from authenticated user
+    const data = { ...req.body };
+    if (req.user && req.user._id) {
+      data.registranteId = req.user._id;
+    }
+    const service = new Service(data);
     await service.save();
     res.status(201).json(service);
   } catch (err) {

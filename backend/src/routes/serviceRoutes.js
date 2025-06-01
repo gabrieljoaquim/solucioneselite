@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const serviceController = require('../controllers/serviceController');
+// const auth = require('../middleware/auth');
 const multer = require('multer');
 const path = require('path');
 const upload = multer({ dest: path.join(__dirname, '../uploads') });

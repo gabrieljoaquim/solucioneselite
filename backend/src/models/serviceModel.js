@@ -20,7 +20,8 @@ const serviceSchema = new mongoose.Schema({
   // clienteCerro removed: client closure logic deleted
   precio: { type: Number, default: null },
   precioAprobado: { type: Boolean, default: false },
-  precioAprobadoFecha: { type: Date, default: null }
+  precioAprobadoFecha: { type: Date, default: null },
+  registranteId: { type: String, required: true }
 }, { timestamps: true });
 
 module.exports = mongoose.model('Service', serviceSchema);

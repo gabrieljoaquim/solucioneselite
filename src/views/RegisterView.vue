@@ -63,8 +63,8 @@ export default {
         password: this.user.password,
         role: this.user.role, // Enviar el rol seleccionado
       };
-      axios
-        .post("http://localhost:5000/api/users", userToSend)
+      api
+        .post("/api/users", userToSend)
         .then(() => {
           alert("Usuario registrado con éxito");
           this.user = {

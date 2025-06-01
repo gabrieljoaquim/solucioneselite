@@ -42,7 +42,7 @@ export default {
       this.success = false;
       this.error = "";
       try {
-        await axios.post("http://localhost:5000/api/schedule/book", {
+        await api.post("/api/schedule/book", {
           worker: this.workerId,
           client: this.clientId,
           date: this.date,

@@ -30,7 +30,7 @@ export default {
     async fetchGallery() {
       this.loading = true;
       try {
-        const res = await axios.get(
+        const res = await api.get(
           `http://localhost:5000/api/gallery/${this.workerId}`
         );
         this.gallery = res.data;

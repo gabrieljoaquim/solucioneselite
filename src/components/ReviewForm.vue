@@ -50,7 +50,7 @@ export default {
       this.success = false;
       this.error = "";
       try {
-        await axios.post("http://localhost:5000/api/reviews", {
+        await api.post("/api/reviews", {
           worker: this.workerId,
           client: this.clientId,
           service: this.serviceId,

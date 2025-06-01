@@ -51,7 +51,7 @@ export default {
     async fetchMessages() {
       if (!this.userId || !this.expert?._id) return;
       try {
-        const res = await axios.get(
+        const res = await api.get(
           `http://localhost:5000/api/messages/${this.userId}/${this.expert._id}`
         );
         this.messages = res.data;
@@ -71,7 +71,7 @@ export default {
           receiverId: this.expert._id,
           text: this.newMessage.trim(),
         };
-        await axios.post("http://localhost:5000/api/messages", payload);
+        await api.post("/api/messages", payload);
         this.newMessage = "";
         await this.fetchMessages();
         this.$nextTick(() => {

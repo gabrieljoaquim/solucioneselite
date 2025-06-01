@@ -44,7 +44,7 @@ const handleForgotPassword = async () => {
   loading.value = true;
   message.value = null;
   try {
-    await axios.post("http://localhost:5000/api/users/reset-password-request", {
+    await api.post("/api/users/reset-password-request", {
       email: email.value,
     });
     message.value = {

@@ -105,7 +105,7 @@ export default {
     async fetchAllUsers() {
       if (!this.userId) return;
       try {
-        const res = await axios.get("http://localhost:5000/api/users");
+        const res = await api.get("/api/users");
         // Exclude self
         this.allUsers = res.data.filter((u) => u._id !== this.userId);
       } catch (err) {
@@ -115,7 +115,7 @@ export default {
     async fetchConversations() {
       if (!this.userId) return;
       try {
-        const res = await axios.get(
+        const res = await api.get(
           `http://localhost:5000/api/messages/inbox/${this.userId}`
         );
         // Merge allUsers with conversations
@@ -206,7 +206,7 @@ export default {
           receiverId: this.selectedUser.userId,
           text: this.newMessage.trim(),
         };
-        await axios.post("http://localhost:5000/api/messages", payload);
+        await api.post("/api/messages", payload);
         this.newMessage = "";
         // Forzar actualización de mensajes
         if (this.$refs.chatBox && this.$refs.chatBox.fetchMessages) {

@@ -295,7 +295,7 @@ export default {
       }
       // NO actualices la UI localmente antes de la respuesta
       try {
-        await axios.put(
+        await api.put(
           `http://localhost:5000/api/services/${this.services[index]._id}`,
           {
             backgroundColor: "lightgreen",
@@ -307,7 +307,7 @@ export default {
           }
         );
         // Refresca toda la lista de servicios para forzar reactividad
-        const refreshed = await axios.get("http://localhost:5000/api/services");
+        const refreshed = await api.get("/api/services");
         this.$store.state.services.splice(
           0,
           this.$store.state.services.length,

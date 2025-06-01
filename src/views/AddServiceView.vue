@@ -162,7 +162,7 @@ export default {
       const formData = new FormData();
       formData.append("pdf", file);
       try {
-        const res = await axios.post(
+        const res = await api.post(
           "http://localhost:5000/api/services/upload-pdf",
           formData,
           { headers: { "Content-Type": "multipart/form-data" } }

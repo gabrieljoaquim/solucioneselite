@@ -49,7 +49,7 @@ export default {
       // Simulación: en producción, subirías el archivo y obtendrías una URL
       const url = URL.createObjectURL(this.file); // Solo demo
       try {
-        await axios.post("http://localhost:5000/api/verification/upload", {
+        await api.post("/api/verification/upload", {
           worker: this.workerId,
           type: this.type,
           url,

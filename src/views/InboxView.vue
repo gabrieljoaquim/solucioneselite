@@ -75,7 +75,7 @@ export default {
     async fetchConversations() {
       if (!this.userId) return;
       try {
-        const res = await axios.get(
+        const res = await api.get(
           `http://localhost:5000/api/messages/inbox/${this.userId}`
         );
         this.conversations = res.data;

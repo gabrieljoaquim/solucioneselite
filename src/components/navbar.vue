@@ -100,7 +100,7 @@ export default {
         return;
       }
       try {
-        const res = await axios.get(
+        const res = await api.get(
           `http://localhost:5000/api/messages/inbox/${this.userId}`
         );
         // Suma todos los mensajes no leídos de todas las conversaciones

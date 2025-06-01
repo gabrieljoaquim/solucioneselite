@@ -61,7 +61,7 @@ export default {
   },
   async mounted() {
     try {
-      const res = await axios.get("http://localhost:5000/api/users");
+      const res = await api.get("/api/users");
       // Mapear los usuarios a un array de expertos con los campos requeridos
       this.experts = res.data
         .filter((u) => u.specialty && u.specialty.length && u.zone && u.name)

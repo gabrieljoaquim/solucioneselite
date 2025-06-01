@@ -55,7 +55,7 @@ async function savePrecio() {
   //   takenById: props.takenById,
   // });
   try {
-    await axios.put(`http://localhost:5000/api/services/${props.serviceId}`, {
+    await api.put(`/api/services/${props.serviceId}`, {
       precio: precioDraft.value,
       currentUserId: props.currentUser._id,
       currentUserRole: props.currentUser.role,

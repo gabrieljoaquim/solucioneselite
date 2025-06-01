@@ -75,9 +75,7 @@ export default {
     async fetchConversations() {
       if (!this.userId) return;
       try {
-        const res = await api.get(
-          `http://localhost:5000/api/messages/inbox/${this.userId}`
-        );
+        const res = await api.get(`/api/messages/inbox/${this.userId}`);
         this.conversations = res.data;
         // Lógica de mensajes no leídos: cuenta mensajes donde el último mensaje no es tuyo
         let unread = 0;

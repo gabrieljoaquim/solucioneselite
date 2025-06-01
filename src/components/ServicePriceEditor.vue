@@ -20,7 +20,7 @@
 
 <script setup>
 import { ref, computed, watch } from "vue";
-import axios from "axios";
+import api from "../axios";
 
 const props = defineProps({
   precio: Number,

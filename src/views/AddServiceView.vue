@@ -128,8 +128,8 @@ export default {
           currentUser && currentUser._id ? currentUser._id : undefined,
         observations,
       };
-      axios
-        .post("http://localhost:5000/api/services", payload)
+      api
+        .post("/api/services", payload)
         .then(() => {
           alert("Servicio agregado correctamente");
           this.service = {
@@ -162,11 +162,9 @@ export default {
       const formData = new FormData();
       formData.append("pdf", file);
       try {
-        const res = await api.post(
-          "http://localhost:5000/api/services/upload-pdf",
-          formData,
-          { headers: { "Content-Type": "multipart/form-data" } }
-        );
+        const res = await api.post("/api/services/upload-pdf", formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
         // Solo autocompleta el formulario, NO guarda en la BD
         this.service = {
           ...this.service,

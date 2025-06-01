@@ -11,7 +11,7 @@
 <script>
 import WorkerSearchFilter from "../components/WorkerSearchFilter.vue";
 import WorkerProfileCard from "../components/WorkerProfileCard.vue";
-import axios from "axios";
+import api from "../axios";
 export default {
   components: { WorkerSearchFilter, WorkerProfileCard },
   data() {

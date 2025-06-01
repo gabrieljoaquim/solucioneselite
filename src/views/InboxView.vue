@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import api from "../axios";
 import { mapState } from "vuex";
 import ChatBox from "../components/ChatBox.vue";
 

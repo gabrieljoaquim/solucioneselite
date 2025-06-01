@@ -109,27 +109,27 @@ export default {
         reader.readAsDataURL(file);
       }
     },
-    async updateProfile() {
-      try {
-        const email = this.$store.state.currentUser?.email;
-        const profileData = { ...this.profile, email };
-        // Guardar especialidad como array de un solo valor (autocorrección)
-        if (typeof profileData.specialty === "string") {
-          profileData.specialty = [profileData.specialty.trim()];
-        }
-        profileData.zone = profileData.zone || "";
-        profileData.name = this.$store.state.currentUser?.name || "";
-        await axios.put("/api/users/profile", profileData);
-        this.$store.commit("updateCurrentUserProfile", {
-          profilePhoto: this.profile.profilePhoto,
+    updateProfile() {
+      const formData = new FormData();
+      Object.keys(this.profile).forEach((key) => {
+        formData.append(key, this.profile[key]);
+      });
+
+      api
+        .put("/api/profile", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then(() => {
+          alert("Perfil actualizado con éxito");
+        })
+        .catch((err) => {
+          alert(
+            "Error al actualizar el perfil: " +
+              (err.response?.data?.error || err.message)
+          );
         });
-        alert("Perfil actualizado con éxito");
-      } catch (err) {
-        alert(
-          "Error al actualizar el perfil: " +
-            (err.response?.data?.error || err.message)
-        );
-      }
     },
     async mounted() {
       try {

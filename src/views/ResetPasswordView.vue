@@ -60,13 +60,10 @@ const handleResetPassword = async () => {
   loading.value = true;
   message.value = null;
   try {
-    const res = await axios.post(
-      "http://localhost:5000/api/users/reset-password",
-      {
-        token: route.params.token,
-        password: password.value,
-      }
-    );
+    const res = await axios.post("/api/users/reset-password", {
+      token: route.params.token,
+      password: password.value,
+    });
     message.value = {
       type: "success",
       text: "Contraseña actualizada correctamente.",

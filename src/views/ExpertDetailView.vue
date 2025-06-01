@@ -63,7 +63,7 @@ export default {
   async created() {
     const expertId = this.$route.params.id;
     try {
-      const res = await api.get(`http://localhost:5000/api/users/${expertId}`);
+      const res = await api.get(`/api/users/${expertId}`);
       this.expert = res.data;
     } catch (err) {
       this.expert = null;

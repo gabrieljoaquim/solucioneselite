@@ -135,7 +135,7 @@ export default {
       try {
         const email = this.$store.state.currentUser?.email;
         if (!email) return;
-        const res = await axios.get(
+        const res = await api.get(
           `/api/users?email=${encodeURIComponent(email)}`
         );
         if (res.data && res.data.length > 0) {

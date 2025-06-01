@@ -42,10 +42,7 @@ export default {
   methods: {
     async loginUser() {
       try {
-        const response = await axios.post(
-          "http://localhost:5000/api/users/login",
-          this.credentials
-        );
+        const response = await api.post("/api/users/login", this.credentials);
         // Guardar usuario en el store
         this.$store.commit("setCurrentUser", response.data);
         // Redirigir siempre al home después de iniciar sesión

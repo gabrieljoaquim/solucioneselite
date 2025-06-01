@@ -64,7 +64,7 @@ export default {
         role: this.user.role, // Enviar el rol seleccionado
       };
       api
-        .post("/api/users", userToSend)
+        .post(`/api/users`, userToSend)
         .then(() => {
           alert("Usuario registrado con éxito");
           this.user = {

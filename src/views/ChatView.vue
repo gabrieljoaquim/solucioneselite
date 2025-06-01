@@ -116,7 +116,7 @@ export default {
       if (!this.userId) return;
       try {
         const res = await api.get(
-          `http://localhost:5000/api/messages/inbox/${this.userId}`
+          `/api/messages/inbox/${this.userId}`
         );
         // Merge allUsers with conversations
         const convMap = {};

@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Create an Axios instance
 const api = axios.create({
-  baseURL: 'https://solucioneselite-u60d.onrender.com',
+  baseURL: process.env.VUE_APP_API_URL,
 });
 
 // Add a request interceptor to include JWT token if present

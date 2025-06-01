@@ -52,7 +52,7 @@ export default {
       if (!this.userId || !this.expert?._id) return;
       try {
         const res = await api.get(
-          `http://localhost:5000/api/messages/${this.userId}/${this.expert._id}`
+          `/api/messages/${this.userId}/${this.expert._id}`
         );
         this.messages = res.data;
         this.$nextTick(() => {

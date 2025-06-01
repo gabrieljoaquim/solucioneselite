@@ -43,7 +43,7 @@ export default {
       this.loading = true;
       this.error = "";
       try {
-        const res = await axios.post(
+        const res = await api.post(
           `/api/services/${this.service._id}/close-by-client`,
           {
             currentUserId: this.currentUser._id,

@@ -60,7 +60,7 @@ const handleResetPassword = async () => {
   loading.value = true;
   message.value = null;
   try {
-    const res = await axios.post("/api/users/reset-password", {
+    const res = await api.post("/api/users/reset-password", {
       token: route.params.token,
       password: password.value,
     });

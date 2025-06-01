@@ -55,7 +55,7 @@ const editDraft = ref({});
 
 async function fetchServices() {
   // Ajusta la URL según tu backend
-  const res = await axios.get("/api/services");
+  const res = await api.get("/api/services");
   services.value = res.data;
 }
 onMounted(fetchServices);
@@ -76,7 +76,7 @@ function saveEdit() {
 }
 function deleteService(service) {
   if (!isAdmin.value) return;
-  axios.delete(`/api/services/${service._id}`).then(fetchServices);
+  api.delete(`/api/services/${service._id}`).then(fetchServices);
 }
 function saveObservations(service) {
   // Solo el cliente puede editar observaciones

@@ -348,17 +348,15 @@ export default {
         currentUserId: currentUser._id,
         currentUserRole: currentUser.role,
       });
-      axios
-        .put(`http://localhost:5000/api/services/${this.services[index]._id}`, {
+      api
+        .put(`/api/services/${this.services[index]._id}`, {
           backgroundColor: "lightblue",
           currentUserId: currentUser._id,
           currentUserRole: currentUser.role,
         })
         .then(async () => {
           // Refresca la lista tras marcar como terminado
-          const refreshed = await axios.get(
-            "http://localhost:5000/api/services"
-          );
+          const refreshed = await api.get("/api/services");
           this.$store.state.services.splice(
             0,
             this.$store.state.services.length,
@@ -403,16 +401,13 @@ export default {
           currentUserId: currentUser._id,
           currentUserRole: currentUser.role,
         });
-        axios
-          .put(
-            `http://localhost:5000/api/services/${this.services[index]._id}`,
-            {
-              details: newDetails,
-              backgroundColor: "#ffcccc",
-              currentUserId: currentUser._id,
-              currentUserRole: currentUser.role,
-            }
-          )
+        api
+          .put(`/api/services/${this.services[index]._id}`, {
+            details: newDetails,
+            backgroundColor: "#ffcccc",
+            currentUserId: currentUser._id,
+            currentUserRole: currentUser.role,
+          })
           .then((res) => {
             Object.assign(this.services[index], res.data);
           })
@@ -446,8 +441,8 @@ export default {
       const currentUser = this.$store.state.currentUser;
       if (!currentUser || currentUser.role !== "cliente") return;
       const aprobado = !!this.services[index].precioAprobado;
-      axios
-        .put(`http://localhost:5000/api/services/${this.services[index]._id}`, {
+      api
+        .put(`/api/services/${this.services[index]._id}`, {
           precioAprobado: aprobado,
           currentUserId: currentUser._id,
           currentUserRole: currentUser.role,
@@ -502,8 +497,8 @@ export default {
       }
       const serviceId = this.services[index]._id;
       if (confirm("¿Estás seguro de que deseas eliminar este servicio?")) {
-        axios
-          .delete(`http://localhost:5000/api/services/${serviceId}`)
+        api
+          .delete(`/api/services/${serviceId}`)
           .then(() => {
             this.services.splice(index, 1);
           })

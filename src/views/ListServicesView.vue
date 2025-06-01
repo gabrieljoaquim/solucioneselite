@@ -189,8 +189,8 @@ export default {
     },
   },
   mounted() {
-    axios
-      .get("http://localhost:5000/api/services")
+    api
+      .get("/api/services")
       .then((res) => {
         // Reemplaza el contenido del store con los servicios del backend
         const currentUser = this.$store.state.currentUser;

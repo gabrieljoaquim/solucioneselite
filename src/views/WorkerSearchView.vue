@@ -24,12 +24,9 @@ export default {
     async onSearch({ city, specialty, zone }) {
       this.loading = true;
       try {
-        const res = await axios.get(
-          "http://localhost:5000/api/worker-search/search",
-          {
-            params: { city, specialty, zone },
-          }
-        );
+        const res = await axios.get("/api/worker-search/search", {
+          params: { city, specialty, zone },
+        });
         this.workers = res.data;
       } catch {
         this.workers = [];

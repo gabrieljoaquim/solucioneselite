@@ -119,7 +119,7 @@ export default {
         }
         profileData.zone = profileData.zone || "";
         profileData.name = this.$store.state.currentUser?.name || "";
-        await axios.put("http://localhost:5000/api/users/profile", profileData);
+        await axios.put("/api/users/profile", profileData);
         this.$store.commit("updateCurrentUserProfile", {
           profilePhoto: this.profile.profilePhoto,
         });
@@ -136,7 +136,7 @@ export default {
         const email = this.$store.state.currentUser?.email;
         if (!email) return;
         const res = await axios.get(
-          `http://localhost:5000/api/users?email=${encodeURIComponent(email)}`
+          `/api/users?email=${encodeURIComponent(email)}`
         );
         if (res.data && res.data.length > 0) {
           const user = res.data[0];

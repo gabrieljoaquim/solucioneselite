@@ -55,7 +55,7 @@ const editDraft = ref({});
 
 async function fetchServices() {
   // Ajusta la URL según tu backend
-  const res = await axios.get("http://localhost:5000/api/services");
+  const res = await axios.get("/api/services");
   services.value = res.data;
 }
 onMounted(fetchServices);
@@ -68,10 +68,7 @@ function editService(service) {
 function saveEdit() {
   // Lógica para guardar cambios (PUT al backend)
   axios
-    .put(
-      `http://localhost:5000/api/services/${editDraft.value._id}`,
-      editDraft.value
-    )
+    .put(`/api/services/${editDraft.value._id}`, editDraft.value)
     .then(() => {
       showEditModal.value = false;
       fetchServices();
@@ -79,14 +76,12 @@ function saveEdit() {
 }
 function deleteService(service) {
   if (!isAdmin.value) return;
-  axios
-    .delete(`http://localhost:5000/api/services/${service._id}`)
-    .then(fetchServices);
+  axios.delete(`/api/services/${service._id}`).then(fetchServices);
 }
 function saveObservations(service) {
   // Solo el cliente puede editar observaciones
   axios
-    .put(`http://localhost:5000/api/services/${service._id}/observations`, {
+    .put(`/api/services/${service._id}/observations`, {
       observations: service.observations,
     })
     .then(fetchServices);
@@ -101,7 +96,7 @@ function rateClient(service) {
 function approveService(service) {
   // Lógica para aprobar servicio
   axios
-    .put(`http://localhost:5000/api/services/${service._id}/approve`, {
+    .put(`/api/services/${service._id}/approve`, {
       clientApproval: true,
     })
     .then(fetchServices);
@@ -109,7 +104,7 @@ function approveService(service) {
 function payService(service) {
   // Lógica para marcar como pagado
   axios
-    .put(`http://localhost:5000/api/services/${service._id}/pay`, {
+    .put(`/api/services/${service._id}/pay`, {
       paymentStatus: "Pagado",
     })
     .then(fetchServices);

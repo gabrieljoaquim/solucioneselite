@@ -139,7 +139,7 @@ export default {
     },
     async fetchUsers() {
       try {
-        const res = await axios.get("http://localhost:5000/api/users");
+        const res = await axios.get("/api/users");
         this.users = res.data;
       } catch (e) {
         this.error = e.response?.data?.error || "Error al cargar usuarios";
@@ -147,7 +147,7 @@ export default {
     },
     async updateUser(user) {
       try {
-        await axios.put("http://localhost:5000/api/users/profile", user);
+        await axios.put("/api/users/profile", user);
         this.error = "";
         alert("Usuario actualizado");
       } catch (e) {
@@ -157,7 +157,7 @@ export default {
     async deleteUser(id) {
       if (!confirm("¿Seguro que deseas eliminar este usuario?")) return;
       try {
-        await axios.delete(`http://localhost:5000/api/users/${id}`);
+        await axios.delete(`/api/users/${id}`);
         this.users = this.users.filter((u) => u._id !== id);
         this.error = "";
       } catch (e) {

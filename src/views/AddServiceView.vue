@@ -70,7 +70,7 @@
 
 <script>
 import ServicePriceEditor from "../components/ServicePriceEditor.vue";
-import axios from "axios";
+import api from "../axios";
 
 export default {
   components: { ServicePriceEditor },

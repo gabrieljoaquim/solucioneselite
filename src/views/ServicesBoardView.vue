@@ -44,7 +44,7 @@
 <script setup>
 import { ref, computed, onMounted } from "vue";
 import ServiceCardAdvanced from "../components/ServiceCardAdvanced.vue";
-import axios from "axios";
+import api from "../axios";
 
 const services = ref([]);
 const currentUser = ref(JSON.parse(localStorage.getItem("currentUser")) || {});

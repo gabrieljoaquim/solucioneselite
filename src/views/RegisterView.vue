@@ -23,14 +23,6 @@
           required
         />
       </div>
-      <div>
-        <label for="role">Rol:</label>
-        <select id="role" v-model="user.role" required>
-          <option value="cliente">Cliente</option>
-          <option value="trabajador">Trabajador</option>
-          <option value="administrador">Administrador</option>
-        </select>
-      </div>
       <button type="submit">Registrarse</button>
     </form>
   </div>
@@ -47,7 +39,7 @@ export default {
         email: "",
         password: "",
         confirmPassword: "",
-        role: "cliente",
+        role: "cliente", // Por defecto, el rol será cliente
       },
     };
   },
@@ -61,7 +53,7 @@ export default {
         name: this.user.name,
         email: this.user.email,
         password: this.user.password,
-        role: this.user.role, // Enviar el rol seleccionado
+        role: this.user.role, // Enviar el rol por defecto
       };
       api
         .post(`/api/users`, userToSend)
@@ -72,7 +64,7 @@ export default {
             email: "",
             password: "",
             confirmPassword: "",
-            role: "cliente",
+            role: "cliente", // Reiniciar el rol a cliente
           };
           this.$router.push({ name: "login" });
         })
@@ -111,22 +103,23 @@ export default {
   display: block;
   margin-bottom: 5px;
 }
-.register form input,
-.register form select {
+.register form input {
   width: 100%;
   padding: 8px;
-  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 .register form button {
   width: 100%;
   padding: 10px;
-  background-color: #007bff;
+  background-color: #117e2c;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  transition: background-color 0.3s;
 }
 .register form button:hover {
-  background-color: #0056b3;
+  background-color: #079f14;
 }
 </style>

@@ -74,6 +74,10 @@
             <strong>Código Punto de Venta:</strong>
             {{ service.puntoVentaCodigo }}
           </p>
+          <p v-if="service.puntoVentaCodigo">
+            <strong>Dirección:</strong>
+            <GoogleMapsLink :code="service.puntoVentaCodigo" />
+          </p>
           <p v-if="service.proveedorAsignado">
             <strong>Proveedor Asignado:</strong> {{ service.proveedorAsignado }}
           </p>
@@ -166,10 +170,12 @@
 <script>
 import ServicePriceEditor from "../components/ServicePriceEditor.vue";
 import api from "../axios";
+import GoogleMapsLink from "../components/GoogleMapsLink.vue";
 
 export default {
   components: {
     ServicePriceEditor,
+    GoogleMapsLink,
   },
   computed: {
     services() {

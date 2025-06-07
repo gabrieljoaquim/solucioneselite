@@ -40,7 +40,7 @@ export default {
       this.success = false;
       this.error = "";
       try {
-        await axios.post("http://localhost:5000/api/schedule/availability", {
+        await api.post("/api/schedule/availability", {
           worker: this.workerId,
           availableSlots: this.availableSlots,
         });

@@ -16,7 +16,10 @@
     <div v-if="error" style="color: red">{{ error }}</div>
     <p><strong>Solicitante:</strong> {{ service.requester }}</p>
     <p><strong>Teléfono:</strong> {{ service.phone }}</p>
-    <p><strong>Dirección:</strong> {{ service.address }}</p>
+    <p v-if="service.puntoVentaCodigo">
+      <strong>Dirección:</strong>
+      <GoogleMapsLink :code="service.puntoVentaCodigo" />
+    </p>
     <p><strong>Horario de trabajo:</strong> {{ service.workingHours }}</p>
     <p><strong>Tipo de servicio:</strong> {{ service.serviceType }}</p>
     <p><strong>Detalles del arreglo:</strong> {{ service.details }}</p>
@@ -29,13 +32,15 @@
 
 <script>
 import api from "../axios";
+import GoogleMapsLink from "../components/GoogleMapsLink.vue";
 export default {
+  components: { GoogleMapsLink },
   data() {
     return {
       service: {
         requester: "Juan Pérez",
         phone: "123456789",
-        address: "Calle Falsa 123",
+        puntoVentaCodigo: "cl 123 Calle Falsa, Bogotá",
         workingHours: "9:00 AM - 5:00 PM",
         serviceType: "Plomería",
         details: "Reparación de tubería",

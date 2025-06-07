@@ -1,17 +1,20 @@
 <template>
   <div class="home">
     <header class="hero">
-      <img alt="logo" class="LogoPrin" src="../assets/logo.png" />
-      <h1>
-        Encuentra a los mejores profesionales en reparación y construcción 🔨🏡
-      </h1>
-      <p>
-        Pintores, plomeros, electricistas y más… ¡solicita un servicio fácil y
-        rápido!
-      </p>
-      <button class="cta" @click="$router.push('/list-experts')">
-        Encuentra un experto ahora
-      </button>
+      <div class="hero-background">
+        <img alt="logo" class="LogoPrin" src="../assets/logo.png" />
+        <h1>
+          Encuentra a los mejores profesionales en reparación y construcción
+          🔨🏡
+        </h1>
+        <p>
+          Pintores, plomeros, electricistas y más… ¡solicita un servicio fácil y
+          rápido!
+        </p>
+        <button class="cta" @click="$router.push('/list-experts')">
+          Encuentra un experto ahora
+        </button>
+      </div>
     </header>
 
     <section class="how-it-works">
@@ -76,28 +79,22 @@ export default {
 }
 .home {
   text-align: center;
-  padding: 32px 0 0 0;
-  background: linear-gradient(
-    135deg,
-    var(--color-background) 60%,
-    #e6f0ff 100%
-  );
+  padding: 0 0 0 0;
+  background: var(--color-background);
   min-height: 100vh;
 }
 
 .hero {
-  background: linear-gradient(
-    90deg,
-    var(--color-bright-green) 60%,
-    #e6f0ff 100%
-  );
+  background-image: url("../assets/fondo2.png");
   color: var(--color-main-black);
   padding: 48px 24px 40px 24px;
-  border-radius: 18px;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
   margin-bottom: 32px;
   position: relative;
   overflow: hidden;
+}
+.hero-background {
+  background-color: rgba(255, 255, 255, 0.4);
 }
 .hero h1 {
   font-size: 2.2em;
@@ -110,13 +107,19 @@ export default {
   margin-bottom: 24px;
   color: var(--color-dark-gray);
 }
-.cta,
+.cta {
+  background: var(--color-success-green);
+  color: var(--color-main-white);
+  padding: 12px 32px;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2em;
+  border-radius: 10px;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
 .register {
-  background: linear-gradient(
-    90deg,
-    var(--color-intense-red),
-    var(--color-golden-yellow)
-  );
+  background: var(--color-intense-red);
   color: var(--color-main-white);
   padding: 12px 32px;
   border: none;

@@ -132,7 +132,7 @@ export default {
   justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
-  background-color: #117e2c;
+  background-color: #144b22;
   color: white;
   font-family: Arial, sans-serif;
 }

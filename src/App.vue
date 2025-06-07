@@ -1,6 +1,8 @@
 <template>
   <div>
-    <navbar />
+    <div>
+      <navbar />
+    </div>
     <router-view @update-unread="unreadCount = $event" />
   </div>
 </template>
@@ -26,7 +28,8 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: var(--color-black);
+  background: #8e8f91;
 }
 
 nav {

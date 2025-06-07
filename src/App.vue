@@ -29,7 +29,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: var(--color-black);
-  background: #8e8f91;
+  background: #ebebec;
 }
 
 nav {

@@ -194,6 +194,7 @@ export default {
   cursor: pointer;
   border-radius: 5px;
   transition: background-color 0.3s;
+  display: none; /* Ocultar el botón en pantallas grandes */
 }
 .menu-button:hover {
   background-color: #079f14;
@@ -246,6 +247,9 @@ export default {
 
 /* Media query para pantallas pequeñas */
 @media (max-width: 768px) {
+  .menu-button {
+    display: block; /* Mostrar el botón en pantallas pequeñas */
+  }
   .menu {
     display: none; /* Ocultar el menú normal en pantallas pequeñas */
     flex-direction: column;

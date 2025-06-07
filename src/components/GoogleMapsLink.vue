@@ -26,7 +26,9 @@ export default {
       return match ? match[0] : "Dirección no encontrada";
     },
     googleMapsUrl() {
-      return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(this.extractedAddress)}`;
+      return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+        this.extractedAddress
+      )}`;
     },
   },
 };

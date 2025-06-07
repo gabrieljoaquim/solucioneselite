@@ -36,9 +36,7 @@ export default {
     async fetchReviews() {
       this.loading = true;
       try {
-        const res = await api.get(
-          `http://localhost:5000/api/reviews/worker/${this.workerId}`
-        );
+        const res = await api.get(`/api/reviews/worker/${this.workerId}`);
         this.reviews = res.data;
       } catch {
         this.reviews = [];

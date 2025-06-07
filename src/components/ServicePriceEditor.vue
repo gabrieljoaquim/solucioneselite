@@ -48,12 +48,6 @@ const canEdit = computed(() => {
 });
 
 async function savePrecio() {
-  // console.log("[DEBUG] Intentando guardar precio", {
-  //   serviceId: props.serviceId,
-  //   precio: precioDraft.value,
-  //   currentUser: props.currentUser,
-  //   takenById: props.takenById,
-  // });
   try {
     await api.put(`/api/services/${props.serviceId}`, {
       precio: precioDraft.value,
@@ -66,7 +60,6 @@ async function savePrecio() {
       "Error al guardar el precio: " +
         (err.response?.data?.error || err.message)
     );
-    // console.error("[ERROR] Guardando precio", err);
   }
 }
 function resetPrecio() {

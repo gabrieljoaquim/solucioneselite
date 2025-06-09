@@ -161,6 +161,8 @@
           >
             Chat
           </button>
+
+          <ServicePhotoUploader :service-id="service._id" />
         </div>
       </li>
     </ul>
@@ -171,11 +173,18 @@
 import ServicePriceEditor from "../components/ServicePriceEditor.vue";
 import api from "../axios";
 import GoogleMapsLink from "../components/GoogleMapsLink.vue";
+import ServicePhotoUploader from "../components/ServicePhotoUploader.vue";
 
 export default {
   components: {
     ServicePriceEditor,
     GoogleMapsLink,
+    ServicePhotoUploader,
+  },
+  data() {
+    return {
+      errorMsg: "",
+    };
   },
   computed: {
     services() {

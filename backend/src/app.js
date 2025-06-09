@@ -27,6 +27,21 @@ app.use((req, res, next) => {
   next();
 });
 
+// Middleware para registrar solicitudes y respuestas
+app.use((req, res, next) => {
+  console.log(`Solicitud: ${req.method} ${req.url}`);
+  res.on('finish', () => {
+    console.log(`Respuesta: ${res.statusCode}`);
+  });
+  next();
+});
+
+// Middleware para ajustar la política de seguridad de contenido
+app.use((req, res, next) => {
+  res.header('Content-Security-Policy', "default-src 'self'; script-src 'self' 'unsafe-eval'; img-src 'self' data:;");
+  next();
+});
+
 // MongoDB Connection
 mongoose.set('strictQuery', true); // Suppress deprecation warning
 mongoose.connect(process.env.MONGO_URI, {

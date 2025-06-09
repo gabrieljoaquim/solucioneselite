@@ -16,6 +16,7 @@
         :style="{ backgroundColor: service.backgroundColor || 'white' }"
         :ref="'serviceItem' + index"
       >
+        <PdfNameDisplay v-if="service.pdfName" :pdfName="service.pdfName" />
         <span>{{ service.requester }} - {{ service.serviceType }}</span>
         <span v-if="service.takenBy" class="taken-by">
           Tomado por:
@@ -174,12 +175,14 @@ import ServicePriceEditor from "../components/ServicePriceEditor.vue";
 import api from "../axios";
 import GoogleMapsLink from "../components/GoogleMapsLink.vue";
 import ServicePhotoUploader from "../components/ServicePhotoUploader.vue";
+import PdfNameDisplay from "../components/PdfNameDisplay.vue";
 
 export default {
   components: {
     ServicePriceEditor,
     GoogleMapsLink,
     ServicePhotoUploader,
+    PdfNameDisplay,
   },
   data() {
     return {

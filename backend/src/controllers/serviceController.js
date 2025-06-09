@@ -203,9 +203,17 @@ exports.uploadPdfAndCreateService = async (req, res) => {
       observations: [],
       status: 'Nuevo',
     };
+    // Guardar el nombre del archivo PDF en el modelo del servicio
+    const pdfName = req.file.originalname;
+    const newService = new Service({
+      ...extractedData,
+      pdfName,
+    });
+    await newService.save();
+
     // Limpieza: elimina el archivo subido
     fs.unlinkSync(pdfPath);
-    res.status(200).json(extractedData);
+    res.status(200).json(newService);
   } catch (err) {
     res.status(500).json({ error: 'Error al procesar el PDF', details: err.message });
   }

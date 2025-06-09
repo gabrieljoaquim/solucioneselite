@@ -11,7 +11,7 @@ const serverPort = isTestEnvironment ? TEST_PORT : PORT;
 // Middleware
 app.use(express.json({ limit: '10mb' })); // Permitir payloads grandes para imágenes
 app.use(cors({
-  origin: '*',
+  origin: ['https://solucioneselite.onrender.com', 'http://localhost:8080'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));

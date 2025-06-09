@@ -26,8 +26,6 @@ const uploadPhotos = multer({ storage });
 router.post('/', serviceController.createService);
 router.get('/', serviceController.getServices);
 router.put('/:id', serviceController.updateService);
-router.post('/upload-pdf', upload.single('pdf'), serviceController.uploadPdfAndCreateService);
-// close-by-client endpoint removed: client closure logic deleted
 router.delete('/:id', serviceController.deleteService);
 // Ruta para subir fotos de un servicio
 router.post('/:serviceId/photos', uploadPhotos.array('photos', 10), serviceController.uploadServicePhotos);

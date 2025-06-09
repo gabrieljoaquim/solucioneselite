@@ -149,9 +149,12 @@ exports.uploadPdfAndCreateService = async (req, res) => {
     return res.status(400).json({ error: 'No se subió ningún archivo PDF' });
   }
   try {
+    console.log('[DEBUG] Archivo recibido:', req.file);
     const pdfPath = req.file.path;
     const dataBuffer = fs.readFileSync(pdfPath);
+    console.log('[DEBUG] Archivo leído correctamente:', pdfPath);
     const data = await pdfParse(dataBuffer);
+    console.log('[DEBUG] Datos del PDF extraídos:', data);
     const text = data.text;
 
     // Lógica de extracción de campos (puedes mejorarla según el formato real)
@@ -161,41 +164,13 @@ exports.uploadPdfAndCreateService = async (req, res) => {
       return match ? match[1].trim() : fallback;
     }
 
-    // Extraer la descripción entre 'Descripción de la novedad' y la primera fecha (formato dd/m/yy)
-    function extractDescriptionUntilDate(startLabel) {
-      const normalizedText = text.replace(/[\r\f]+/g, '\n').replace(/[\u200B-\u200D\uFEFF]/g, '').replace(/ +/g, ' ');
-      // Regex para encontrar la posición del label de inicio
-      const startPattern = startLabel.split(' ').join('[ \n\r\f]*');
-      const startRegex = new RegExp(startPattern + "[ \n\r\f]*:?", "i");
-      const startMatch = startRegex.exec(normalizedText);
-      if (!startMatch) {
-        console.log(`[DEBUG] No se encontró el label de inicio '${startLabel}' en el texto extraído.`);
-        return "";
-      }
-      const startIdx = startMatch.index + startMatch[0].length;
-      const afterStart = normalizedText.substring(startIdx);
-      // Regex para encontrar la primera fecha (ej: 13/5/25 o 13/05/2025)
-      const dateRegex = /\b\d{1,2}\/\d{1,2}\/\d{2,4}(?:,? [0-9]{1,2}:[0-9]{2} ?[ap]\.?m\.?)*\b/;
-      const dateMatch = dateRegex.exec(afterStart);
-      let description;
-      if (dateMatch) {
-        description = afterStart.substring(0, dateMatch.index).trim();
-      } else {
-        description = afterStart.trim();
-      }
-      console.log(`[DEBUG] Descripción extraída entre '${startLabel}' y la primera fecha:`);
-      console.log(description.substring(0, 500));
-      return description;
-    }
-
-    // Extraer los datos pero NO guardar en la base de datos
     const extractedData = {
       serviceType: extractField("Tipo de mantenimiento Locativo"),
       requester: extractField("Nombres Apellidos"),
       phone: extractField("Télefono de contacto"),
       address: extractField("Ubicación"),
       workingHours: `${extractField("Horario de apertura") || ''} - ${extractField("Horario de cierre") || ''}`.trim(),
-      details: extractDescriptionUntilDate("Descripción de la novedad"),
+      details: extractField("Descripción de la novedad"),
       puntoVentaCodigo: extractField("Punto de venta código"),
       proveedorAsignado: extractField("Proveedor asignado"),
       nombreOficina: extractField("Nombre de Oficina"),
@@ -203,24 +178,34 @@ exports.uploadPdfAndCreateService = async (req, res) => {
       observations: [],
       status: 'Nuevo',
     };
-    // Guardar el nombre del archivo PDF en el modelo del servicio
+
+    console.log('[DEBUG] Datos extraídos del PDF:', extractedData);
+
+    // Validar datos antes de guardar
+    if (!extractedData.serviceType || !extractedData.requester || !extractedData.phone) {
+      throw new Error('Datos incompletos extraídos del PDF');
+    }
+
+    // Asegurar que el campo registranteId esté presente antes de guardar
+    const currentUser = req.user; // Suponiendo que req.user contiene los datos del usuario autenticado
+    if (!currentUser || !currentUser._id) {
+      throw new Error('El campo registranteId es obligatorio y no está presente');
+    }
+
     const pdfName = req.file.originalname;
     const newService = new Service({
       ...extractedData,
       pdfName,
+      registranteId: currentUser._id, // Asignar el ID del usuario autenticado
     });
     await newService.save();
+    console.log('[DEBUG] Servicio guardado en la base de datos:', newService);
 
-    // Agregar registros de depuración
-    console.log('[DEBUG] Archivo recibido:', req.file);
-    console.log('[DEBUG] Ruta del archivo:', pdfPath);
-    console.log('[DEBUG] Datos extraídos del PDF:', extractedData);
-    console.log('[DEBUG] Nombre del archivo PDF:', pdfName);
-
-    // Limpieza: elimina el archivo subido
     fs.unlinkSync(pdfPath);
+    console.log('[DEBUG] Archivo PDF eliminado:', pdfPath);
     res.status(200).json(newService);
   } catch (err) {
+    console.error('[ERROR] Error al procesar el PDF:', err);
     res.status(500).json({ error: 'Error al procesar el PDF', details: err.message });
   }
 };

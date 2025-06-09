@@ -213,3 +213,22 @@ exports.uploadPdfAndCreateService = async (req, res) => {
 
 // Endpoint para que el cliente cierre el servicio
 // closeByClient endpoint removed: client closure logic deleted
+
+// Endpoint para subir fotos del servicio
+exports.uploadServicePhotos = async (req, res) => {
+  try {
+    const { serviceId } = req.params;
+    const service = await Service.findById(serviceId);
+    if (!service) {
+      return res.status(404).json({ error: 'Servicio no encontrado' });
+    }
+
+    const photoPaths = req.files.map((file) => file.path);
+    service.photos = [...(service.photos || []), ...photoPaths];
+    await service.save();
+
+    res.status(200).json({ message: 'Fotos subidas exitosamente', photos: photoPaths });
+  } catch (err) {
+    res.status(500).json({ error: 'Error al subir las fotos', details: err.message });
+  }
+};

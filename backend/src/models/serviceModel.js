@@ -21,7 +21,8 @@ const serviceSchema = new mongoose.Schema({
   precio: { type: Number, default: null },
   precioAprobado: { type: Boolean, default: false },
   precioAprobadoFecha: { type: Date, default: null },
-  registranteId: { type: String, required: true }
+  registranteId: { type: String, required: true },
+  photos: { type: [String], default: [] }
 }, { timestamps: true });
 
 module.exports = mongoose.model('Service', serviceSchema);

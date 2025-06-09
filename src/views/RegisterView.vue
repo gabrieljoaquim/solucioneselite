@@ -8,7 +8,13 @@
       </div>
       <div>
         <label for="email">Correo Electrónico:</label>
-        <input type="email" id="email" v-model="user.email" required />
+        <input
+          type="email"
+          id="email"
+          v-model="user.email"
+          @input="user.email = user.email.toLowerCase()"
+          required
+        />
       </div>
       <div>
         <label for="password">Contraseña:</label>
@@ -58,7 +64,9 @@ export default {
       api
         .post(`/api/users`, userToSend)
         .then(() => {
-          alert("Usuario registrado con éxito");
+          alert(
+            "Usuario registrado con éxito. Por favor, verifica tu correo electrónico."
+          );
           this.user = {
             name: "",
             email: "",

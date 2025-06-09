@@ -145,7 +145,9 @@ exports.deleteService = async (req, res) => {
 
 // Endpoint para subir PDF y extraer datos (NO crear servicio)
 exports.uploadPdfAndCreateService = async (req, res) => {
+  // Agregar más registros de depuración para identificar problemas
   if (!req.file) {
+    console.error('[ERROR] No se subió ningún archivo PDF');
     return res.status(400).json({ error: 'No se subió ningún archivo PDF' });
   }
   try {
@@ -183,26 +185,33 @@ exports.uploadPdfAndCreateService = async (req, res) => {
 
     // Validar datos antes de guardar
     if (!extractedData.serviceType || !extractedData.requester || !extractedData.phone) {
+      console.error('[ERROR] Datos incompletos extraídos del PDF:', extractedData);
       throw new Error('Datos incompletos extraídos del PDF');
     }
 
-    // Asegurar que el campo registranteId esté presente antes de guardar
-    const currentUser = req.user; // Suponiendo que req.user contiene los datos del usuario autenticado
-    if (!currentUser || !currentUser._id) {
-      throw new Error('El campo registranteId es obligatorio y no está presente');
+    const pdfName = req.file.originalname;
+    // Ensure registranteId is included
+    const registranteId = req.user ? req.user.id : null; // Assuming req.user contains authenticated user info
+    if (!registranteId) {
+      console.error('[ERROR] registranteId is missing');
+      throw new Error('registranteId is required');
     }
 
-    const pdfName = req.file.originalname;
     const newService = new Service({
       ...extractedData,
       pdfName,
-      registranteId: currentUser._id, // Asignar el ID del usuario autenticado
+      registranteId,
     });
     await newService.save();
     console.log('[DEBUG] Servicio guardado en la base de datos:', newService);
 
-    fs.unlinkSync(pdfPath);
-    console.log('[DEBUG] Archivo PDF eliminado:', pdfPath);
+    // Add error handling for file deletion
+    try {
+      fs.unlinkSync(pdfPath);
+      console.log('[DEBUG] Archivo PDF eliminado:', pdfPath);
+    } catch (unlinkErr) {
+      console.error('[ERROR] Error al eliminar el archivo PDF:', unlinkErr);
+    }
     res.status(200).json(newService);
   } catch (err) {
     console.error('[ERROR] Error al procesar el PDF:', err);

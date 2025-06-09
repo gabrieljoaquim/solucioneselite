@@ -161,6 +161,16 @@ export default {
       }
       const formData = new FormData();
       formData.append("pdf", file);
+
+      // Add registranteId to the formData
+      const registranteId = this.registrante; // Assuming this.registrante contains the authenticated user's ID
+      if (!registranteId) {
+        this.error = "El ID del registrante no está disponible";
+        this.loading = false;
+        return;
+      }
+      formData.append("registranteId", registranteId);
+
       try {
         const res = await api.post("/api/services/upload-pdf", formData, {
           headers: { "Content-Type": "multipart/form-data" },

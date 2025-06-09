@@ -11,7 +11,7 @@ const serverPort = isTestEnvironment ? TEST_PORT : PORT;
 // Middleware
 app.use(express.json({ limit: '10mb' })); // Permitir payloads grandes para imágenes
 app.use(cors({
-  origin: ['https://solucioneselite.onrender.com', 'http://localhost:8080'],
+  origin: ['https://solucioneselite-u60d.onrender.com', 'https://solucioneselite.onrender.com', 'http://localhost:8080'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
@@ -27,13 +27,21 @@ app.use((req, res, next) => {
   next();
 });
 
-// Middleware para registrar solicitudes y respuestas
+// Middleware para registrar solicitudes, respuestas y errores
 app.use((req, res, next) => {
   console.log(`Solicitud: ${req.method} ${req.url}`);
+  console.log(`Headers: ${JSON.stringify(req.headers)}`);
+  console.log(`Body: ${JSON.stringify(req.body)}`);
   res.on('finish', () => {
     console.log(`Respuesta: ${res.statusCode}`);
   });
   next();
+});
+
+// Middleware para capturar errores
+app.use((err, req, res, next) => {
+  console.error(`Error: ${err.message}`);
+  res.status(err.status || 500).json({ error: err.message });
 });
 
 // Middleware para ajustar la política de seguridad de contenido

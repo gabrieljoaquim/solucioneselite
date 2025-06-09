@@ -4,12 +4,17 @@ const serviceController = require('../controllers/serviceController');
 // const auth = require('../middleware/auth');
 const multer = require('multer');
 const path = require('path');
+const fs = require('fs');
 const upload = multer({ dest: path.join(__dirname, '../uploads') });
 
 // Configuración de multer para subir fotos
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, '../uploads/services'));
+    const uploadPath = path.join(__dirname, '../uploads/services');
+    if (!fs.existsSync(uploadPath)) {
+      fs.mkdirSync(uploadPath, { recursive: true });
+    }
+    cb(null, uploadPath);
   },
   filename: (req, file, cb) => {
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);

@@ -90,6 +90,18 @@ exports.updateService = async (req, res) => {
         const updated = await Service.findByIdAndUpdate(id, req.body, { new: true });
         return res.json(updated);
       }
+      // Agregar logs para depuración
+      console.log('[DEBUG] Datos recibidos en updateService:', req.body);
+      console.log('[DEBUG] ID del servicio:', id);
+
+      // Validar si el servicio está libre
+      if (!service.takenById) {
+        console.log('[DEBUG] Servicio libre, actualizando...');
+        const updated = await Service.findByIdAndUpdate(id, req.body, { new: true });
+        return res.json(updated);
+      }
+
+      // Validar si el usuario está autorizado
       if (
         !currentUserId ||
         (!currentUserRole || (
@@ -99,6 +111,13 @@ exports.updateService = async (req, res) => {
           currentUserRole !== 'administrador')
         )
       ) {
+        console.log('[DEBUG] Usuario no autorizado:', {
+          currentUserId,
+          currentUserRole,
+          takenById: service.takenById,
+          takenBy: service.takenBy,
+          takenByEmail: service.takenByEmail,
+        });
         return res.status(403).json({ error: 'No autorizado para cambiar el estado/color de este servicio' });
       }
       const updated = await Service.findByIdAndUpdate(id, req.body, { new: true });

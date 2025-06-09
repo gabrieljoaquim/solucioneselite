@@ -211,6 +211,12 @@ exports.uploadPdfAndCreateService = async (req, res) => {
     });
     await newService.save();
 
+    // Agregar registros de depuración
+    console.log('[DEBUG] Archivo recibido:', req.file);
+    console.log('[DEBUG] Ruta del archivo:', pdfPath);
+    console.log('[DEBUG] Datos extraídos del PDF:', extractedData);
+    console.log('[DEBUG] Nombre del archivo PDF:', pdfName);
+
     // Limpieza: elimina el archivo subido
     fs.unlinkSync(pdfPath);
     res.status(200).json(newService);

@@ -167,6 +167,7 @@
           </button>
 
           <ServicePhotoUploader :service-id="service._id" />
+          <GenerateServicePDF :service="service" />
         </div>
       </li>
     </ul>
@@ -175,6 +176,7 @@
 
 <script>
 import ServicePriceEditor from "../components/ServicePriceEditor.vue";
+import GenerateServicePDF from "../components/GenerateServicePDF.vue";
 import api from "../axios";
 import GoogleMapsLink from "../components/GoogleMapsLink.vue";
 import ServicePhotoUploader from "../components/ServicePhotoUploader.vue";
@@ -186,6 +188,7 @@ export default {
     GoogleMapsLink,
     ServicePhotoUploader,
     PdfNameDisplay,
+    GenerateServicePDF,
   },
   data() {
     return {

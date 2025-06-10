@@ -7,6 +7,7 @@ const PORT = process.env.PORT || 5000;
 const TEST_PORT = process.env.TEST_PORT || 5001; // Use a different port for testing
 const isTestEnvironment = process.env.NODE_ENV === 'test';
 const serverPort = isTestEnvironment ? TEST_PORT : PORT;
+const path = require("path");
 
 // Middleware
 app.use(express.json({ limit: '10mb' })); // Permitir payloads grandes para imágenes
@@ -49,6 +50,8 @@ app.use((req, res, next) => {
   res.header('Content-Security-Policy', "default-src 'self'; script-src 'self' 'unsafe-eval'; img-src 'self' data:;");
   next();
 });
+
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // MongoDB Connection
 mongoose.set('strictQuery', true); // Suppress deprecation warning

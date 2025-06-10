@@ -152,6 +152,7 @@ exports.uploadPdfDataOnly = async (req, res) => {
       nombreOficina: extractField("Nombre de Oficina"),
       reportDate: new Date().toISOString().split('T')[0],
       observations: [],
+      pdfReferencia: req.file.originalname,
     };
 
     fs.unlinkSync(pdfPath); // Elimina el archivo temporal

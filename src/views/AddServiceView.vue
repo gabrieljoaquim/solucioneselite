@@ -2,6 +2,11 @@
   <div class="add-service">
     <h1>Agregar Servicio</h1>
     <form @submit.prevent="submitService">
+      <PdfNameDisplay
+        v-if="service.pdfReferencia"
+        :pdfName="service.pdfReferencia"
+      />
+
       <label for="requester">Solicitante:</label>
       <input
         id="requester"
@@ -70,10 +75,15 @@
 
 <script>
 import ServicePriceEditor from "../components/ServicePriceEditor.vue";
+import PdfNameDisplay from "../components/PdfNameDisplay.vue";
 import api from "../axios";
 
 export default {
-  components: { ServicePriceEditor },
+  components: {
+    ServicePriceEditor,
+    PdfNameDisplay,
+  },
+
   data() {
     return {
       service: {
@@ -159,6 +169,7 @@ export default {
         this.loading = false;
         return;
       }
+      const fileName = file.name;
       const formData = new FormData();
       formData.append("pdf", file);
 
@@ -182,6 +193,7 @@ export default {
           observations: Array.isArray(res.data.observations)
             ? res.data.observations.join("\n")
             : res.data.observations || "",
+          pdfReferencia: fileName,
         };
       } catch (err) {
         this.error = err.response?.data?.error || "Error al procesar el PDF";

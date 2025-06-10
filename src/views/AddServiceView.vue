@@ -169,7 +169,7 @@ export default {
         this.loading = false;
         return;
       }
-      // formData.append("registranteId", registranteId);
+      formData.append("registranteId", registranteId);
 
       try {
         const res = await api.post("/api/services/upload-pdf", formData, {

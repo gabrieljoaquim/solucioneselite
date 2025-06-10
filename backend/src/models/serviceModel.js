@@ -23,7 +23,7 @@ const serviceSchema = new mongoose.Schema({
   precioAprobadoFecha: { type: Date, default: null },
   registranteId: { type: String, required: true },
   photos: { type: [String], default: [] },
-  pdfName: { type: String, default: '' }
+  pdfReferencia: { type: String, default: '' }
 }, { timestamps: true });
 
 module.exports = mongoose.model('Service', serviceSchema);

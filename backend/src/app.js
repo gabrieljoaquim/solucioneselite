@@ -90,3 +90,5 @@ app.get('/api/test', (req, res) => {
 app.listen(serverPort, () => {
   console.log(`Server running on port ${serverPort}`);
 });
+
+app.use(express.urlencoded({ extended: true }));

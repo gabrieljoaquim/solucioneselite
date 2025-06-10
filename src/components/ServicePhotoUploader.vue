@@ -44,10 +44,18 @@ export default {
       }));
     },
     async uploadPhotos() {
+      const currentUser = this.$store.state.currentUser;
+      const pdfReferencia = this.$store.state.services.find(
+        (s) => s._id === this.serviceId
+      )?.pdfReferencia;
+
       const formData = new FormData();
       this.photos.forEach((photo) => {
         formData.append("photos", photo.file);
       });
+
+      formData.append("techId", currentUser._id);
+      formData.append("pdfReferencia", pdfReferencia);
 
       try {
         await api.post(`/api/services/${this.serviceId}/photos`, formData, {

@@ -47,18 +47,21 @@ app.use((err, req, res, next) => {
 
 // Middleware para ajustar la política de seguridad de contenido
 app.use((req, res, next) => {
-  res.header('Content-Security-Policy', "default-src 'self'; script-src 'self' 'unsafe-eval'; img-src 'self' data:;");
+  res.header('Content-Security-Policy', "default-src 'self'; img-src * data: blob:;");
+
   next();
 });
 
-const setCorsHeaders = (req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*"); // o el dominio exacto
-  res.setHeader("Access-Control-Allow-Methods", "GET");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-  next();
-};
+const uploadsPath = path.join(__dirname, "src/uploads");
 
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+// Aplica cabeceras CORS manualmente
+app.use('/uploads', (req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*'); // puedes usar origen específico si lo deseas
+  res.setHeader('Access-Control-Allow-Methods', 'GET');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  next();
+}, express.static(uploadsPath));
+
 
 // MongoDB Connection
 mongoose.set('strictQuery', true); // Suppress deprecation warning

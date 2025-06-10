@@ -142,7 +142,7 @@ exports.uploadPdfDataOnly = async (req, res) => {
 
     const extractedData = {
       serviceType: extractField("Tipo de mantenimiento Locativo"),
-      requester: extractField("Nombres Apellidos"),
+      requester: req.user?.name || req.user?.email || '',
       phone: extractField("Télefono de contacto"),
       address: extractField("Ubicación"),
       workingHours: `${extractField("Horario de apertura") || ''} - ${extractField("Horario de cierre") || ''}`.trim(),

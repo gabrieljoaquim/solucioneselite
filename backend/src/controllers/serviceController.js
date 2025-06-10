@@ -167,17 +167,37 @@ exports.uploadPdfDataOnly = async (req, res) => {
 exports.uploadServicePhotos = async (req, res) => {
   try {
     const { serviceId } = req.params;
+    const { techId, pdfReferencia } = req.body;
+
     const service = await Service.findById(serviceId);
-    if (!service) {
-      return res.status(404).json({ error: 'Servicio no encontrado' });
+    if (!service) return res.status(404).json({ error: 'Servicio no encontrado' });
+
+    if (!techId || !pdfReferencia) {
+      return res.status(400).json({ error: 'Faltan datos: techId o pdfReferencia' });
     }
 
-    const photoPaths = req.files.map((file) => file.path);
+    const techSuffix = techId.slice(-6);
+    const baseName = pdfReferencia.replace(/\.pdf$/i, '').replace(/\s+/g, '_');
+
+    const photoPaths = [];
+
+    for (let i = 0; i < req.files.length; i++) {
+      const originalPath = req.files[i].path;
+      const ext = path.extname(req.files[i].originalname);
+      const newName = `${baseName}_${techSuffix}_${(i + 1).toString().padStart(2, '0')}${ext}`;
+      const newPath = path.join(path.dirname(originalPath), newName);
+
+      fs.renameSync(originalPath, newPath); // Renombrar físicamente
+      photoPaths.push(newPath);
+    }
+
     service.photos = [...(service.photos || []), ...photoPaths];
     await service.save();
 
-    res.status(200).json({ message: 'Fotos subidas exitosamente', photos: photoPaths });
+    res.status(200).json({ message: 'Fotos subidas y renombradas', photos: photoPaths });
   } catch (err) {
+    console.error('[uploadServicePhotos] Error:', err);
     res.status(500).json({ error: 'Error al subir las fotos', details: err.message });
   }
 };
+

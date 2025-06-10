@@ -5,7 +5,6 @@ const pdfParse = require('pdf-parse');
 
 exports.createService = async (req, res) => {
   try {
-    // Always set registranteId from authenticated user
     const data = { ...req.body };
     if (req.user && req.user._id) {
       data.registranteId = req.user._id;
@@ -27,15 +26,11 @@ exports.getServices = async (req, res) => {
   }
 };
 
-// Validación global: impedir que un trabajador tome un nuevo servicio si tiene uno pendiente de cierre por cliente
-// canWorkerTakeService removed: client closure logic deleted
-
-// Actualizar un servicio (por id)
 exports.updateService = async (req, res) => {
   try {
     const { id } = req.params;
-    // Si se envía $push, usar $push para agregar observación
-    if (req.body.$push && req.body.$push.observations) {
+
+    if (req.body.$push?.observations) {
       const updated = await Service.findByIdAndUpdate(
         id,
         { $push: { observations: req.body.$push.observations } },
@@ -45,20 +40,10 @@ exports.updateService = async (req, res) => {
       return res.json(updated);
     }
 
-    // Control de edición de precio: solo trabajador asignado o admin
     if (typeof req.body.precio !== 'undefined') {
       const service = await Service.findById(id);
       if (!service) return res.status(404).json({ error: 'Servicio no encontrado' });
       const { currentUserId, currentUserRole } = req.body;
-      // Debug log for troubleshooting
-      console.log('[DEBUG] Precio edit request:', {
-        takenById: service.takenById,
-        currentUserId,
-        currentUserRole,
-        takenByIdType: typeof service.takenById,
-        currentUserIdType: typeof currentUserId
-      });
-      // Always compare as strings, and force takenById to string if possible
       const takenByIdStr = service.takenById ? String(service.takenById) : '';
       const currentUserIdStr = currentUserId ? String(currentUserId) : '';
       if (
@@ -72,24 +57,21 @@ exports.updateService = async (req, res) => {
         return res.status(403).json({ error: 'No autorizado para editar el precio de este servicio' });
       }
       service.precio = req.body.precio;
-      // Always store takenById as string
-      if (service.takenById && typeof service.takenById !== 'string') {
-        service.takenById = String(service.takenById);
-      }
       await service.save();
       return res.json(service);
     }
-    // Solo permitir cambios de color/estado si el usuario es el que tomó el servicio o admin
+
     if (req.body.backgroundColor || req.body.status) {
       const currentUserId = req.body.currentUserId;
       const currentUserRole = req.body.currentUserRole;
       const service = await Service.findById(id);
       if (!service) return res.status(404).json({ error: 'Servicio no encontrado' });
-      // Permitir tomar el servicio si está libre
+
       if (!service.takenById) {
         const updated = await Service.findByIdAndUpdate(id, req.body, { new: true });
         return res.json(updated);
       }
+
       if (
         !currentUserId ||
         (!currentUserRole || (
@@ -104,14 +86,13 @@ exports.updateService = async (req, res) => {
       const updated = await Service.findByIdAndUpdate(id, req.body, { new: true });
       return res.json(updated);
     }
-    // Si se actualiza el campo 'details' (descripción del arreglo)
+
     if (typeof req.body.details === 'string') {
       const updated = await Service.findByIdAndUpdate(id, { details: req.body.details }, { new: true });
       if (!updated) return res.status(404).json({ error: 'Servicio no encontrado' });
       return res.json(updated);
     }
 
-    // Si el cliente aprueba el precio
     if (typeof req.body.precioAprobado !== 'undefined') {
       const update = {
         precioAprobado: !!req.body.precioAprobado,
@@ -122,7 +103,6 @@ exports.updateService = async (req, res) => {
       return res.json(updated);
     }
 
-    // Si no, actualizar normalmente
     const updated = await Service.findByIdAndUpdate(id, req.body, { new: true });
     if (!updated) return res.status(404).json({ error: 'Servicio no encontrado' });
     res.json(updated);
@@ -131,7 +111,6 @@ exports.updateService = async (req, res) => {
   }
 };
 
-// Eliminar un servicio (por id)
 exports.deleteService = async (req, res) => {
   try {
     const { id } = req.params;
@@ -143,25 +122,20 @@ exports.deleteService = async (req, res) => {
   }
 };
 
-// Endpoint para subir PDF y extraer datos (NO crear servicio)
-exports.uploadPdfAndCreateService = async (req, res) => {
-  // Agregar más registros de depuración para identificar problemas
+// ✅ Nuevo endpoint: Procesa PDF y devuelve datos sin guardar en la BD
+exports.uploadPdfDataOnly = async (req, res) => {
   if (!req.file) {
-    console.error('[ERROR] No se subió ningún archivo PDF');
     return res.status(400).json({ error: 'No se subió ningún archivo PDF' });
   }
+
   try {
-    console.log('[DEBUG] Archivo recibido:', req.file);
     const pdfPath = req.file.path;
     const dataBuffer = fs.readFileSync(pdfPath);
-    console.log('[DEBUG] Archivo leído correctamente:', pdfPath);
     const data = await pdfParse(dataBuffer);
-    console.log('[DEBUG] Datos del PDF extraídos:', data);
     const text = data.text;
 
-    // Lógica de extracción de campos (puedes mejorarla según el formato real)
     function extractField(label, fallback = "") {
-      const regex = new RegExp(label + ":?\s*(.*)", "i");
+      const regex = new RegExp(`${label}:\\s*(.+)`, "i");
       const match = text.match(regex);
       return match ? match[1].trim() : fallback;
     }
@@ -178,51 +152,17 @@ exports.uploadPdfAndCreateService = async (req, res) => {
       nombreOficina: extractField("Nombre de Oficina"),
       reportDate: new Date().toISOString().split('T')[0],
       observations: [],
-      status: 'Nuevo',
     };
 
-    console.log('[DEBUG] Datos extraídos del PDF:', extractedData);
+    fs.unlinkSync(pdfPath); // Elimina el archivo temporal
 
-    // Validar datos antes de guardar
-    if (!extractedData.serviceType || !extractedData.requester || !extractedData.phone) {
-      console.error('[ERROR] Datos incompletos extraídos del PDF:', extractedData);
-      throw new Error('Datos incompletos extraídos del PDF');
-    }
-
-    const pdfName = req.file.originalname;
-    // Ensure registranteId is included
-    const registranteId = req.user ? req.user.id : null; // Assuming req.user contains authenticated user info
-    if (!registranteId) {
-      console.error('[ERROR] registranteId is missing');
-      throw new Error('registranteId is required');
-    }
-
-    const newService = new Service({
-      ...extractedData,
-      pdfName,
-      registranteId,
-    });
-    await newService.save();
-    console.log('[DEBUG] Servicio guardado en la base de datos:', newService);
-
-    // Add error handling for file deletion
-    try {
-      fs.unlinkSync(pdfPath);
-      console.log('[DEBUG] Archivo PDF eliminado:', pdfPath);
-    } catch (unlinkErr) {
-      console.error('[ERROR] Error al eliminar el archivo PDF:', unlinkErr);
-    }
-    res.status(200).json(newService);
+    res.status(200).json(extractedData);
   } catch (err) {
     console.error('[ERROR] Error al procesar el PDF:', err);
     res.status(500).json({ error: 'Error al procesar el PDF', details: err.message });
   }
 };
 
-// Endpoint para que el cliente cierre el servicio
-// closeByClient endpoint removed: client closure logic deleted
-
-// Endpoint para subir fotos del servicio
 exports.uploadServicePhotos = async (req, res) => {
   try {
     const { serviceId } = req.params;

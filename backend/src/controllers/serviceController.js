@@ -135,14 +135,14 @@ exports.uploadPdfDataOnly = async (req, res) => {
     const text = data.text;
 
     function extractField(label, fallback = "") {
-      const regex = new RegExp(`${label}:\\s*(.+)`, "i");
+      const regex = new RegExp(`${label}\\s*:?\\s*(.+)`, "i");
       const match = text.match(regex);
       return match ? match[1].trim() : fallback;
     }
 
     const extractedData = {
       serviceType: extractField("Tipo de mantenimiento Locativo"),
-      requester: req.user?.name || req.user?.email || '',
+      requester: extractField("Nombres Apellidos") || (req.user?.name || req.user?.email || ''),
       phone: extractField("Télefono de contacto"),
       address: extractField("Ubicación"),
       workingHours: `${extractField("Horario de apertura") || ''} - ${extractField("Horario de cierre") || ''}`.trim(),

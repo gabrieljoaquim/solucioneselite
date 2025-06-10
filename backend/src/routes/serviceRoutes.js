@@ -29,5 +29,9 @@ router.put('/:id', serviceController.updateService);
 router.delete('/:id', serviceController.deleteService);
 // Ruta para subir fotos de un servicio
 router.post('/:serviceId/photos', uploadPhotos.array('photos', 10), serviceController.uploadServicePhotos);
+// Ruta para procesar PDF sin guardar en la BD
+router.post('/upload-pdf', upload.single('pdf'), serviceController.uploadPdfDataOnly);
+
+
 
 module.exports = router;

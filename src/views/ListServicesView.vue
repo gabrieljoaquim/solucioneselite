@@ -16,7 +16,10 @@
         :style="{ backgroundColor: service.backgroundColor || 'white' }"
         :ref="'serviceItem' + index"
       >
-        <PdfNameDisplay v-if="service.pdfName" :pdfName="service.pdfName" />
+        <PdfNameDisplay
+          v-if="service.pdfReferencia"
+          :pdfName="service.pdfReferencia"
+        />
         <span>{{ service.requester }} - {{ service.serviceType }}</span>
         <span v-if="service.takenBy" class="taken-by">
           Tomado por:

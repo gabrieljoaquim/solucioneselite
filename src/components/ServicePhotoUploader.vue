@@ -1,7 +1,13 @@
 <template>
   <div class="photo-uploader">
     <h3>Subir Fotos del Servicio</h3>
-    <input type="file" multiple accept="image/*" @change="handleFileUpload" />
+    <input
+      type="file"
+      ref="fileInput"
+      multiple
+      accept="image/*"
+      @change="handleFileUpload"
+    />
     <button @click="uploadPhotos" :disabled="!photos.length">
       Subir Fotos
     </button>
@@ -45,9 +51,19 @@ export default {
     },
     async uploadPhotos() {
       const currentUser = this.$store.state.currentUser;
-      const pdfReferencia = this.$store.state.services.find(
+      if (!currentUser || !currentUser._id) {
+        alert("No se pudo obtener el ID del técnico.");
+        return;
+      }
+
+      const service = this.$store.state.services.find(
         (s) => s._id === this.serviceId
-      )?.pdfReferencia;
+      );
+
+      if (!service || !service.pdfReferencia) {
+        alert("No se encontró la referencia del PDF para este servicio.");
+        return;
+      }
 
       const formData = new FormData();
       this.photos.forEach((photo) => {
@@ -55,7 +71,7 @@ export default {
       });
 
       formData.append("techId", currentUser._id);
-      formData.append("pdfReferencia", pdfReferencia);
+      formData.append("pdfReferencia", service.pdfReferencia);
 
       try {
         await api.post(`/api/services/${this.serviceId}/photos`, formData, {
@@ -65,6 +81,7 @@ export default {
         });
         alert("Fotos subidas exitosamente.");
         this.photos = [];
+        this.$refs.fileInput.value = null; // limpia el input
       } catch (error) {
         alert(
           "Error al subir las fotos: " +
@@ -107,6 +124,7 @@ export default {
 }
 .thumbnails {
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
 }
 .thumbnails img {

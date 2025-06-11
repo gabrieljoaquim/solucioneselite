@@ -10,7 +10,7 @@ const upload = multer({ dest: path.join(__dirname, '../uploads') });
 // Configuración de multer para subir fotos
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const uploadPath = path.join(__dirname, '../uploads/services');
+    const uploadPath = path.join(__dirname, 'uploads');
     if (!fs.existsSync(uploadPath)) {
       fs.mkdirSync(uploadPath, { recursive: true });
     }

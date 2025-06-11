@@ -188,7 +188,9 @@ exports.uploadServicePhotos = async (req, res) => {
       const newPath = path.join(path.dirname(originalPath), newName);
 
       fs.renameSync(originalPath, newPath); // Renombrar físicamente
-      photoPaths.push(newPath);
+      const relativePath = `/uploads/services/${newName}`;
+photoPaths.push(relativePath);
+
     }
 
     service.photos = [...(service.photos || []), ...photoPaths];

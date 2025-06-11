@@ -41,10 +41,9 @@
           <img
             v-for="(photo, i) in service.photos"
             :key="i"
-            :src="photoUrl(photo)"
-            crossorigin="anonymous"
+            :src="getFullPhotoUrl(photo)"
             class="service-photo"
-            alt="foto del servicio"
+            @error="onImageError(i)"
           />
         </div>
       </div>
@@ -66,14 +65,39 @@ export default {
   data() {
     return {
       descripcionFinal: "",
+      expectedPhotos: [],
     };
   },
+  mounted() {
+    const base = this.service.pdfReferencia?.replace(/\.pdf$/i, "");
+    const tecnicoId = this.service.takenById;
+    if (!base || !tecnicoId) return;
+
+    const tecnicoIdSuffix = tecnicoId.slice(-6);
+    this.expectedPhotos = this.computedExpectedPhotos.map((_, i) => {
+      const n = (i + 1).toString().padStart(2, "0"); // 01, 02, ...
+      return `http://localhost:5000/uploads/services/${base}_${tecnicoIdSuffix}_${n}.jpg`;
+    });
+  },
+
   computed: {
     fileName() {
       const base = this.service.pdfReferencia
         ? this.service.pdfReferencia.replace(/\.pdf$/i, "")
         : "servicio";
       return `${base}_realizado.pdf`;
+    },
+    computedExpectedPhotos() {
+      const base = this.service.pdfReferencia?.replace(/\.pdf$/i, "");
+      const tecnicoId = this.service.takenById;
+      if (!base || !tecnicoId) return [];
+
+      const tecnicoIdSuffix = tecnicoId.slice(-6);
+      // Suponemos máximo 30 fotos
+      return Array.from({ length: 30 }, (_, i) => {
+        const n = (i + 1).toString().padStart(2, "0"); // 01, 02, ...
+        return `http://localhost:5000/uploads/services/${base}_${tecnicoIdSuffix}_${n}.jpg`;
+      });
     },
   },
   methods: {
@@ -101,6 +125,37 @@ export default {
 
       pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
       pdf.save(this.fileName);
+    },
+    onImageError(index) {
+      this.expectedPhotos.splice(index, 1); // Oculta imágenes que no existen
+    },
+    methods: {
+      getFullPhotoUrl(photoPath) {
+        const baseURL = window.location.hostname.includes("localhost")
+          ? "http://localhost:5000"
+          : "https://solucioneselite-u60d.onrender.com";
+        return `${baseURL}${photoPath}`;
+      },
+      onImageError(i) {
+        console.warn("Imagen no cargada:", i);
+      },
+      async generatePDF() {
+        const element = this.$refs.pdfContent;
+        const canvas = await html2canvas(element, {
+          scale: 2,
+          useCORS: true,
+        });
+
+        const imgData = canvas.toDataURL("image/png");
+        const pdf = new jsPDF("p", "pt", "a4");
+
+        const imgProps = pdf.getImageProperties(imgData);
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+        pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+        pdf.save(this.fileName);
+      },
     },
   },
 };

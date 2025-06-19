@@ -4,7 +4,7 @@
     <div v-if="errorMsg" class="no-services-msg">
       {{ errorMsg }}
     </div>
-    <div v-else-if="services.length === 0" class="no-services-msg">
+    <div v-else-if="services && services.length === 0" class="no-services-msg">
       No tienes servicios registrados. Si creaste un servicio con otro usuario,
       inicia sesión con ese usuario para verlo.
     </div>
@@ -78,9 +78,9 @@
             <strong>Código Punto de Venta:</strong>
             {{ service.puntoVentaCodigo }}
           </p>
-          <p v-if="service.puntoVentaCodigo">
+          <p v-if="service.address">
             <strong>Dirección:</strong>
-            <GoogleMapsLink :code="service.puntoVentaCodigo" />
+            <GoogleMapsLink :address="service.address" />
           </p>
           <p v-if="service.proveedorAsignado">
             <strong>Proveedor Asignado:</strong> {{ service.proveedorAsignado }}
@@ -177,10 +177,12 @@
 <script>
 import ServicePriceEditor from "../components/ServicePriceEditor.vue";
 import GenerateServicePDF from "../components/GenerateServicePDF.vue";
-import api from "../axios";
 import GoogleMapsLink from "../components/GoogleMapsLink.vue";
 import ServicePhotoUploader from "../components/ServicePhotoUploader.vue";
 import PdfNameDisplay from "../components/PdfNameDisplay.vue";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "@/firebase/firebaseConfig";
+import { doc, deleteDoc } from "firebase/firestore";
 
 export default {
   components: {
@@ -192,7 +194,7 @@ export default {
   },
   data() {
     return {
-      errorMsg: "",
+      errorMsg: null,
     };
   },
   computed: {
@@ -212,78 +214,23 @@ export default {
       );
     },
   },
-  mounted() {
-    api
-      .get("/api/services")
-      .then((res) => {
-        // Reemplaza el contenido del store con los servicios del backend
-        const currentUser = this.$store.state.currentUser;
-        const services = res.data.map((service) => {
-          // Si el servicio fue tomado por el usuario actual, asegura que takenById coincida
-          if (
-            service.takenByEmail &&
-            currentUser &&
-            service.takenByEmail === currentUser.email
-          ) {
-            service.takenById = currentUser._id;
-          }
-          // Si el servicio fue tomado por el usuario actual pero el campo takenById no existe o no coincide
-          if (
-            service.takenBy &&
-            currentUser &&
-            service.takenBy === (currentUser.name || currentUser.email) &&
-            service.takenById !== currentUser._id
-          ) {
-            service.takenById = currentUser._id;
-          }
+  methods: {
+    async fetchServices() {
+      try {
+        const querySnapshot = await getDocs(collection(db, "services"));
+        const services = querySnapshot.docs.map((doc) => {
+          const service = { id: doc.id, ...doc.data() };
+          console.log("Servicio procesado:", service);
           return service;
         });
-        this.$store.state.services.splice(
-          0,
-          this.$store.state.services.length,
-          ...services
-        );
-      })
-      .catch((err) => {
-        // Manejo de error de red o CORS
-        this.$store.state.services.splice(0, this.$store.state.services.length);
-        this.errorMsg =
-          (err.response &&
-            (err.response.data?.error || err.response.data?.message)) ||
-          (err.message
-            ? `Error de red: ${err.message}`
-            : "No se pudieron cargar los servicios. Verifica la conexión con el backend.");
-      });
-  },
-  methods: {
-    async goToChat(service) {
-      const currentUser = this.$store.state.currentUser;
-      if (!currentUser) {
-        alert("Debes iniciar sesión para usar el chat.");
-        return;
+        this.$store.commit("setServices", services);
+        console.log("Servicios finales:", services);
+      } catch (error) {
+        this.errorMsg = "Error al cargar los servicios: " + error.message;
       }
-      let otherUserId = null;
-      if (currentUser.role === "cliente") {
-        // Chat with worker (takenById)
-        otherUserId = service.takenById;
-        if (!otherUserId) {
-          alert("El servicio aún no ha sido tomado por un trabajador.");
-          return;
-        }
-      } else if (currentUser.role === "trabajador") {
-        // Chat with client (usar solo registranteId)
-        otherUserId = service.registranteId;
-        if (!otherUserId) {
-          alert(
-            "No se pudo determinar el cliente para este servicio. (Falta registranteId)"
-          );
-          return;
-        }
-      } else if (currentUser.role === "administrador") {
-        alert("El chat solo está disponible para clientes y trabajadores.");
-        return;
-      }
-      this.$router.push({ name: "chat-user", params: { userId: otherUserId } });
+    },
+    toggleDetails(index) {
+      this.services[index].showDetails = !this.services[index].showDetails;
     },
     canShowPriceEditor(service) {
       const user = this.$store.state.currentUser;
@@ -293,23 +240,6 @@ export default {
       if (user.role === "trabajador" && service.takenById === user._id)
         return true;
       return false;
-    },
-    toggleDetails(index) {
-      // Cierra todos los detalles excepto el seleccionado
-      this.services.forEach((s, i) => {
-        if (i !== index) s.showDetails = false;
-      });
-      // Alterna el seleccionado
-      this.services[index].showDetails = !this.services[index].showDetails;
-      this.$nextTick(() => {
-        if (this.services[index].showDetails) {
-          // Centra la vista en el servicio abierto
-          const el = this.$refs["serviceItem" + index];
-          if (el && el.scrollIntoView) {
-            el.scrollIntoView({ behavior: "smooth", block: "center" });
-          }
-        }
-      });
     },
     async markAsTaken(index) {
       const currentUser = this.$store.state.currentUser;
@@ -512,26 +442,27 @@ export default {
       const currentUser = this.$store.state.currentUser;
       return currentUser && currentUser.role === "administrador";
     },
-    deleteService(index) {
-      const currentUser = this.$store.state.currentUser;
-      // Cambia la validación para usar el rol, no isAdmin
-      if (!currentUser || currentUser.role !== "administrador") {
-        alert("Solo un administrador puede eliminar servicios.");
+
+    async deleteService(index) {
+      const service = this.services[index];
+      if (
+        !confirm(
+          `¿Estás seguro de eliminar el servicio de ${service.requester}?`
+        )
+      )
         return;
-      }
-      const serviceId = this.services[index]._id;
-      if (confirm("¿Estás seguro de que deseas eliminar este servicio?")) {
-        api
-          .delete(`/api/services/${serviceId}`)
-          .then(() => {
-            this.services.splice(index, 1);
-          })
-          .catch(() => {
-            alert("Error al eliminar el servicio");
-          });
+
+      try {
+        await deleteDoc(doc(db, "services", service.id)); // Elimina en Firestore
+        this.services.splice(index, 1); // Elimina localmente
+        alert("Servicio eliminado exitosamente.");
+      } catch (error) {
+        alert("Error al eliminar el servicio: " + error.message);
       }
     },
-    // onClienteCerro removed: client closure logic deleted
+  },
+  async mounted() {
+    await this.fetchServices();
   },
 };
 </script>

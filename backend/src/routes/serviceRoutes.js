@@ -27,11 +27,16 @@ router.post('/', serviceController.createService);
 router.get('/', serviceController.getServices);
 router.put('/:id', serviceController.updateService);
 router.delete('/:id', serviceController.deleteService);
-// Ruta para subir fotos de un servicio
-router.post('/:serviceId/photos', uploadPhotos.array('photos', 10), serviceController.uploadServicePhotos);
 // Ruta para procesar PDF sin guardar en la BD
 router.post('/upload-pdf', upload.single('pdf'), serviceController.uploadPdfDataOnly);
+// Ruta para subir fotos de un servicio
+router.post('/:serviceId/photos', uploadPhotos.array('photos', 10), serviceController.uploadServicePhotos);
 
+router.stack.forEach(r => {
+  if (r.route) {
+    console.log(`Ruta activa: ${Object.keys(r.route.methods)[0].toUpperCase()} ${r.route.path}`);
+  }
+});
 
 
 module.exports = router;

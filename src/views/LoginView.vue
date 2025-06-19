@@ -1,34 +1,30 @@
 <template>
   <div class="login">
     <h1>Iniciar Sesión</h1>
-    <div>
-      <form @submit.prevent="loginUser">
-        <div>
-          <label for="email">Correo Electrónico:</label>
-          <input type="email" id="email" v-model="credentials.email" required />
-        </div>
-        <div>
-          <label for="password">Contraseña:</label>
-          <input
-            type="password"
-            id="password"
-            v-model="credentials.password"
-            required
-          />
-        </div>
-        <button type="submit">Iniciar Sesión</button>
-      </form>
-    </div>
-    <div>
-      <button class="ReClav" type="button" @click="forgotPassword">
+    <form @submit.prevent="loginUser">
+      <div>
+        <label for="email">Correo Electrónico:</label>
+        <input type="email" id="email" v-model="credentials.email" required />
+      </div>
+      <div>
+        <label for="password">Contraseña:</label>
+        <input
+          type="password"
+          id="password"
+          v-model="credentials.password"
+          required
+        />
+      </div>
+      <button type="submit">Iniciar Sesión</button>
+      <button type="button" @click="forgotPassword">
         ¿Olvidaste tu contraseña?
       </button>
-    </div>
+    </form>
   </div>
 </template>
 
 <script>
-import api from "../axios";
+import { loginWithEmail } from "@/firebase/auth";
 
 export default {
   data() {
@@ -42,17 +38,23 @@ export default {
   methods: {
     async loginUser() {
       try {
-        const response = await api.post("/api/users/login", this.credentials);
-        // Guardar usuario en el store
-        this.$store.commit("setCurrentUser", response.data);
-        // Redirigir siempre al home después de iniciar sesión
+        const user = await loginWithEmail(
+          this.credentials.email,
+          this.credentials.password
+        );
+        this.$store.commit("setCurrentUser", {
+          ...user,
+          role: "administrador",
+        });
+        alert(`Bienvenido, ${user.email}`);
         this.$router.push({ name: "home" });
-      } catch (err) {
-        alert(err.response?.data?.error || "Credenciales incorrectas");
+      } catch (error) {
+        alert("Error al iniciar sesión: " + error.message);
       }
     },
     forgotPassword() {
-      this.$router.push({ name: "forgot-password" });
+      alert("Se ha enviado un enlace de recuperación a su correo electrónico.");
+      // Aquí puedes implementar la lógica para enviar un correo de recuperación
     },
   },
 };
@@ -94,13 +96,5 @@ export default {
 }
 .login form button:hover {
   background-color: #0056b3;
-}
-.ReClav {
-  margin-top: 10px;
-  background-color: transparent;
-  border: none;
-  color: #007bff;
-  cursor: pointer;
-  text-decoration: underline;
 }
 </style>

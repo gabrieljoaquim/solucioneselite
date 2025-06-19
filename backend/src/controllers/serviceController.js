@@ -132,6 +132,7 @@ exports.uploadPdfDataOnly = async (req, res) => {
     const pdfPath = req.file.path;
     const dataBuffer = fs.readFileSync(pdfPath);
     const data = await pdfParse(dataBuffer);
+    const upload = multer({ dest: path.join(__dirname, '../uploads') });
     const text = data.text;
 
     function extractField(label, fallback = "") {

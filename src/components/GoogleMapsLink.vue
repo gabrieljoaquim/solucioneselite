@@ -15,15 +15,14 @@
 export default {
   name: "GoogleMapsLink",
   props: {
-    code: {
+    address: {
       type: String,
       required: true,
     },
   },
   computed: {
     extractedAddress() {
-      const match = this.code.match(/\b(cr|cl)\s+[^,]+/i);
-      return match ? match[0] : "Dirección no encontrada";
+      return this.address || "Dirección no encontrada";
     },
     googleMapsUrl() {
       return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(

@@ -129,33 +129,31 @@ export default {
     onImageError(index) {
       this.expectedPhotos.splice(index, 1); // Oculta imágenes que no existen
     },
-    methods: {
-      getFullPhotoUrl(photoPath) {
-        const baseURL = window.location.hostname.includes("localhost")
-          ? "http://localhost:5000"
-          : "https://solucioneselite-u60d.onrender.com";
-        return `${baseURL}${photoPath}`;
-      },
-      onImageError(i) {
-        console.warn("Imagen no cargada:", i);
-      },
-      async generatePDF() {
-        const element = this.$refs.pdfContent;
-        const canvas = await html2canvas(element, {
-          scale: 2,
-          useCORS: true,
-        });
+    getFullPhotoUrl(photoPath) {
+      const baseURL = window.location.hostname.includes("localhost")
+        ? "http://localhost:5000"
+        : "https://solucioneselite-u60d.onrender.com";
+      return `${baseURL}${photoPath}`;
+    },
+    onImageError(i) {
+      console.warn("Imagen no cargada:", i);
+    },
+    async generatePDF() {
+      const element = this.$refs.pdfContent;
+      const canvas = await html2canvas(element, {
+        scale: 2,
+        useCORS: true,
+      });
 
-        const imgData = canvas.toDataURL("image/png");
-        const pdf = new jsPDF("p", "pt", "a4");
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF("p", "pt", "a4");
 
-        const imgProps = pdf.getImageProperties(imgData);
-        const pdfWidth = pdf.internal.pageSize.getWidth();
-        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+      const imgProps = pdf.getImageProperties(imgData);
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
 
-        pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-        pdf.save(this.fileName);
-      },
+      pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+      pdf.save(this.fileName);
     },
   },
 };

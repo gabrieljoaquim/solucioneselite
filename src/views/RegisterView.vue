@@ -8,13 +8,7 @@
       </div>
       <div>
         <label for="email">Correo Electrónico:</label>
-        <input
-          type="email"
-          id="email"
-          v-model="user.email"
-          @input="user.email = user.email.toLowerCase()"
-          required
-        />
+        <input type="email" id="email" v-model="user.email" required />
       </div>
       <div>
         <label for="password">Contraseña:</label>
@@ -35,7 +29,9 @@
 </template>
 
 <script>
-import api from "../axios";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
+import { auth, db } from "@/firebase/firebaseConfig";
 
 export default {
   data() {
@@ -45,47 +41,34 @@ export default {
         email: "",
         password: "",
         confirmPassword: "",
-        role: "cliente", // Por defecto, el rol será cliente
       },
     };
   },
   methods: {
-    registerUser() {
+    async registerUser() {
       if (this.user.password !== this.user.confirmPassword) {
         alert("Las contraseñas no coinciden");
         return;
       }
-      const userToSend = {
-        name: this.user.name,
-        email: this.user.email,
-        password: this.user.password,
-        role: this.user.role, // Enviar el rol por defecto
-      };
-      api
-        .post(`/api/users`, userToSend)
-        .then(() => {
-          alert(
-            "Usuario registrado con éxito. Por favor, verifica tu correo electrónico."
-          );
-          this.user = {
-            name: "",
-            email: "",
-            password: "",
-            confirmPassword: "",
-            role: "cliente", // Reiniciar el rol a cliente
-          };
-          this.$router.push({ name: "login" });
-        })
-        .catch((err) => {
-          if (err.response?.data?.error?.includes("duplicate key")) {
-            alert("El correo ya está registrado, intenta con otro.");
-          } else {
-            alert(
-              "Error al registrar usuario: " +
-                (err.response?.data?.error || err.message)
-            );
-          }
+      try {
+        const userCredential = await createUserWithEmailAndPassword(
+          auth,
+          this.user.email,
+          this.user.password
+        );
+        const userId = userCredential.user.uid;
+
+        // Guardar información adicional en Firestore
+        await setDoc(doc(db, "users", userId), {
+          name: this.user.name,
+          email: this.user.email,
         });
+
+        alert("Usuario registrado con éxito");
+        this.$router.push({ name: "login" });
+      } catch (error) {
+        alert("Error al registrar usuario: " + error.message);
+      }
     },
   },
 };
@@ -114,20 +97,18 @@ export default {
 .register form input {
   width: 100%;
   padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  box-sizing: border-box;
 }
 .register form button {
   width: 100%;
   padding: 10px;
-  background-color: #117e2c;
+  background-color: #007bff;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s;
 }
 .register form button:hover {
-  background-color: #079f14;
+  background-color: #0056b3;
 }
 </style>

@@ -57,33 +57,24 @@
 
       <button type="submit">Agregar Servicio</button>
     </form>
-    <form @submit.prevent="uploadPdf" style="margin-top: 24px">
-      <label for="pdf">O subir PDF de servicio:</label>
-      <input
-        type="file"
-        id="pdf"
-        ref="pdfInput"
-        accept="application/pdf"
-        required
-      />
-      <button type="submit">Cargar PDF y Autocompletar</button>
-    </form>
-    <div v-if="loading">Procesando PDF...</div>
-    <div v-if="error" style="color: red">{{ error }}</div>
+
+    <PdfUploader :service="service" />
   </div>
 </template>
 
 <script>
 import ServicePriceEditor from "../components/ServicePriceEditor.vue";
 import PdfNameDisplay from "../components/PdfNameDisplay.vue";
-import api from "../axios";
+import { collection, addDoc } from "firebase/firestore";
+import { db } from "@/firebase/firebaseConfig";
+import PdfUploader from "@/components/PdfUploader.vue";
 
 export default {
   components: {
     ServicePriceEditor,
     PdfNameDisplay,
+    PdfUploader,
   },
-
   data() {
     return {
       service: {
@@ -96,12 +87,13 @@ export default {
         puntoVentaCodigo: "",
         proveedorAsignado: "",
         nombreOficina: "",
-        reportDate: "",
+        reportDate: new Date().toISOString().split("T")[0],
         observations: "",
+        pdfReferencia: "",
       },
       registrante: "",
       loading: false,
-      error: "",
+      error: null,
     };
   },
   computed: {
@@ -119,84 +111,28 @@ export default {
     }
   },
   methods: {
-    submitService() {
-      let observations = this.service.observations;
-      if (typeof observations === "string" && observations.trim() !== "") {
-        observations = observations
-          .split("\n")
-          .map((o) => o.trim())
-          .filter(Boolean);
-      } else {
-        observations = [];
-      }
-      // Agrega el registrante automáticamente y el registranteId
-      const currentUser = this.$store.state.currentUser;
-      const payload = {
+    rellenarDesdePdf(dataExtraida) {
+      this.service = {
         ...this.service,
-        registrante: this.registrante,
-        registranteId:
-          currentUser && currentUser._id ? currentUser._id : undefined,
-        observations,
+        ...dataExtraida,
       };
-      api
-        .post("/api/services", payload)
-        .then(() => {
-          alert("Servicio agregado correctamente");
-          this.service = {
-            requester: "",
-            phone: "",
-            address: "",
-            workingHours: "",
-            serviceType: "",
-            details: "",
-            puntoVentaCodigo: "",
-            proveedorAsignado: "",
-            nombreOficina: "",
-            reportDate: new Date().toISOString().split("T")[0],
-            observations: "",
-          };
-        })
-        .catch(() => {
-          alert("Error al agregar el servicio");
-        });
     },
-    async uploadPdf() {
-      this.error = "";
-      this.loading = true;
-      const file = this.$refs.pdfInput.files[0];
-      if (!file) {
-        this.error = "Selecciona un archivo PDF";
-        this.loading = false;
-        return;
-      }
-      const fileName = file.name;
-      const formData = new FormData();
-      formData.append("pdf", file);
-
-      // Add registranteId to the formData
-      const registranteId = this.registrante; // Assuming this.registrante contains the authenticated user's ID
-      if (!registranteId) {
-        this.error = "El ID del registrante no está disponible";
-        this.loading = false;
-        return;
-      }
-      formData.append("registranteId", registranteId);
-
+    async submitService() {
       try {
-        const res = await api.post("/api/services/upload-pdf", formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
-        // Solo autocompleta el formulario, NO guarda en la BD
-        this.service = {
+        this.loading = true;
+        this.error = null;
+
+        // Guardar el servicio en Firestore
+        await addDoc(collection(db, "services"), {
           ...this.service,
-          ...res.data,
-          observations: Array.isArray(res.data.observations)
-            ? res.data.observations.join("\n")
-            : res.data.observations || "",
-          pdfReferencia: fileName,
-        };
-      } catch (err) {
-        this.error = err.response?.data?.error || "Error al procesar el PDF";
+          registrante: this.registrante,
+          createdAt: new Date().toISOString(),
+        });
+
+        alert("Servicio agregado con éxito");
+        this.$router.push({ name: "add-services" });
+      } catch (error) {
+        this.error = "Error al agregar el servicio: " + error.message;
       } finally {
         this.loading = false;
       }

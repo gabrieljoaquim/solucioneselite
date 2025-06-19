@@ -10,22 +10,10 @@
         <label for="address">Dirección:</label>
         <input type="text" id="address" v-model="profile.address" required />
       </div>
+      <SpecialtySelector :specialties.sync="profile.specialty" />
       <div>
-        <label for="specialty">Especialidad:</label>
-        <input
-          type="text"
-          id="specialty"
-          v-model="profile.specialty"
-          placeholder="Ej: Plomería, Electricidad, Pintura, etc."
-          required
-          autocomplete="on"
-          autocorrect="on"
-          spellcheck="true"
-        />
-      </div>
-      <div>
-        <label for="profilePhoto">Foto de Perfil:</label>
-        <input type="file" id="profilePhoto" @change="onFileChange" />
+        <label for="profilePicture">Foto de Perfil:</label>
+        <input type="file" id="profilePicture" @change="onFileChange" />
       </div>
       <div>
         <label for="experience">Años de Experiencia:</label>
@@ -46,33 +34,12 @@
           placeholder="Describe tus habilidades y experiencia"
         ></textarea>
       </div>
-      <div>
-        <label for="zone">Zona de Trabajo:</label>
-        <input
-          type="text"
-          id="zone"
-          v-model="profile.zone"
-          placeholder="Ej: Medellín, Bogotá, etc."
-        />
-      </div>
-      <div>
-        <label for="rating">Calificación (0-5):</label>
-        <input
-          type="number"
-          id="rating"
-          v-model.number="profile.rating"
-          min="0"
-          max="5"
-          step="0.1"
-          placeholder="Ej: 4.8"
-        />
-      </div>
       <button type="submit">Actualizar Perfil</button>
     </form>
-    <div v-if="profile.profilePhoto">
+    <div v-if="profile.picture">
       <h2>Vista Previa de la Foto:</h2>
       <img
-        :src="profile.profilePhoto"
+        :src="profile.picture"
         alt="Foto de Perfil"
         style="max-width: 200px"
       />
@@ -81,20 +48,23 @@
 </template>
 
 <script>
-import api from "../axios";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { db } from "@/firebase/firebaseConfig";
+import SpecialtySelector from "@/components/SpecialtySelector.vue";
 
 export default {
+  components: {
+    SpecialtySelector,
+  },
   data() {
     return {
       profile: {
         phone: "",
         address: "",
-        specialty: "",
-        profilePhoto: null,
+        specialty: [],
+        picture: null,
         experience: 0,
         description: "",
-        zone: "",
-        rating: null,
       },
     };
   },
@@ -104,57 +74,32 @@ export default {
       if (file) {
         const reader = new FileReader();
         reader.onload = (e) => {
-          this.profile.profilePhoto = e.target.result;
+          this.profile.picture = e.target.result;
         };
         reader.readAsDataURL(file);
       }
     },
-    updateProfile() {
-      const formData = new FormData();
-      Object.keys(this.profile).forEach((key) => {
-        formData.append(key, this.profile[key]);
-      });
-
-      api
-        .put("/api/profile", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then(() => {
-          alert("Perfil actualizado con éxito");
-        })
-        .catch((err) => {
-          alert(
-            "Error al actualizar el perfil: " +
-              (err.response?.data?.error || err.message)
-          );
-        });
-    },
-    async mounted() {
+    async updateProfile() {
       try {
-        const email = this.$store.state.currentUser?.email;
-        if (!email) return;
-        const res = await api.get(
-          `/api/users?email=${encodeURIComponent(email)}`
-        );
-        if (res.data && res.data.length > 0) {
-          const user = res.data[0];
-          this.profile = {
-            phone: user.phone || "",
-            address: user.address || "",
-            specialty: user.specialty || "",
-            profilePhoto: user.profilePhoto || null,
-            experience: user.experience || 0,
-            description: user.description || "",
-            zone: user.zone || "",
-            rating: user.rating || null,
-          };
-        }
-      } catch (err) {
-        // Si hay error, deja el perfil vacío
+        const userId = this.$store.state.currentUser.uid;
+        await setDoc(doc(db, "users", userId), this.profile, { merge: true });
+        alert("Perfil actualizado con éxito");
+      } catch (error) {
+        alert("Error al actualizar el perfil: " + error.message);
       }
     },
+  },
+  async mounted() {
+    try {
+      const userId = this.$store.state.currentUser.uid;
+      const docRef = doc(db, "users", userId);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        this.profile = { ...this.profile, ...docSnap.data() };
+      }
+    } catch (error) {
+      alert("Error al cargar el perfil: " + error.message);
+    }
   },
 };
 </script>

@@ -27,8 +27,17 @@ export default createStore({
       state.user.profilePhoto = photoUrl;
     },
     setCurrentUser(state, user) {
-      state.currentUser = user;
+    state.currentUser = user;
+    if (user) {
+      localStorage.setItem('currentUser', JSON.stringify(user));
+    } else {
+      localStorage.removeItem('currentUser');
+    }
+
     },
+    updateService(state, { index, data }) {
+    state.services[index] = { ...state.services[index], ...data };
+  },
     updateCurrentUserProfile(state, profile) {
       if (state.currentUser) {
         state.currentUser = { ...state.currentUser, ...profile };

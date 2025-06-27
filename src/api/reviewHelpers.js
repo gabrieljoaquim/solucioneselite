@@ -1,19 +1,35 @@
-import api from '../axios';
+// src/api/firebaseServiceHelpers.js
+import { collection, getDocs, query, where } from 'firebase/firestore';
+import { db } from '@/firebase/firebaseConfig'; // asegúrate de que esta ruta esté bien
 
-// Obtiene servicios cerrados por el cliente para un trabajador
+// Obtiene servicios que fueron tomados por un trabajador para un cliente (nombre o email)
 export async function getClosedServicesByClientAndWorker(client, worker) {
-  const res = await api.get('/api/services');
-  // Filtra servicios cerrados por el cliente, tomados por el trabajador
-  // Client closure logic removed: return all services taken by worker for this client
-  return res.data.filter(s =>
-    (s.requester === client.name || s.requester === client.email) &&
-    (s.takenById === worker._id || s.takenBy === worker.name || s.takenBy === worker.email)
-  );
+  try {
+    const servicesRef = collection(db, 'services');
+    const snapshot = await getDocs(servicesRef);
+
+    return snapshot.docs
+      .map(doc => ({ id: doc.id, ...doc.data() }))
+      .filter(service =>
+        (service.requester === client.name || service.requester === client.email) &&
+        (service.takenById === worker._id || service.takenBy === worker.name || service.takenBy === worker.email)
+      );
+  } catch (error) {
+    console.error('Error al obtener servicios:', error);
+    return [];
+  }
 }
 
-// Obtiene ids de servicios ya reseñados por el cliente
+// Obtiene los IDs de los servicios ya reseñados por un cliente (reviews)
 export async function getReviewedServiceIds(clientId) {
-  const res = await api.get('/api/reviews/worker/' + clientId);
-  // Devuelve los ids de servicios ya reseñados por este cliente
-  return res.data.map(r => r.service);
+  try {
+    const reviewsRef = collection(db, 'reviews');
+    const q = query(reviewsRef, where('clientId', '==', clientId));
+    const snapshot = await getDocs(q);
+
+    return snapshot.docs.map(doc => doc.data().service);
+  } catch (error) {
+    console.error('Error al obtener reviews:', error);
+    return [];
+  }
 }

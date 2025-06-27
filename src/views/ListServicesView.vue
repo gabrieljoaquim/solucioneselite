@@ -144,6 +144,7 @@
             @mark-observation="markWithObservation(index)"
             @mark-finalized="markAsFinalized(index)"
           />
+          <AdminServiceControl :service="service" />
 
           <ServicePhotoUploader :service-id="service._id" />
           <GenerateServicePDF :service="service" />
@@ -163,6 +164,7 @@ import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/firebase/firebaseConfig";
 import { doc, deleteDoc } from "firebase/firestore";
 import ServiceStatusButtons from "../components/ServiceStatusButtons.vue";
+import AdminServiceControl from "../components/AdminServiceControl.vue";
 
 export default {
   components: {
@@ -172,6 +174,7 @@ export default {
     PdfNameDisplay,
     GenerateServicePDF,
     ServiceStatusButtons,
+    AdminServiceControl,
   },
   data() {
     return {

@@ -1,6 +1,7 @@
 <template>
   <div class="profile">
     <h1>Perfil del Trabajador</h1>
+    <p v-if="currentUser">Hola {{ currentUser.email }}</p>
     <form @submit.prevent="updateProfile">
       <div>
         <label for="phone">Teléfono:</label>
@@ -24,6 +25,14 @@
           min="0"
           required
         />
+      </div>
+      <div v-if="currentUser && currentUser.role === 'admin'">
+        <label for="role">Rol:</label>
+        <select id="role" v-model="profile.role" required>
+          <option value="cliente">Cliente</option>
+          <option value="trabajador">Trabajador</option>
+          <option value="admin">Administrador</option>
+        </select>
       </div>
       <div>
         <label for="description">Descripción:</label>
@@ -51,6 +60,8 @@
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "@/firebase/firebaseConfig";
 import SpecialtySelector from "@/components/SpecialtySelector.vue";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { storage } from "@/firebase/firebaseConfig";
 
 export default {
   components: {
@@ -65,41 +76,44 @@ export default {
         picture: null,
         experience: 0,
         description: "",
+        role: "cliente",
       },
     };
   },
-  methods: {
-    onFileChange(event) {
-      const file = event.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          this.profile.picture = e.target.result;
-        };
-        reader.readAsDataURL(file);
-      }
-    },
-    async updateProfile() {
-      try {
-        const userId = this.$store.state.currentUser.uid;
-        await setDoc(doc(db, "users", userId), this.profile, { merge: true });
-        alert("Perfil actualizado con éxito");
-      } catch (error) {
-        alert("Error al actualizar el perfil: " + error.message);
-      }
+  computed: {
+    currentUser() {
+      return this.$store.state.currentUser;
     },
   },
-  async mounted() {
-    try {
+
+  methods: {
+    async onFileChange(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
       const userId = this.$store.state.currentUser.uid;
-      const docRef = doc(db, "users", userId);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        this.profile = { ...this.profile, ...docSnap.data() };
+      const storageRef = ref(storage, `profilePictures/${userId}/${file.name}`);
+
+      try {
+        const snapshot = await uploadBytes(storageRef, file);
+        const downloadURL = await getDownloadURL(snapshot.ref);
+        this.profile.picture = downloadURL; // esta es la que guardarás en Firestore
+      } catch (error) {
+        alert("Error al subir la imagen: " + error.message);
       }
-    } catch (error) {
-      alert("Error al cargar el perfil: " + error.message);
-    }
+    },
+    async mounted() {
+      try {
+        const userId = this.$store.state.currentUser.uid;
+        const docRef = doc(db, "users", userId);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          this.profile = { ...this.profile, ...docSnap.data() };
+        }
+      } catch (error) {
+        alert("Error al cargar el perfil: " + error.message);
+      }
+    },
   },
 };
 </script>

@@ -89,7 +89,10 @@
 </template>
 
 <script>
-import api from "../axios";
+import { getDocs, collection } from "firebase/firestore";
+import { db } from "@/firebase/firebaseConfig";
+import { doc, updateDoc, deleteDoc } from "firebase/firestore";
+
 export default {
   data() {
     return {
@@ -139,29 +142,37 @@ export default {
     },
     async fetchUsers() {
       try {
-        const res = await api.get("/api/users");
-        this.users = res.data;
+        const snapshot = await getDocs(collection(db, "users"));
+        this.users = snapshot.docs.map((doc) => ({
+          _id: doc.id,
+          ...doc.data(),
+        }));
+        this.error = "";
       } catch (e) {
-        this.error = e.response?.data?.error || "Error al cargar usuarios";
+        this.error = e.message || "Error al cargar usuarios";
       }
     },
     async updateUser(user) {
       try {
-        await api.put("/api/users/profile", user);
+        const userRef = doc(db, "users", user._id);
+        const userToUpdate = { ...user };
+        delete userToUpdate._id; // No se puede actualizar el ID
+
+        await updateDoc(userRef, userToUpdate);
         this.error = "";
         alert("Usuario actualizado");
       } catch (e) {
-        this.error = e.response?.data?.error || "Error al actualizar usuario";
+        this.error = e.message || "Error al actualizar usuario";
       }
     },
     async deleteUser(id) {
       if (!confirm("¿Seguro que deseas eliminar este usuario?")) return;
       try {
-        await api.delete(`/api/users/${id}`);
+        await deleteDoc(doc(db, "users", id));
         this.users = this.users.filter((u) => u._id !== id);
         this.error = "";
       } catch (e) {
-        this.error = e.response?.data?.error || "Error al eliminar usuario";
+        this.error = e.message || "Error al eliminar usuario";
       }
     },
   },

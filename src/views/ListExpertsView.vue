@@ -50,7 +50,8 @@
 </template>
 
 <script>
-import api from "../axios";
+import { getDocs, collection } from "firebase/firestore";
+import { db } from "@/firebase/firebaseConfig";
 
 export default {
   name: "ListExpertsView",
@@ -61,19 +62,17 @@ export default {
   },
   async mounted() {
     try {
-      const res = await api.get("/api/users");
-      // Mapear los usuarios a un array de expertos con los campos requeridos
-      this.experts = res.data
-        .filter((u) => u.specialty && u.specialty.length && u.zone && u.name)
-        .map((u) => ({
-          _id: u._id,
-          name: u.name,
-          profilePhoto: u.profilePhoto,
-          zone: u.zone,
-          specialty: u.specialty,
-          rating: u.rating,
-        }));
+      const snapshot = await getDocs(collection(db, "users"));
+      const users = snapshot.docs.map((doc) => ({
+        _id: doc.id,
+        ...doc.data(),
+      }));
+
+      this.experts = users.filter(
+        (u) => u.specialty?.length && u.zone && u.name
+      );
     } catch (err) {
+      console.error("Error cargando expertos:", err);
       this.experts = [];
     }
   },

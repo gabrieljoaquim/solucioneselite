@@ -40,9 +40,9 @@
           </div>
         </div>
         <div class="expert-actions">
-          <button class="chat-expert-btn" @click.stop="goToChat(expert._id)">
+          <!-- <button class="chat-expert-btn" @click.stop="goToChat(expert._id)">
             Chatear
-          </button>
+          </button> -->
         </div>
       </div>
     </div>
@@ -69,7 +69,7 @@ export default {
       }));
 
       this.experts = users.filter(
-        (u) => u.specialty?.length && u.zone && u.name
+        (u) => u.role !== "cliente" && u.specialty?.length && u.zone && u.name
       );
     } catch (err) {
       console.error("Error cargando expertos:", err);
@@ -80,9 +80,9 @@ export default {
     goToExpert(id) {
       this.$router.push({ name: "ExpertDetail", params: { id } });
     },
-    goToChat(expertId) {
-      this.$router.push({ name: "chat-user", params: { userId: expertId } });
-    },
+    // goToChat(expertId) {
+    //   this.$router.push({ name: "chat-user", params: { userId: expertId } });
+    // },
   },
 };
 </script>

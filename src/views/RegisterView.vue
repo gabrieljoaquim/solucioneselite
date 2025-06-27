@@ -41,13 +41,28 @@ export default {
         email: "",
         password: "",
         confirmPassword: "",
+        phone: "",
+        zone: "",
+        specialty: [],
+        experience: 0,
+        description: "",
+        role: "cliente", // predeterminado (puedes cambiarlo si lo deseas)
+        profilePhoto: "",
       },
     };
   },
   methods: {
     async registerUser() {
+      if (!this.user.name || !this.user.email || !this.user.password) {
+        alert("Por favor completa todos los campos requeridos.");
+        return;
+      }
       if (this.user.password !== this.user.confirmPassword) {
         alert("Las contraseñas no coinciden");
+        return;
+      }
+      if (!this.user.email || !this.user.email.includes("@")) {
+        alert("Por favor, ingresa un correo electrónico válido.");
         return;
       }
       try {
@@ -62,10 +77,18 @@ export default {
         await setDoc(doc(db, "users", userId), {
           name: this.user.name,
           email: this.user.email,
+          name: this.user.name,
+          phone: this.user.phone,
+          zone: this.user.zone,
+          specialty: this.user.specialty,
+          experience: this.user.experience,
+          description: this.user.description,
+          role: this.user.role, // predeterminado (puedes cambiarlo si lo deseas)
+          profilePhoto: this.user.profilePhoto,
         });
 
         alert("Usuario registrado con éxito");
-        this.$router.push({ name: "login" });
+        this.$router.push({ name: "/" });
       } catch (error) {
         alert("Error al registrar usuario: " + error.message);
       }

@@ -130,41 +130,20 @@
             </p>
           </div>
           <div v-if="getObservations(service).length">
-            <strong>Observaciones:</strong>
+            <strong> Observaciones: </strong>
             <ul>
               <li v-for="(obs, i) in getObservations(service)" :key="i">
                 {{ obs }}
               </li>
             </ul>
           </div>
-          <button
-            class="btn-tomar"
-            @click="markAsTaken(index)"
-            :disabled="!!service.takenById"
-          >
-            Marcar como tomado
-          </button>
-          <button
-            class="btn-observacion"
-            @click="markWithObservation(index)"
-            :disabled="!canEditDetails(service)"
-          >
-            Con Observación
-          </button>
-          <button
-            class="btn-terminado"
-            @click="markAsFinalized(index)"
-            :disabled="!canEditDetails(service)"
-          >
-            Servicio Terminado
-          </button>
-          <button
-            class="btn-chat"
-            @click="goToChat(service)"
-            style="background-color: #117e2c; color: #fff; margin-left: 0"
-          >
-            Chat
-          </button>
+          <ServiceStatusButtons
+            :service="service"
+            :canEdit="canEditDetails(service)"
+            @mark-taken="markAsTaken(index)"
+            @mark-observation="markWithObservation(index)"
+            @mark-finalized="markAsFinalized(index)"
+          />
 
           <ServicePhotoUploader :service-id="service._id" />
           <GenerateServicePDF :service="service" />
@@ -183,6 +162,7 @@ import PdfNameDisplay from "../components/PdfNameDisplay.vue";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/firebase/firebaseConfig";
 import { doc, deleteDoc } from "firebase/firestore";
+import ServiceStatusButtons from "../components/ServiceStatusButtons.vue";
 
 export default {
   components: {
@@ -191,6 +171,7 @@ export default {
     ServicePhotoUploader,
     PdfNameDisplay,
     GenerateServicePDF,
+    ServiceStatusButtons,
   },
   data() {
     return {
@@ -241,90 +222,10 @@ export default {
         return true;
       return false;
     },
-    async markAsTaken(index) {
-      const currentUser = this.$store.state.currentUser;
-      if (!currentUser) {
-        alert("Debes iniciar sesión para tomar un servicio.");
-        return;
-      }
-      // NO actualices la UI localmente antes de la respuesta
-      try {
-        await api.put(
-          `http://localhost:5000/api/services/${this.services[index]._id}`,
-          {
-            backgroundColor: "lightgreen",
-            takenBy: currentUser.name || currentUser.email || currentUser._id,
-            takenById: currentUser._id,
-            takenByEmail: currentUser.email,
-            currentUserId: currentUser._id,
-            currentUserRole: currentUser.role,
-          }
-        );
-        // Refresca toda la lista de servicios para forzar reactividad
-        const refreshed = await api.get("/api/services");
-        this.$store.state.services.splice(
-          0,
-          this.$store.state.services.length,
-          ...refreshed.data
-        );
-      } catch (err) {
-        const msg =
-          err.response?.data?.error ||
-          err.response?.data?.message ||
-          "Error al tomar el servicio";
-        alert(msg);
-      }
-    },
     markAsCompleted(index) {
       this.services[index].backgroundColor = "lightyellow";
     },
-    markWithObservation(index) {
-      const currentUser = this.$store.state.currentUser;
-      if (!currentUser) return;
-      this.services[index].backgroundColor = "#ffcccc"; // rojo claro
-      this.services[index].editingDetails = true;
-      this.services[index].detailsDraft = this.services[index].details;
-      this.$nextTick(() => {
-        const inputs = this.$refs.detailsInput;
-        if (Array.isArray(inputs)) {
-          if (inputs[index]) inputs[index].focus();
-        } else if (inputs && typeof inputs.focus === "function") {
-          inputs.focus();
-        }
-      });
-    },
-    markAsFinalized(index) {
-      const currentUser = this.$store.state.currentUser;
-      if (!currentUser) return;
-      // Log para depuración
-      console.log("markAsFinalized PUT:", {
-        backgroundColor: "lightblue",
-        currentUserId: currentUser._id,
-        currentUserRole: currentUser.role,
-      });
-      api
-        .put(`/api/services/${this.services[index]._id}`, {
-          backgroundColor: "lightblue",
-          currentUserId: currentUser._id,
-          currentUserRole: currentUser.role,
-        })
-        .then(async () => {
-          // Refresca la lista tras marcar como terminado
-          const refreshed = await api.get("/api/services");
-          this.$store.state.services.splice(
-            0,
-            this.$store.state.services.length,
-            ...refreshed.data
-          );
-        })
-        .catch((err) => {
-          alert(
-            err.response?.data?.error ||
-              err.response?.data?.message ||
-              "Error al marcar como terminado"
-          );
-        });
-    },
+
     // sendToClosed removed: client closure logic deleted
     editDetails(index) {
       this.services[index].editingDetails = true;

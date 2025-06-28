@@ -129,6 +129,7 @@
               <strong>Status:</strong> {{ service.status }}
             </p>
           </div>
+
           <div v-if="getObservations(service).length">
             <strong> Observaciones: </strong>
             <ul>
@@ -137,6 +138,7 @@
               </li>
             </ul>
           </div>
+
           <ServiceStatusButtons
             :service="service"
             :canEdit="canEditDetails(service)"

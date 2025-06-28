@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import api from "../axios";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 export default {
   props: {
@@ -49,9 +49,11 @@ export default {
         preview: URL.createObjectURL(file),
       }));
     },
+
     async uploadPhotos() {
       const currentUser = this.$store.state.currentUser;
-      if (!currentUser || !currentUser._id) {
+
+      if (!currentUser || !currentUser.uid) {
         alert("No se pudo obtener el ID del técnico.");
         return;
       }
@@ -65,29 +67,36 @@ export default {
         return;
       }
 
-      const formData = new FormData();
-      this.photos.forEach((photo) => {
-        formData.append("photos", photo.file);
-      });
+      const storage = getStorage();
+      const uploadedUrls = [];
 
-      formData.append("techId", currentUser._id);
-      formData.append("pdfReferencia", service.pdfReferencia);
+      // Reemplaza espacios en el nombre del PDF por "_"
+      const baseName = service.pdfReferencia.replace(/\s+/g, "_");
 
-      try {
-        await api.post(`/api/services/${this.serviceId}/photos`, formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
-        alert("Fotos subidas exitosamente.");
-        this.photos = [];
-        this.$refs.fileInput.value = null; // limpia el input
-      } catch (error) {
-        alert(
-          "Error al subir las fotos: " +
-            (error.response?.data?.error || error.message)
-        );
+      for (let i = 0; i < this.photos.length; i++) {
+        const photo = this.photos[i];
+        const file = photo.file;
+
+        const fileName = `${baseName}_${currentUser.uid}_${String(
+          i + 1
+        ).padStart(2, "0")}.jpg`;
+        const fileRef = ref(storage, `fotos_servicio/${fileName}`);
+
+        try {
+          const snapshot = await uploadBytes(fileRef, file);
+          const downloadUrl = await getDownloadURL(snapshot.ref);
+          uploadedUrls.push(downloadUrl);
+        } catch (error) {
+          alert(`Error subiendo la foto ${i + 1}: ${error.message}`);
+        }
       }
+
+      alert("Fotos subidas exitosamente.");
+      console.log("URLs subidas:", uploadedUrls);
+
+      // Limpieza
+      this.photos = [];
+      this.$refs.fileInput.value = null;
     },
   },
 };

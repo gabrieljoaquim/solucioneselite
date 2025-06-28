@@ -1,5 +1,5 @@
-import { createStore } from 'vuex'
-import { collection, getDocs, doc, setDoc } from "firebase/firestore";
+import { createStore } from "vuex";
+import { collection, getDocs, doc, getDoc, setDoc } from "firebase/firestore";
 import { db, auth } from "@/firebase/firebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
 
@@ -7,37 +7,32 @@ export default createStore({
   state: {
     users: [],
     services: [],
+    currentUser: null, // Incluye uid, email, role, etc.
     user: {
-      profilePhoto: '' // Placeholder for the user's profile photo
+      profilePhoto: "", // Puedes usar esto en vistas
     },
-    currentUser: null,
-  },
-  getters: {
   },
   mutations: {
+    setCurrentUser(state, user) {
+      state.currentUser = user;
+      if (user) {
+        localStorage.setItem("currentUser", JSON.stringify(user));
+      } else {
+        localStorage.removeItem("currentUser");
+      }
+    },
     addUser(state, user) {
       state.users.push(user);
-      console.log('Usuarios en el store:', state.users);
     },
     addService(state, service) {
-      state.services.push(service); // Update services state
-      console.log('Servicio agregado:', service);
+      state.services.push(service);
     },
     setProfilePhoto(state, photoUrl) {
       state.user.profilePhoto = photoUrl;
     },
-    setCurrentUser(state, user) {
-    state.currentUser = user;
-    if (user) {
-      localStorage.setItem('currentUser', JSON.stringify(user));
-    } else {
-      localStorage.removeItem('currentUser');
-    }
-
-    },
     updateService(state, { index, data }) {
-    state.services[index] = { ...state.services[index], ...data };
-  },
+      state.services[index] = { ...state.services[index], ...data };
+    },
     updateCurrentUserProfile(state, profile) {
       if (state.currentUser) {
         state.currentUser = { ...state.currentUser, ...profile };
@@ -53,8 +48,11 @@ export default createStore({
   actions: {
     async fetchUsers({ commit }) {
       try {
-        const querySnapshot = await getDocs(collection(db, "users"));
-        const users = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+        const snapshot = await getDocs(collection(db, "users"));
+        const users = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
         commit("setUsers", users);
       } catch (error) {
         console.error("Error fetching users:", error);
@@ -62,8 +60,11 @@ export default createStore({
     },
     async fetchServices({ commit }) {
       try {
-        const querySnapshot = await getDocs(collection(db, "services"));
-        const services = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+        const snapshot = await getDocs(collection(db, "services"));
+        const services = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
         commit("setServices", services);
       } catch (error) {
         console.error("Error fetching services:", error);
@@ -87,16 +88,30 @@ export default createStore({
         console.error("Error adding service:", error);
       }
     },
+
+    // 👇 Esta es la más importante
     observeAuthState({ commit }) {
-      onAuthStateChanged(auth, (user) => {
+      onAuthStateChanged(auth, async (user) => {
         if (user) {
-          commit("setCurrentUser", user);
+          try {
+            const userDoc = await getDoc(doc(db, "users", user.uid));
+            const userData = userDoc.exists() ? userDoc.data() : {};
+
+            commit("setCurrentUser", {
+              uid: user.uid,
+              email: user.email,
+              role: userData.role || "cliente", // <- Default si no hay
+              ...userData, // Agrega otros campos útiles como name, phone, etc.
+            });
+          } catch (err) {
+            console.error("Error al cargar el perfil del usuario:", err);
+            commit("setCurrentUser", null);
+          }
         } else {
           commit("setCurrentUser", null);
         }
       });
     },
   },
-  modules: {
-  }
-})
+  modules: {},
+});

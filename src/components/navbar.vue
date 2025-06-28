@@ -13,6 +13,10 @@
           alt="User Photo"
           class="user-photo"
         />
+        <div class="user-info" v-if="userName">
+          <div class="user-name">{{ userName }}</div>
+        </div>
+
         <div class="auth-buttons">
           <router-link
             v-if="!$store.state.currentUser"
@@ -249,6 +253,46 @@ export default {
   }
   .navbar-left {
     justify-content: flex-start; /* Alinear a la izquierda en modo móvil */
+  }
+  .navbar-top {
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .navbar-right {
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .user-photo {
+    margin-right: 0;
+    margin-bottom: 4px;
+  }
+
+  .user-info {
+    text-align: center;
+    font-size: 0.9em;
+    color: white;
+    margin-bottom: 4px;
+  }
+
+  .auth-buttons {
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .small-button {
+    font-size: 0.9em;
+    padding: 6px 12px;
+    width: 120px;
+    text-align: center;
+  }
+
+  .menu-padre {
+    padding: 0 10px;
   }
 }
 </style>

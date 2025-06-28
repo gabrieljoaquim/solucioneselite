@@ -18,7 +18,7 @@
         <img
           v-for="(photo, index) in photos"
           :key="index"
-          :src="photo.preview"
+          :src="downloadUrl"
           alt="Foto del servicio"
         />
       </div>

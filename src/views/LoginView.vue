@@ -25,6 +25,8 @@
 
 <script>
 import { loginWithEmail } from "@/firebase/auth";
+import { getOrCreateDeviceId } from "@/utils/device"; // <- Ajusta si la ruta es diferente
+import { getFirestore, doc, getDoc } from "firebase/firestore";
 
 export default {
   data() {
@@ -42,10 +44,42 @@ export default {
           this.credentials.email,
           this.credentials.password
         );
+
+        // 1. Obtener el role desde Firestore
+        const db = getFirestore();
+        const userRef = doc(db, "users", user.uid);
+        const userSnap = await getDoc(userRef);
+
+        if (!userSnap.exists()) {
+          throw new Error(
+            "El usuario no tiene un perfil registrado en Firestore."
+          );
+        }
+
+        const userData = userSnap.data();
+        const role = userData.role || "cliente"; // por defecto "cliente"
+
+        // 2. Obtener deviceId
+        const deviceId = getOrCreateDeviceId();
+
+        // 3. Guardar todo en localStorage
+        localStorage.setItem(
+          "session",
+          JSON.stringify({
+            userId: user.uid,
+            email: user.email,
+            role: role,
+            deviceId: deviceId,
+          })
+        );
+
+        // 4. Guardar en el store de Vuex
         this.$store.commit("setCurrentUser", {
-          ...user,
-          role: "administrador",
+          uid: user.uid,
+          email: user.email,
+          role: role,
         });
+
         alert(`Bienvenido, ${user.email}`);
         this.$router.push({ name: "home" });
       } catch (error) {

@@ -130,12 +130,27 @@ export default {
         });
 
         alert("Servicio agregado con éxito");
+        this.resetForm(); // Limpia el formulario visualmente
         this.$router.push({ name: "add-services" });
       } catch (error) {
         this.error = "Error al agregar el servicio: " + error.message;
       } finally {
         this.loading = false;
       }
+    },
+    resetForm() {
+      this.service.requester = "";
+      this.service.phone = "";
+      this.service.address = "";
+      this.service.workingHours = "";
+      this.service.serviceType = "";
+      this.service.details = "";
+      this.service.puntoVentaCodigo = "";
+      this.service.proveedorAsignado = "";
+      this.service.nombreOficina = "";
+      this.service.reportDate = new Date().toISOString().split("T")[0];
+      this.service.observations = "";
+      this.service.pdfReferencia = "";
     },
   },
 };

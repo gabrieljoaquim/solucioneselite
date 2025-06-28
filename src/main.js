@@ -11,3 +11,4 @@ app.use(router)
 store.dispatch('observeAuthState')
 
 app.mount('#app')
+

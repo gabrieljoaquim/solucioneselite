@@ -9,8 +9,12 @@
 
 <script>
 import navbar from "./components/navbar.vue";
+import store from "./store"; // ajusta si usas otro path
+import { getOrCreateDeviceId } from "@/utils/device"; // misma ruta
+
 export default {
   name: "App",
+
   components: {
     navbar,
   },
@@ -18,6 +22,26 @@ export default {
     return {
       unreadCount: 0,
     };
+  },
+  mounted() {
+    function restoreSession() {
+      const saved = JSON.parse(localStorage.getItem("session"));
+      const currentDeviceId = getOrCreateDeviceId();
+
+      if (saved && saved.deviceId === currentDeviceId) {
+        store.commit("setCurrentUser", {
+          uid: saved.userId,
+          email: saved.email,
+          role: saved.role || "cliente",
+        });
+        console.log("Sesión restaurada automáticamente con rol:", saved.role);
+      } else {
+        console.log("No hay sesión válida o el dispositivo es diferente.");
+        localStorage.removeItem("session");
+      }
+    }
+
+    restoreSession();
   },
 };
 </script>

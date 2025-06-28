@@ -85,6 +85,7 @@ export default {
       } catch (error) {
         alert("Error al iniciar sesión: " + error.message);
       }
+      await this.$store.dispatch("observeAuthState");
     },
     forgotPassword() {
       alert("Se ha enviado un enlace de recuperación a su correo electrónico.");

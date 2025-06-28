@@ -70,6 +70,17 @@
                     <label
                       >Descripción: <input v-model="editingUser.description"
                     /></label>
+                    <label>
+                      Foto de Perfil:
+                      <input type="file" @change="onImageChange($event)" />
+                    </label>
+                    <div v-if="editingUser.picture">
+                      <img
+                        :src="editingUser.picture"
+                        alt="Foto de Perfil"
+                        style="max-width: 100px; border-radius: 4px"
+                      />
+                    </div>
                   </div>
                   <button type="submit">Guardar</button>
                   <button type="button" @click="cancelEdit">Cancelar</button>
@@ -92,6 +103,12 @@
 import { getDocs, collection } from "firebase/firestore";
 import { db } from "@/firebase/firebaseConfig";
 import { doc, updateDoc, deleteDoc } from "firebase/firestore";
+import {
+  ref as storageRef,
+  uploadBytes,
+  getDownloadURL,
+} from "firebase/storage";
+import { storage } from "@/firebase/firebaseConfig";
 
 export default {
   data() {
@@ -173,6 +190,24 @@ export default {
         this.error = "";
       } catch (e) {
         this.error = e.message || "Error al eliminar usuario";
+      }
+    },
+    async onImageChange(event) {
+      const file = event.target.files[0];
+      if (!file || !this.editingUser || !this.editingUser._id) return;
+
+      const userId = this.editingUser._id;
+      const imgRef = storageRef(
+        storage,
+        `profilePictures/${userId}/${file.name}`
+      );
+
+      try {
+        const snapshot = await uploadBytes(imgRef, file);
+        const downloadURL = await getDownloadURL(snapshot.ref);
+        this.editingUser.picture = downloadURL; // se guarda directamente en el modelo
+      } catch (error) {
+        this.error = "Error al subir imagen: " + error.message;
       }
     },
   },

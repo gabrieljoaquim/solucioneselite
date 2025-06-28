@@ -50,14 +50,6 @@
           <li>
             <router-link to="/list-services">Servicios</router-link>
           </li>
-          <li>
-            <router-link to="/chat" class="chat-link">
-              Chat
-              <span v-if="unreadCount > 0" class="unread-badge">{{
-                unreadCount
-              }}</span>
-            </router-link>
-          </li>
         </ul>
       </div>
     </div>

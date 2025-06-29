@@ -3,7 +3,8 @@
     "default": "appimagenes-1a48c",
     "firebase storage:bucket": "servilinkstore",
     "y": "appimagenes-1a48c",
-    "firebase storage:rules:set ./storage.rules ": "appimagenes-1a48c"
+    "firebase storage:rules:set ./storage.rules ": "appimagenes-1a48c",
+    "dist": "servilinkstore-8f04c"
   },
   "targets": {},
   "etags": {}

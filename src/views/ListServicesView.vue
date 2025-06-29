@@ -148,8 +148,11 @@
           />
           <AdminServiceControl :service="service" />
           <GenerateServicePDF
+            v-if="
+              $store.state.currentUser &&
+              $store.state.currentUser.role === 'administrador'
+            "
             :service="service"
-            v-if="userRole === 'administrador'"
           />
         </div>
       </li>

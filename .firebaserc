@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "servilinkstore"
-  }
+    "default": "servilinkstore",
+    "firebase storage:bucket": "servilinkstore"
+  },
+  "targets": {},
+  "etags": {}
 }

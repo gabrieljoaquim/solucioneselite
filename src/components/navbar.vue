@@ -7,11 +7,16 @@
       </div>
       <div class="navbar-right">
         <img
-          :src="
-            $store.state.currentUser?.profilePhoto || '/default-user-photo.jpg'
-          "
+          :src="currentUser?.profilePhoto || '/default-user-photo.jpg'"
           alt="User Photo"
           class="user-photo"
+          @click="showProfileEditor = true"
+        />
+        <ProfileEditor
+          :visible="showProfileEditor"
+          :user="currentUser"
+          @close="showProfileEditor = false"
+          @updated="handleUserUpdate"
         />
         <div class="user-info" v-if="userName">
           <div class="user-name">{{ userName }}</div>
@@ -62,17 +67,20 @@
 
 <script>
 import { mapState } from "vuex";
-import api from "../axios";
+import ProfileEditor from "@/components/ProfileEditor.vue";
 
 export default {
+  components: { ProfileEditor },
   name: "navbar",
   data() {
     return {
       unreadCount: 0,
       intervalId: null,
       isMenuOpen: false,
+      showProfileEditor: false,
     };
   },
+
   mounted() {
     this.fetchUnreadCount();
     this.intervalId = setInterval(this.fetchUnreadCount, 5000);
@@ -103,6 +111,10 @@ export default {
     },
     toggleMenu() {
       this.isMenuOpen = !this.isMenuOpen;
+    },
+    handleUserUpdate(updatedUser) {
+      console.log("Usuario actualizado:", updatedUser);
+      // Ya se actualiza en Vuex, puedes hacer más cosas si quieres
     },
   },
   computed: {

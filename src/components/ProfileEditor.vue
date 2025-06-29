@@ -10,7 +10,7 @@
 
         <label>
           Foto de perfil:
-          <input type="file" @change="onImageChange" />
+          <input type="file" accept="image/" @change="onImageChange" />
         </label>
 
         <div v-if="editableUser.profilePhoto">
@@ -42,6 +42,8 @@ export default {
   emits: ["close", "updated"],
   data() {
     return {
+      imagenes: [],
+      imagen: null,
       editableUser: {
         name: "",
         profilePhoto: "",
@@ -59,6 +61,7 @@ export default {
   methods: {
     async onImageChange(event) {
       const file = event.target.files[0];
+
       if (!file || !this.editableUser.uid) return;
 
       const path = `profilePictures/${this.editableUser.uid}/${file.name}`;

@@ -142,10 +142,18 @@ export default {
 
 <style scoped>
 .service-status-buttons {
+  width: 550px;
   display: flex;
+  justify-content: center;
   flex-wrap: wrap;
   gap: 8px;
   margin-top: 10px;
+}
+.service-status-buttons button {
+  flex: 1 1 120px;
+  font-size: 14px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
 }
 .btn-tomar {
   background-color: #4caf50;

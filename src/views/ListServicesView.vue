@@ -147,9 +147,10 @@
             @mark-finalized="markAsFinalized(index)"
           />
           <AdminServiceControl :service="service" />
-
-          <ServicePhotoUploader :service-id="service._id" />
-          <GenerateServicePDF :service="service" />
+          <GenerateServicePDF
+            :service="service"
+            v-if="userRole === 'administrador'"
+          />
         </div>
       </li>
     </ul>
@@ -160,7 +161,6 @@
 import ServicePriceEditor from "../components/ServicePriceEditor.vue";
 import GenerateServicePDF from "../components/GenerateServicePDF.vue";
 import GoogleMapsLink from "../components/GoogleMapsLink.vue";
-import ServicePhotoUploader from "../components/ServicePhotoUploader.vue";
 import PdfNameDisplay from "../components/PdfNameDisplay.vue";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/firebase/firebaseConfig";
@@ -172,7 +172,6 @@ export default {
   components: {
     ServicePriceEditor,
     GoogleMapsLink,
-    ServicePhotoUploader,
     PdfNameDisplay,
     GenerateServicePDF,
     ServiceStatusButtons,
@@ -216,7 +215,9 @@ export default {
       }
     },
     toggleDetails(index) {
-      this.services[index].showDetails = !this.services[index].showDetails;
+      this.services.forEach((service, i) => {
+        service.showDetails = i === index ? !service.showDetails : false;
+      });
     },
     canShowPriceEditor(service) {
       const user = this.$store.state.currentUser;

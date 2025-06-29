@@ -1,7 +1,9 @@
 {
   "projects": {
-    "default": "servilinkstore",
-    "firebase storage:bucket": "servilinkstore"
+    "default": "appimagenes-1a48c",
+    "firebase storage:bucket": "servilinkstore",
+    "y": "appimagenes-1a48c",
+    "firebase storage:rules:set ./storage.rules ": "appimagenes-1a48c"
   },
   "targets": {},
   "etags": {}

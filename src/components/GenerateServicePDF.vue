@@ -8,6 +8,14 @@
       style="width: 100%; margin-bottom: 12px"
     ></textarea>
 
+    <input
+      type="file"
+      multiple
+      accept="image/*"
+      @change="handleImageUpload"
+      style="margin-bottom: 12px"
+    />
+
     <button @click="generatePDF">Generar PDF del Servicio</button>
 
     <!-- Contenido oculto que se exporta a PDF -->
@@ -16,12 +24,8 @@
       <p><strong>Proveedor:</strong> {{ service.proveedorAsignado }}</p>
       <p><strong>Referencia:</strong> {{ fileName }}</p>
       <p><strong>Solicitante:</strong> {{ service.requester }}</p>
-      <!-- <p><strong>Registrante:</strong> {{ service.registrante }}</p> -->
-      <!-- <p><strong>Teléfono:</strong> {{ service.phone }}</p> -->
       <p><strong>Dirección:</strong> {{ service.address }}</p>
-      <!-- <p><strong>Horario:</strong> {{ service.workingHours }}</p> -->
       <p><strong>Tipo de Servicio:</strong> {{ service.serviceType }}</p>
-      <!-- <p><strong>Descripción inicial:</strong> {{ service.details }}</p> -->
       <p><strong>Fecha de Reporte:</strong> {{ service.reportDate }}</p>
       <p v-if="service.precio != null">
         <strong>Precio:</strong> ${{ service.precio }}
@@ -32,17 +36,30 @@
       </p>
       <p style="white-space: pre-line">{{ descripcionFinal }}</p>
 
+      <div v-if="imagenesSeleccionadas.length" style="margin-top: 20px">
+        <h4>Imágenes seleccionadas desde tu equipo</h4>
+        <div class="photo-grid">
+          <img
+            v-for="(img, i) in imagenesSeleccionadas"
+            :key="'local-' + i"
+            :src="img"
+            class="service-photo"
+          />
+        </div>
+      </div>
+
       <div
         v-if="service.photos && service.photos.length"
         style="margin-top: 20px"
       >
-        <h4>Fotos del Trabajo</h4>
+        <h4>Fotos del Trabajo (cargadas desde servidor)</h4>
         <div class="photo-grid">
           <img
             v-for="(photo, i) in service.photos"
-            :key="i"
+            :key="'server-' + i"
             :src="getFullPhotoUrl(photo)"
             class="service-photo"
+            crossorigin="anonymous"
             @error="onImageError(i)"
           />
         </div>
@@ -65,21 +82,9 @@ export default {
   data() {
     return {
       descripcionFinal: "",
-      expectedPhotos: [],
+      imagenesSeleccionadas: [],
     };
   },
-  mounted() {
-    const base = this.service.pdfReferencia?.replace(/\.pdf$/i, "");
-    const tecnicoId = this.service.takenById;
-    if (!base || !tecnicoId) return;
-
-    const tecnicoIdSuffix = tecnicoId.slice(-6);
-    this.expectedPhotos = this.computedExpectedPhotos.map((_, i) => {
-      const n = (i + 1).toString().padStart(2, "0"); // 01, 02, ...
-      return `http://localhost:5000/uploads/services/${base}_${tecnicoIdSuffix}_${n}.jpg`;
-    });
-  },
-
   computed: {
     fileName() {
       const base = this.service.pdfReferencia
@@ -87,30 +92,36 @@ export default {
         : "servicio";
       return `${base}_realizado.pdf`;
     },
-    computedExpectedPhotos() {
-      const base = this.service.pdfReferencia?.replace(/\.pdf$/i, "");
-      const tecnicoId = this.service.takenById;
-      if (!base || !tecnicoId) return [];
-
-      const tecnicoIdSuffix = tecnicoId.slice(-6);
-      // Suponemos máximo 30 fotos
-      return Array.from({ length: 30 }, (_, i) => {
-        const n = (i + 1).toString().padStart(2, "0"); // 01, 02, ...
-        return `http://localhost:5000/uploads/services/${base}_${tecnicoIdSuffix}_${n}.jpg`;
-      });
-    },
   },
   methods: {
-    photoUrl(photoPath) {
-      const relativePath = photoPath.split("uploads").pop(); // lo que viene después de 'uploads'
-      const baseURL = window.location.hostname.includes("localhost")
-        ? "http://localhost:5000"
-        : "https://solucioneselite-u60d.onrender.com";
+    handleImageUpload(event) {
+      const files = event.target.files;
+      this.imagenesSeleccionadas = [];
 
-      return `${baseURL}/uploads${relativePath}`;
+      Array.from(files).forEach((file) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          this.imagenesSeleccionadas.push(e.target.result); // base64
+        };
+        reader.readAsDataURL(file);
+      });
+    },
+    async waitForImagesToLoad(container) {
+      const images = container.querySelectorAll("img");
+      const promises = Array.from(images).map((img) => {
+        if (img.complete && img.naturalHeight !== 0) return Promise.resolve();
+        return new Promise((resolve) => {
+          img.onload = resolve;
+          img.onerror = resolve;
+        });
+      });
+      return Promise.all(promises);
     },
     async generatePDF() {
       const element = this.$refs.pdfContent;
+
+      await this.waitForImagesToLoad(element);
+
       const canvas = await html2canvas(element, {
         scale: 2,
         useCORS: true,
@@ -125,9 +136,6 @@ export default {
 
       pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
       pdf.save(this.fileName);
-    },
-    onImageError(index) {
-      this.expectedPhotos.splice(index, 1); // Oculta imágenes que no existen
     },
     getFullPhotoUrl(photoPath) {
       const baseURL = window.location.hostname.includes("localhost")
@@ -138,35 +146,19 @@ export default {
     onImageError(i) {
       console.warn("Imagen no cargada:", i);
     },
-    async generatePDF() {
-      const element = this.$refs.pdfContent;
-      const canvas = await html2canvas(element, {
-        scale: 2,
-        useCORS: true,
-      });
-
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF("p", "pt", "a4");
-
-      const imgProps = pdf.getImageProperties(imgData);
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-
-      pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-      pdf.save(this.fileName);
-    },
   },
 };
 </script>
 
 <style scoped>
 .pdf-template {
-  width: 800px;
+  width: 555px;
   padding: 20px;
   font-family: Arial, sans-serif;
   background-color: white;
   color: black;
   font-size: 14px;
+  box-sizing: border-box;
 }
 .photo-grid {
   display: flex;
@@ -174,7 +166,7 @@ export default {
   gap: 10px;
 }
 .service-photo {
-  width: 150px;
+  width: 120px;
   height: auto;
   border: 1px solid #ccc;
 }

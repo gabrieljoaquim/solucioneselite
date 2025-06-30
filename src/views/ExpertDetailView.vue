@@ -23,25 +23,13 @@
         </p>
       </div>
     </div>
-    <div v-if="!userId" class="chat-login-warning">
-      <p>Debes iniciar sesión para contactar al experto.</p>
-    </div>
-    <div v-else class="expert-actions">
-      <button
-        class="chat-expert-btn"
-        @click="
-          $router.push({ name: 'chat-user', params: { userId: expert._id } })
-        "
-      >
-        Chatear con este experto
-      </button>
-    </div>
   </div>
   <div v-else class="loading">Cargando experto...</div>
 </template>
 
 <script>
-import api from "../axios";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "@/firebase/firebaseConfig";
 import { mapState } from "vuex";
 
 export default {
@@ -63,8 +51,13 @@ export default {
   async created() {
     const expertId = this.$route.params.id;
     try {
-      const res = await api.get(`/api/users/${expertId}`);
-      this.expert = res.data;
+      const docRef = doc(db, "users", expertId);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        this.expert = { _id: expertId, ...docSnap.data() };
+      } else {
+        this.expert = null;
+      }
     } catch (err) {
       this.expert = null;
     }

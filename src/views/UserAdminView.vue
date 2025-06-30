@@ -216,23 +216,108 @@ export default {
 
 <style scoped>
 .user-admin-view {
-  max-width: 800px;
-  margin: 0 auto;
+  max-width: 950px;
+  margin: 32px auto;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  padding: 32px 24px 40px 24px;
+}
+h1 {
+  text-align: center;
+  color: #219653;
+  font-size: 2.1em;
+  font-weight: 800;
+  margin-bottom: 28px;
 }
 .user-table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: #fafbfc;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
 }
 .user-table th,
 .user-table td {
-  border: 1px solid #ccc;
-  padding: 8px;
+  padding: 12px 14px;
+  border-bottom: 1px solid #e0e0e0;
+  text-align: left;
 }
 .user-table th {
-  background: #f5f5f5;
+  background: #eafaf1;
+  color: #219653;
+  font-weight: 700;
+  font-size: 1.08em;
+}
+.user-table tr:last-child td {
+  border-bottom: none;
+}
+.user-table tr:hover:not(.edit-row) {
+  background: #eafaf1;
+}
+button {
+  background: #219653;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 7px 18px;
+  font-size: 1em;
+  font-weight: 600;
+  margin-right: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+button:last-child {
+  margin-right: 0;
+}
+button:hover {
+  background: #17643a;
+}
+.edit-row {
+  background: #f7faff;
+}
+.edit-fields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px 24px;
+  margin-bottom: 18px;
+}
+.edit-fields label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 500;
+  color: #333;
+  min-width: 180px;
+  margin-bottom: 6px;
+}
+.edit-fields input,
+.edit-fields select {
+  margin-top: 4px;
+  padding: 7px 10px;
+  border: 1px solid #bfc9d1;
+  border-radius: 5px;
+  font-size: 1em;
+  background: #f9fafd;
+}
+.edit-fields input[type="file"] {
+  padding: 0;
+  background: none;
+  border: none;
+}
+.edit-fields img {
+  margin-top: 8px;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
 }
 .error-msg {
   color: #d32f2f;
-  margin-bottom: 10px;
+  background: #fff3f3;
+  border: 1px solid #f8bbbb;
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 18px;
+  text-align: center;
 }
 </style>

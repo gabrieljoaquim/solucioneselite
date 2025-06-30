@@ -12,7 +12,17 @@
         <p><strong>Zona:</strong> {{ expert.zone }}</p>
         <p>
           <strong>Calificación:</strong>
-          {{ expert.rating ? expert.rating.toFixed(1) : "Sin calificación" }}
+          <span v-if="typeof expert.avgRating === 'number'">
+            <span
+              v-for="n in 5"
+              :key="n"
+              class="star"
+              :class="{ filled: n <= Math.round(expert.avgRating) }"
+              >★</span
+            >
+            <span class="rating-value">{{ expert.avgRating.toFixed(1) }}</span>
+          </span>
+          <span v-else>Sin calificación</span>
         </p>
         <p v-if="expert.description">
           <strong>Descripción:</strong> {{ expert.description }}
@@ -182,5 +192,16 @@ export default {
   text-align: center;
   margin-top: 64px;
   color: var(--color-neutral-gray);
+}
+.star {
+  color: #ddd;
+  font-size: 1.2em;
+}
+.star.filled {
+  color: var(--color-bright-green);
+}
+.rating-value {
+  margin-left: 8px;
+  font-weight: 700;
 }
 </style>

@@ -108,7 +108,7 @@ export default {
   color: var(--color-dark-gray);
 }
 .cta {
-  background: var(--color-success-green);
+  background: rgba(0, 255, 0, 0.4);
   color: var(--color-main-white);
   padding: 12px 32px;
   border: none;
@@ -132,7 +132,7 @@ export default {
 }
 .cta:hover,
 .register:hover {
-  background: var(--color-dark-gray);
+  background: rgba(0, 255, 0, 0.6);
   color: var(--color-bright-green);
   transform: translateY(-2px) scale(1.04);
 }

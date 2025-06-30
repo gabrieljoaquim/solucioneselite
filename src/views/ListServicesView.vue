@@ -22,16 +22,18 @@
         />
         <span>{{ service.requester }} - {{ service.serviceType }}</span>
         <span v-if="service.takenBy" class="taken-by">
-          Tomado por:
-          <span
-            :class="{
-              'yo-activo':
-                $store.state.currentUser &&
-                service.takenById === $store.state.currentUser._id,
-            }"
-          >
-            {{ service.takenBy }}
-          </span>
+          <WorkerRating
+            v-if="service.takenBy"
+            :workerName="service.takenBy"
+            :workerId="service.takenById"
+            :currentUser="$store.state.currentUser"
+            :serviceId="service._id"
+            @rated="
+              (data) => {
+                /* Aquí puedes manejar la calificación, por ejemplo, enviarla al backend */
+              }
+            "
+          />
         </span>
         <button @click="toggleDetails(index)">
           {{ service.showDetails ? "Ocultar Detalles" : "Ver Detalles" }}
@@ -170,6 +172,7 @@ import { db } from "@/firebase/firebaseConfig";
 import { doc, deleteDoc } from "firebase/firestore";
 import ServiceStatusButtons from "../components/ServiceStatusButtons.vue";
 import AdminServiceControl from "../components/AdminServiceControl.vue";
+import WorkerRating from "../components/WorkerRating.vue";
 
 export default {
   components: {
@@ -179,6 +182,7 @@ export default {
     GenerateServicePDF,
     ServiceStatusButtons,
     AdminServiceControl,
+    WorkerRating,
   },
   data() {
     return {

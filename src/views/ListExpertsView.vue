@@ -31,12 +31,16 @@
               v-for="n in 5"
               :key="n"
               class="star"
-              :class="{ filled: n <= (expert.rating || 0) }"
+              :class="{ filled: n <= Math.round(expert.avgRating || 0) }"
               >★</span
             >
-            <span class="rating-value">{{
-              expert.rating ? expert.rating.toFixed(1) : "Sin calificación"
-            }}</span>
+            <span class="rating-value">
+              {{
+                typeof expert.avgRating === "number"
+                  ? expert.avgRating.toFixed(1)
+                  : "Sin calificación"
+              }}
+            </span>
           </div>
         </div>
         <div class="expert-actions">

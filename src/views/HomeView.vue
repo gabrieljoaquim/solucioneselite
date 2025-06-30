@@ -52,7 +52,7 @@
 
     <footer class="cta-footer">
       <h2>Encuentra un profesional ahora</h2>
-      <button class="cta" @click="$router.push('/add-service')">
+      <button class="cta" @click="handleAddService">
         Solicita tu servicio
       </button>
     </footer>
@@ -65,6 +65,16 @@
 export default {
   name: "HomeView",
   components: {},
+  methods: {
+    handleAddService() {
+      if (!this.$store.state.currentUser) {
+        // Si no está autenticado, redirige a registro/login
+        this.$router.push("/register");
+      } else {
+        this.$router.push("/add-service");
+      }
+    },
+  },
 };
 </script>
 

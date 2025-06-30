@@ -77,7 +77,6 @@ export default {
         await setDoc(doc(db, "users", userId), {
           name: this.user.name,
           email: this.user.email,
-          name: this.user.name,
           phone: this.user.phone,
           zone: this.user.zone,
           specialty: this.user.specialty,
@@ -88,9 +87,26 @@ export default {
         });
 
         alert("Usuario registrado con éxito");
-        this.$router.push({ name: "/" });
+        this.$router.push({ name: "home" });
+        // Limpiar campos
+        this.user = {
+          name: "",
+          email: "",
+          password: "",
+          confirmPassword: "",
+          phone: "",
+          zone: "",
+          specialty: [],
+          experience: 0,
+          description: "",
+          role: "cliente",
+          profilePhoto: "",
+        };
       } catch (error) {
         alert("Error al registrar usuario: " + error.message);
+        // Limpiar campos si hay error
+        this.user.password = "";
+        this.user.confirmPassword = "";
       }
     },
   },

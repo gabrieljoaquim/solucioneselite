@@ -54,10 +54,14 @@
           </li>
           <li><router-link to="/about">Nosotros</router-link></li>
           <li>
-            <router-link to="/add-service">Crear Serv.</router-link>
+            <router-link v-if="$store.state.currentUser" to="/add-service"
+              >Crear Serv.</router-link
+            >
           </li>
           <li>
-            <router-link to="/list-services">Servicios</router-link>
+            <router-link v-if="$store.state.currentUser" to="/list-services"
+              >Servicios</router-link
+            >
           </li>
         </ul>
       </div>

@@ -173,6 +173,7 @@ import { doc, deleteDoc } from "firebase/firestore";
 import ServiceStatusButtons from "../components/ServiceStatusButtons.vue";
 import AdminServiceControl from "../components/AdminServiceControl.vue";
 import WorkerRating from "../components/WorkerRating.vue";
+import { getIdToken } from "@/firebase/auth";
 
 export default {
   components: {
@@ -209,14 +210,22 @@ export default {
   methods: {
     async fetchServices() {
       try {
-        const querySnapshot = await getDocs(collection(db, "services"));
-        const services = querySnapshot.docs.map((doc) => {
-          const service = { id: doc.id, ...doc.data() };
-          console.log("Servicio procesado:", service);
-          return service;
+        const token = await getIdToken(); // 🔐 Obtener token del usuario
+        const response = await fetch("/api/services", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         });
+
+        if (!response.ok) {
+          const errData = await response.json();
+          throw new Error(errData.message || "Error al obtener servicios.");
+        }
+
+        const services = await response.json();
+
         this.$store.commit("setServices", services);
-        console.log("Servicios finales:", services);
+        console.log("Servicios desde backend:", services);
       } catch (error) {
         this.errorMsg = "Error al cargar los servicios: " + error.message;
       }
@@ -252,40 +261,52 @@ export default {
         }
       });
     },
-    saveDetails(index) {
+    async saveDetails(index) {
       const currentUser = this.$store.state.currentUser;
       if (!currentUser) {
         alert("Debes iniciar sesión.");
         return;
       }
+
       const newDetails = this.services[index].detailsDraft.trim();
-      if (newDetails) {
+      if (!newDetails) {
+        alert("La descripción no puede estar vacía.");
+        return;
+      }
+
+      try {
         this.services[index].details = newDetails;
         this.services[index].editingDetails = false;
-        // LOG para depuración
-        console.log("saveDetails PUT:", {
-          details: newDetails,
-          backgroundColor: "#ffcccc",
-          currentUserId: currentUser._id,
-          currentUserRole: currentUser.role,
-        });
-        api
-          .put(`/api/services/${this.services[index]._id}`, {
-            details: newDetails,
-            backgroundColor: "#ffcccc",
-            currentUserId: currentUser._id,
-            currentUserRole: currentUser.role,
-          })
-          .then((res) => {
-            Object.assign(this.services[index], res.data);
-          })
-          .catch((err) => {
-            alert(
-              err.response?.data?.error ||
-                err.response?.data?.message ||
-                "Error al guardar detalles"
-            );
-          });
+
+        const { getIdToken } = await import("@/firebase/auth");
+        const token = await getIdToken();
+
+        const response = await fetch(
+          `/api/services/${this.services[index]._id}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              details: newDetails,
+              backgroundColor: "#ffcccc",
+              currentUserId: currentUser._id,
+              currentUserRole: currentUser.role,
+            }),
+          }
+        );
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || "Error al guardar detalles");
+        }
+
+        const updatedService = await response.json();
+        Object.assign(this.services[index], updatedService);
+      } catch (error) {
+        alert("Error al guardar detalles: " + error.message);
       }
     },
     cancelEditDetails(index) {
@@ -305,30 +326,44 @@ export default {
       // Permitir editar si el usuario tomó el servicio
       return currentUser && service.takenById === currentUser._id;
     },
-    onAprobarPrecio(index) {
+    async onAprobarPrecio(index) {
       const currentUser = this.$store.state.currentUser;
       if (!currentUser || currentUser.role !== "cliente") return;
+
       const aprobado = !!this.services[index].precioAprobado;
-      api
-        .put(`/api/services/${this.services[index]._id}`, {
-          precioAprobado: aprobado,
-          currentUserId: currentUser._id,
-          currentUserRole: currentUser.role,
-        })
-        .then((res) => {
-          // Actualiza también la fecha de aprobación en la UI
-          this.services[index].precioAprobadoFecha =
-            res.data.precioAprobadoFecha;
-        })
-        .catch((err) => {
-          alert(
-            err.response?.data?.error ||
-              err.response?.data?.message ||
-              "Error al actualizar aprobación de precio"
-          );
-          // Revertir en UI si falla
-          this.services[index].precioAprobado = !aprobado;
-        });
+
+      try {
+        const { getIdToken } = await import("@/firebase/auth");
+        const token = await getIdToken();
+
+        const response = await fetch(
+          `/api/services/${this.services[index]._id}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              precioAprobado: aprobado,
+              currentUserId: currentUser._id,
+              currentUserRole: currentUser.role,
+            }),
+          }
+        );
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || "Error al aprobar precio");
+        }
+
+        const updated = await response.json();
+        this.services[index].precioAprobadoFecha = updated.precioAprobadoFecha;
+      } catch (err) {
+        alert("Error al actualizar aprobación de precio: " + err.message);
+        // Revertir cambio visual si falla
+        this.services[index].precioAprobado = !aprobado;
+      }
     },
     formatFecha(fecha) {
       if (!fecha) return "";
@@ -359,16 +394,32 @@ export default {
 
     async deleteService(index) {
       const service = this.services[index];
+
       if (
         !confirm(
           `¿Estás seguro de eliminar el servicio de ${service.requester}?`
         )
-      )
+      ) {
         return;
+      }
 
       try {
-        await deleteDoc(doc(db, "services", service.id)); // Elimina en Firestore
-        this.services.splice(index, 1); // Elimina localmente
+        const { getIdToken } = await import("@/firebase/auth");
+        const token = await getIdToken();
+
+        const response = await fetch(`/api/services/${service._id}`, {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || "Error al eliminar el servicio");
+        }
+
+        this.services.splice(index, 1);
         alert("Servicio eliminado exitosamente.");
       } catch (error) {
         alert("Error al eliminar el servicio: " + error.message);

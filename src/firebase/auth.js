@@ -23,3 +23,12 @@ export const watchAuthState = (onUserChange) => {
     onUserChange(user);
   });
 };
+// 🔑 Obtener el ID token del usuario actual
+export const getIdToken = async () => {
+  const user = auth.currentUser;
+  if (user) {
+    return await user.getIdToken(); // Token válido para enviar al backend
+  }
+  return null;
+};
+

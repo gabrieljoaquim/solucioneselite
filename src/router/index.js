@@ -89,6 +89,12 @@ const routes = [
     name: 'ExpertDetail',
     component: () => import('../views/ExpertDetailView.vue')
   },
+  {
+  path: '/configurar-membrete',
+  name: 'PDFHeaderConfig',
+  component: () => import('@/views/PDFHeaderConfig.vue'),
+  meta: { requiresAuth: true }
+},
 ]
 
 const router = createRouter({

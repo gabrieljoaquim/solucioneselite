@@ -49,6 +49,20 @@
           <p><strong>Teléfono:</strong> {{ service.phone }}</p>
           <p><strong>Dirección:</strong> {{ service.address }}</p>
           <p><strong>Horario:</strong> {{ service.workingHours }}</p>
+          <div
+            v-if="service.observations && service.observations.trim()"
+            class="observations-section"
+          >
+            <div class="observations-header">
+              <strong>⚠️ OBSERVACIONES:</strong>
+            </div>
+            <div class="observations-content">
+              {{ service.observations }}
+            </div>
+            <div v-if="service.observationAt" class="observations-date">
+              Registrada el: {{ formatFecha(service.observationAt) }}
+            </div>
+          </div>
           <p v-if="service.details && !service.editingDetails">
             <strong>Descripción del arreglo:</strong>
             {{ service.details }}
@@ -174,6 +188,7 @@ import ServiceStatusButtons from "../components/ServiceStatusButtons.vue";
 import AdminServiceControl from "../components/AdminServiceControl.vue";
 import WorkerRating from "../components/WorkerRating.vue";
 import { getIdToken } from "@/firebase/auth";
+import api from "@/api";
 
 export default {
   components: {
@@ -210,24 +225,14 @@ export default {
   methods: {
     async fetchServices() {
       try {
-        const token = await getIdToken(); // 🔐 Obtener token del usuario
-        const response = await fetch("/api/services", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        if (!response.ok) {
-          const errData = await response.json();
-          throw new Error(errData.message || "Error al obtener servicios.");
-        }
-
-        const services = await response.json();
-
+        const response = await api.get("/services");
+        const services = response.data;
         this.$store.commit("setServices", services);
         console.log("Servicios desde backend:", services);
       } catch (error) {
-        this.errorMsg = "Error al cargar los servicios: " + error.message;
+        this.errorMsg =
+          "Error al cargar los servicios: " +
+          (error.response?.data?.error || error.message);
       }
     },
     toggleDetails(index) {
@@ -278,35 +283,21 @@ export default {
         this.services[index].details = newDetails;
         this.services[index].editingDetails = false;
 
-        const { getIdToken } = await import("@/firebase/auth");
-        const token = await getIdToken();
-
-        const response = await fetch(
-          `/api/services/${this.services[index]._id}`,
+        const response = await api.put(
+          `/services/${this.services[index]._id}`,
           {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({
-              details: newDetails,
-              backgroundColor: "#ffcccc",
-              currentUserId: currentUser._id,
-              currentUserRole: currentUser.role,
-            }),
+            details: newDetails,
+            backgroundColor: "#ffcccc",
+            currentUserId: currentUser._id,
+            currentUserRole: currentUser.role,
           }
         );
-
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.message || "Error al guardar detalles");
-        }
-
-        const updatedService = await response.json();
-        Object.assign(this.services[index], updatedService);
+        Object.assign(this.services[index], response.data);
       } catch (error) {
-        alert("Error al guardar detalles: " + error.message);
+        alert(
+          "Error al guardar detalles: " +
+            (error.response?.data?.error || error.message)
+        );
       }
     },
     cancelEditDetails(index) {
@@ -333,35 +324,21 @@ export default {
       const aprobado = !!this.services[index].precioAprobado;
 
       try {
-        const { getIdToken } = await import("@/firebase/auth");
-        const token = await getIdToken();
-
-        const response = await fetch(
-          `/api/services/${this.services[index]._id}`,
+        const response = await api.put(
+          `/services/${this.services[index]._id}`,
           {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({
-              precioAprobado: aprobado,
-              currentUserId: currentUser._id,
-              currentUserRole: currentUser.role,
-            }),
+            precioAprobado: aprobado,
+            currentUserId: currentUser._id,
+            currentUserRole: currentUser.role,
           }
         );
-
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.message || "Error al aprobar precio");
-        }
-
-        const updated = await response.json();
-        this.services[index].precioAprobadoFecha = updated.precioAprobadoFecha;
+        this.services[index].precioAprobadoFecha =
+          response.data.precioAprobadoFecha;
       } catch (err) {
-        alert("Error al actualizar aprobación de precio: " + err.message);
-        // Revertir cambio visual si falla
+        alert(
+          "Error al actualizar aprobación de precio: " +
+            (err.response?.data?.error || err.message)
+        );
         this.services[index].precioAprobado = !aprobado;
       }
     },
@@ -374,18 +351,25 @@ export default {
         d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
       );
     },
+    // Actualizar este método en ListServices.vue
     getObservations(service) {
-      // Always return an array for observations
-      if (Array.isArray(service.observations)) {
-        return service.observations;
-      } else if (
+      // Ahora las observaciones se muestran en su propia sección
+      // Este método puede ser usado para observaciones adicionales si es necesario
+
+      // Si hay observaciones múltiples (historial), devolver como array
+      if (Array.isArray(service.observationsHistory)) {
+        return service.observationsHistory;
+      }
+
+      // Para compatibilidad con versiones anteriores
+      if (
         typeof service.observations === "string" &&
         service.observations.trim() !== ""
       ) {
         return [service.observations];
-      } else {
-        return [];
       }
+
+      return [];
     },
     canDeleteService(service) {
       const currentUser = this.$store.state.currentUser;
@@ -394,7 +378,6 @@ export default {
 
     async deleteService(index) {
       const service = this.services[index];
-
       if (
         !confirm(
           `¿Estás seguro de eliminar el servicio de ${service.requester}?`
@@ -402,27 +385,15 @@ export default {
       ) {
         return;
       }
-
       try {
-        const { getIdToken } = await import("@/firebase/auth");
-        const token = await getIdToken();
-
-        const response = await fetch(`/api/services/${service._id}`, {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.message || "Error al eliminar el servicio");
-        }
-
+        await api.delete(`/services/${service._id}`);
         this.services.splice(index, 1);
         alert("Servicio eliminado exitosamente.");
       } catch (error) {
-        alert("Error al eliminar el servicio: " + error.message);
+        alert(
+          "Error al eliminar el servicio: " +
+            (error.response?.data?.error || error.message)
+        );
       }
     },
   },
@@ -454,6 +425,61 @@ export default {
 .list-services {
   max-width: 600px;
   margin: 0 auto;
+}
+/* Agregar estos estilos al <style scoped> de ListServices.vue */
+
+.observations-section {
+  background-color: #ffebee;
+  border: 2px solid #e57373;
+  border-radius: 8px;
+  padding: 12px;
+  margin: 10px 0;
+  box-shadow: 0 2px 4px rgba(229, 115, 115, 0.2);
+}
+
+.observations-header {
+  color: #c62828;
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.observations-content {
+  color: #d32f2f;
+  font-size: 14px;
+  line-height: 1.4;
+  background-color: #ffcdd2;
+  padding: 8px;
+  border-radius: 4px;
+  border-left: 4px solid #f44336;
+  margin-bottom: 8px;
+}
+
+.observations-date {
+  color: #666;
+  font-size: 12px;
+  font-style: italic;
+  text-align: right;
+}
+
+/* Efecto de pulso para llamar más la atención */
+.observations-section {
+  animation: pulse-red 2s infinite;
+}
+
+@keyframes pulse-red {
+  0% {
+    box-shadow: 0 2px 4px rgba(229, 115, 115, 0.2);
+  }
+  50% {
+    box-shadow: 0 4px 8px rgba(229, 115, 115, 0.4);
+  }
+  100% {
+    box-shadow: 0 2px 4px rgba(229, 115, 115, 0.2);
+  }
 }
 ul {
   list-style-type: none;

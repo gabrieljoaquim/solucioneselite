@@ -103,16 +103,46 @@ export default {
       }
     },
     async mounted() {
-      try {
-        const userId = this.$store.state.currentUser.uid;
-        const docRef = doc(db, "users", userId);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          this.profile = { ...this.profile, ...docSnap.data() };
-        }
-      } catch (error) {
-        alert("Error al cargar el perfil: " + error.message);
+      const waitForUser = () => {
+        return new Promise((resolve) => {
+          const check = () => {
+            const user = this.$store.state.currentUser;
+            if (user && user.uid) resolve(user);
+            else setTimeout(check, 100); // espera hasta que se cargue
+          };
+          check();
+        });
+      };
+
+      const user = await waitForUser();
+      if (!user || user.role !== "admin") {
+        alert("Acceso no autorizado");
+        this.$router.push("/");
+        return;
       }
+
+      this.userId = user.uid;
+      this.cargarDatos(this.userId);
+    },
+    methods: {
+      async cargarDatos(userId) {
+        try {
+          const userDoc = await getDoc(doc(db, "users", userId));
+          if (userDoc.exists()) {
+            const data = userDoc.data();
+            this.form.nombreComercial =
+              data.empresa?.nombreComercial || data.nombre || "";
+            this.form.rut = data.empresa?.rut || "";
+            this.form.eslogan = data.empresa?.eslogan || "";
+            this.form.telefono = data.telefono || "";
+            this.form.email = data.email || "";
+            this.form.direccion = data.direccion || "";
+            this.form.logoUrl = data.empresa?.logoUrl || "";
+          }
+        } catch (error) {
+          alert("Error al cargar datos: " + error.message);
+        }
+      },
     },
   },
 };

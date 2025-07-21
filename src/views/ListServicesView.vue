@@ -63,6 +63,7 @@
               Registrada el: {{ formatFecha(service.observationAt) }}
             </div>
           </div>
+
           <p v-if="service.details && !service.editingDetails">
             <strong>Descripción del arreglo:</strong>
             {{ service.details }}
@@ -181,13 +182,12 @@ import ServicePriceEditor from "../components/ServicePriceEditor.vue";
 import GenerateServicePDF from "../components/GenerateServicePDF.vue";
 import GoogleMapsLink from "../components/GoogleMapsLink.vue";
 import PdfNameDisplay from "../components/PdfNameDisplay.vue";
-import { collection, getDocs } from "firebase/firestore";
-import { db } from "@/firebase/firebaseConfig";
-import { doc, deleteDoc } from "firebase/firestore";
 import ServiceStatusButtons from "../components/ServiceStatusButtons.vue";
 import AdminServiceControl from "../components/AdminServiceControl.vue";
 import WorkerRating from "../components/WorkerRating.vue";
-import { getIdToken } from "@/firebase/auth";
+
+import { collection, getDocs, doc, deleteDoc } from "firebase/firestore";
+import { db } from "@/firebase/firebaseConfig";
 import api from "@/api";
 
 export default {
@@ -209,16 +209,11 @@ export default {
     services() {
       const currentUser = this.$store.state.currentUser;
       if (!currentUser) return [];
-      if (
-        currentUser.role === "administrador" ||
-        currentUser.role === "trabajador"
-      ) {
+      if (["administrador", "trabajador"].includes(currentUser.role)) {
         return this.$store.state.services;
       }
-      // Cliente: solo ve los servicios donde él es el registrante
       return this.$store.state.services.filter(
-        (service) =>
-          service.registrante === (currentUser.name || currentUser.email)
+        (s) => s.registrante === (currentUser.name || currentUser.email)
       );
     },
   },
@@ -233,39 +228,51 @@ export default {
         this.errorMsg =
           "Error al cargar los servicios: " +
           (error.response?.data?.error || error.message);
+        try {
+          const querySnapshot = await getDocs(collection(db, "services"));
+          const services = querySnapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
+          this.$store.commit("setServices", services);
+        } catch (err) {
+          this.errorMsg = "Error al cargar los servicios: " + err.message;
+        }
       }
     },
+
     toggleDetails(index) {
-      this.services.forEach((service, i) => {
-        service.showDetails = i === index ? !service.showDetails : false;
+      this.services.forEach((s, i) => {
+        s.showDetails = i === index ? !s.showDetails : false;
       });
     },
+
     canShowPriceEditor(service) {
       const user = this.$store.state.currentUser;
       if (!user) return false;
-      // Solo mostrar si el usuario es admin o trabajador asignado Y el servicio ya fue tomado
-      if (user.role === "administrador") return true;
-      if (user.role === "trabajador" && service.takenById === user._id)
-        return true;
-      return false;
+      return (
+        user.role === "administrador" ||
+        (user.role === "trabajador" && service.takenById === user._id)
+      );
     },
+
     markAsCompleted(index) {
       this.services[index].backgroundColor = "lightyellow";
     },
 
-    // sendToClosed removed: client closure logic deleted
     editDetails(index) {
       this.services[index].editingDetails = true;
       this.services[index].detailsDraft = this.services[index].details;
       this.$nextTick(() => {
         const inputs = this.$refs.detailsInput;
         if (Array.isArray(inputs)) {
-          if (inputs[index]) inputs[index].focus();
-        } else if (inputs && typeof inputs.focus === "function") {
-          inputs.focus();
+          inputs[index]?.focus?.();
+        } else {
+          inputs?.focus?.();
         }
       });
     },
+
     async saveDetails(index) {
       const currentUser = this.$store.state.currentUser;
       if (!currentUser) {
@@ -273,7 +280,7 @@ export default {
         return;
       }
 
-      const newDetails = this.services[index].detailsDraft.trim();
+      const newDetails = this.services[index].detailsDraft?.trim();
       if (!newDetails) {
         alert("La descripción no puede estar vacía.");
         return;
@@ -283,40 +290,41 @@ export default {
         this.services[index].details = newDetails;
         this.services[index].editingDetails = false;
 
-        const response = await api.put(
-          `/services/${this.services[index]._id}`,
-          {
-            details: newDetails,
-            backgroundColor: "#ffcccc",
-            currentUserId: currentUser._id,
-            currentUserRole: currentUser.role,
-          }
-        );
-        Object.assign(this.services[index], response.data);
-      } catch (error) {
+        const res = await api.put(`/services/${this.services[index]._id}`, {
+          details: newDetails,
+          backgroundColor: "#ffcccc",
+          currentUserId: currentUser._id,
+          currentUserRole: currentUser.role,
+        });
+
+        Object.assign(this.services[index], res.data);
+      } catch (err) {
         alert(
           "Error al guardar detalles: " +
-            (error.response?.data?.error || error.message)
+            (err.response?.data?.error || err.message)
         );
       }
     },
+
     cancelEditDetails(index) {
       this.services[index].editingDetails = false;
       this.services[index].detailsDraft = "";
     },
+
     canEditDetails(service) {
       const currentUser = this.$store.state.currentUser;
       return (
         currentUser &&
-        (service.takenById === currentUser._id ||
-          currentUser.role === "administrador")
+        (currentUser.role === "administrador" ||
+          service.takenById === currentUser._id)
       );
     },
+
     canEditObservation(service) {
       const currentUser = this.$store.state.currentUser;
-      // Permitir editar si el usuario tomó el servicio
       return currentUser && service.takenById === currentUser._id;
     },
+
     async onAprobarPrecio(index) {
       const currentUser = this.$store.state.currentUser;
       if (!currentUser || currentUser.role !== "cliente") return;
@@ -324,16 +332,12 @@ export default {
       const aprobado = !!this.services[index].precioAprobado;
 
       try {
-        const response = await api.put(
-          `/services/${this.services[index]._id}`,
-          {
-            precioAprobado: aprobado,
-            currentUserId: currentUser._id,
-            currentUserRole: currentUser.role,
-          }
-        );
-        this.services[index].precioAprobadoFecha =
-          response.data.precioAprobadoFecha;
+        const res = await api.put(`/services/${this.services[index]._id}`, {
+          precioAprobado: aprobado,
+          currentUserId: currentUser._id,
+          currentUserRole: currentUser.role,
+        });
+        this.services[index].precioAprobadoFecha = res.data.precioAprobadoFecha;
       } catch (err) {
         alert(
           "Error al actualizar aprobación de precio: " +
@@ -342,6 +346,7 @@ export default {
         this.services[index].precioAprobado = !aprobado;
       }
     },
+
     formatFecha(fecha) {
       if (!fecha) return "";
       const d = new Date(fecha);
@@ -351,29 +356,23 @@ export default {
         d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
       );
     },
-    // Actualizar este método en ListServices.vue
-    getObservations(service) {
-      // Ahora las observaciones se muestran en su propia sección
-      // Este método puede ser usado para observaciones adicionales si es necesario
 
-      // Si hay observaciones múltiples (historial), devolver como array
+    getObservations(service) {
       if (Array.isArray(service.observationsHistory)) {
         return service.observationsHistory;
       }
-
-      // Para compatibilidad con versiones anteriores
       if (
         typeof service.observations === "string" &&
         service.observations.trim() !== ""
       ) {
         return [service.observations];
       }
-
       return [];
     },
+
     canDeleteService(service) {
       const currentUser = this.$store.state.currentUser;
-      return currentUser && currentUser.role === "administrador";
+      return currentUser?.role === "administrador";
     },
 
     async deleteService(index) {
@@ -382,9 +381,9 @@ export default {
         !confirm(
           `¿Estás seguro de eliminar el servicio de ${service.requester}?`
         )
-      ) {
+      )
         return;
-      }
+
       try {
         await api.delete(`/services/${service._id}`);
         this.services.splice(index, 1);

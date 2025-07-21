@@ -49,6 +49,10 @@
       <div class="navbar-bottom">
         <button class="menu-button" @click="toggleMenu">Menu</button>
         <ul class="menu" :class="{ 'menu-open': isMenuOpen }">
+          <li v-if="userRole === 'administrador'">
+            <router-link to="/admin/users">Usuarios</router-link>
+          </li>
+
           <li><router-link to="/about">Nosotros</router-link></li>
           <li>
             <router-link v-if="$store.state.currentUser" to="/add-service"

@@ -7,15 +7,19 @@
         <label for="phone">Teléfono:</label>
         <input type="text" id="phone" v-model="profile.phone" required />
       </div>
+
       <div>
         <label for="address">Dirección:</label>
         <input type="text" id="address" v-model="profile.address" required />
       </div>
-      <SpecialtySelector :specialties.sync="profile.specialty" />
+
+      <SpecialtySelector v-model:especialidades="profile.specialty" />
+
       <div>
         <label for="profilePicture">Foto de Perfil:</label>
         <input type="file" id="profilePicture" @change="onFileChange" />
       </div>
+
       <div>
         <label for="experience">Años de Experiencia:</label>
         <input
@@ -26,6 +30,7 @@
           required
         />
       </div>
+
       <div v-if="currentUser && currentUser.role === 'admin'">
         <label for="role">Rol:</label>
         <select id="role" v-model="profile.role" required>
@@ -34,6 +39,7 @@
           <option value="admin">Administrador</option>
         </select>
       </div>
+
       <div>
         <label for="description">Descripción:</label>
         <textarea
@@ -43,8 +49,10 @@
           placeholder="Describe tus habilidades y experiencia"
         ></textarea>
       </div>
+
       <button type="submit">Actualizar Perfil</button>
     </form>
+
     <div v-if="profile.picture">
       <h2>Vista Previa de la Foto:</h2>
       <img
@@ -58,10 +66,13 @@
 
 <script>
 import { doc, getDoc, setDoc } from "firebase/firestore";
-import { db } from "@/firebase/firebaseConfig";
+import { db, storage } from "@/firebase/firebaseConfig";
+import {
+  ref as storageRef,
+  uploadBytes,
+  getDownloadURL,
+} from "firebase/storage";
 import SpecialtySelector from "@/components/SpecialtySelector.vue";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { storage } from "@/firebase/firebaseConfig";
 
 export default {
   components: {
@@ -85,65 +96,68 @@ export default {
       return this.$store.state.currentUser;
     },
   },
-
   methods: {
     async onFileChange(event) {
       const file = event.target.files[0];
       if (!file) return;
 
-      const userId = this.$store.state.currentUser.uid;
-      const storageRef = ref(storage, `profilePictures/${userId}/${file.name}`);
+      const userId = this.currentUser.uid;
+      const pathRef = storageRef(
+        storage,
+        `profilePictures/${userId}/${file.name}`
+      );
 
       try {
-        const snapshot = await uploadBytes(storageRef, file);
-        const downloadURL = await getDownloadURL(snapshot.ref);
-        this.profile.picture = downloadURL; // esta es la que guardarás en Firestore
+        const snapshot = await uploadBytes(pathRef, file);
+        const url = await getDownloadURL(snapshot.ref);
+        this.profile.picture = url;
       } catch (error) {
         alert("Error al subir la imagen: " + error.message);
       }
     },
-    async mounted() {
-      const waitForUser = () => {
-        return new Promise((resolve) => {
-          const check = () => {
-            const user = this.$store.state.currentUser;
-            if (user && user.uid) resolve(user);
-            else setTimeout(check, 100); // espera hasta que se cargue
-          };
-          check();
-        });
-      };
 
-      const user = await waitForUser();
-      if (!user || user.role !== "admin") {
-        alert("Acceso no autorizado");
-        this.$router.push("/");
+    async updateProfile() {
+      if (!this.currentUser) {
+        alert("Debes iniciar sesión.");
         return;
       }
 
-      this.userId = user.uid;
-      this.cargarDatos(this.userId);
+      try {
+        const userId = this.currentUser.uid;
+        await setDoc(doc(db, "users", userId), this.profile, { merge: true });
+        alert("Perfil actualizado exitosamente.");
+      } catch (error) {
+        alert("Error al guardar perfil: " + error.message);
+      }
     },
-    methods: {
-      async cargarDatos(userId) {
-        try {
-          const userDoc = await getDoc(doc(db, "users", userId));
-          if (userDoc.exists()) {
-            const data = userDoc.data();
-            this.form.nombreComercial =
-              data.empresa?.nombreComercial || data.nombre || "";
-            this.form.rut = data.empresa?.rut || "";
-            this.form.eslogan = data.empresa?.eslogan || "";
-            this.form.telefono = data.telefono || "";
-            this.form.email = data.email || "";
-            this.form.direccion = data.direccion || "";
-            this.form.logoUrl = data.empresa?.logoUrl || "";
-          }
-        } catch (error) {
-          alert("Error al cargar datos: " + error.message);
+
+    async cargarDatos() {
+      try {
+        const userId = this.currentUser.uid;
+        const userDoc = await getDoc(doc(db, "users", userId));
+        if (userDoc.exists()) {
+          this.profile = { ...this.profile, ...userDoc.data() };
         }
-      },
+      } catch (error) {
+        alert("Error al cargar el perfil: " + error.message);
+      }
     },
+  },
+  async mounted() {
+    // Esperar hasta que el usuario esté disponible
+    const waitForUser = () => {
+      return new Promise((resolve) => {
+        const check = () => {
+          const user = this.currentUser;
+          if (user && user.uid) resolve(user);
+          else setTimeout(check, 100);
+        };
+        check();
+      });
+    };
+
+    await waitForUser();
+    await this.cargarDatos();
   },
 };
 </script>

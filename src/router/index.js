@@ -95,6 +95,7 @@ const routes = [
   component: () => import('@/views/PDFHeaderConfig.vue'),
   meta: { requiresAuth: true }
 },
+
 ]
 
 const router = createRouter({

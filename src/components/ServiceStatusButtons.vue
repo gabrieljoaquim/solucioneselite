@@ -7,6 +7,7 @@
     >
       Tomar
     </button>
+
     <button
       class="btn-observacion"
       @click="markWithObservation"
@@ -14,6 +15,7 @@
     >
       Observación
     </button>
+
     <button class="btn-terminado" @click="markAsFinalized" :disabled="!canEdit">
       Terminado
     </button>
@@ -21,7 +23,8 @@
 </template>
 
 <script>
-import api from "@/api";
+import { doc, updateDoc } from "firebase/firestore";
+import { db } from "@/firebase/firebaseConfig";
 
 export default {
   name: "ServiceStatusButtons",
@@ -38,156 +41,111 @@ export default {
   methods: {
     async markAsTaken() {
       const currentUser = this.$store.state.currentUser;
-      if (!currentUser) {
-        alert("Debes iniciar sesión para tomar un servicio.");
-        return;
-      }
+      if (!currentUser) return alert("Debes iniciar sesión.");
 
       if (
         this.service.takenById &&
-        this.service.takenById !== currentUser._id &&
-        currentUser.role !== "administrador"
+        this.service.takenById !== currentUser.uid
       ) {
-        alert("Este servicio ya fue tomado por otro trabajador.");
-        return;
+        return alert("Este servicio ya fue tomado por otro trabajador.");
       }
 
+      const updatedData = {
+        backgroundColor: "lightgreen",
+        takenBy: currentUser.name || currentUser.email || currentUser.uid,
+        takenById: currentUser.uid,
+        takenByEmail: currentUser.email,
+        status: "tomado",
+        takenAt: new Date().toISOString(),
+      };
+
       try {
-        const updatedData = {
-          backgroundColor: "lightgreen",
-          takenBy: currentUser.name || currentUser.email,
-          takenById: currentUser._id,
-          takenByEmail: currentUser.email,
-          status: "tomado",
-          takenAt: new Date().toISOString(),
-          currentUserId: currentUser._id,
-          currentUserRole: currentUser.role,
-        };
+        await updateDoc(doc(db, "services", this.service.id), updatedData);
 
-        const response = await api.put(
-          `/services/${this.service._id}`,
-          updatedData
-        );
-
-        // Actualizar el servicio en el store
         const index = this.$store.state.services.findIndex(
-          (s) => s._id === this.service._id
+          (s) => s.id === this.service.id
         );
         if (index !== -1) {
           this.$store.commit("updateService", {
             index,
-            data: response.data,
+            data: updatedData,
           });
         }
 
-        // Emitir evento para notificar al componente padre
-        this.$emit("mark-taken", response.data);
+        this.$emit("mark-taken", updatedData);
       } catch (err) {
-        console.error("Error al tomar el servicio:", err);
-        alert(
-          "Error al tomar el servicio: " +
-            (err.response?.data?.error || err.message)
-        );
+        console.error(err);
+        alert("Error al tomar el servicio: " + err.message);
       }
     },
 
     async markWithObservation() {
       const currentUser = this.$store.state.currentUser;
-      if (!currentUser) {
-        alert("Debes iniciar sesión.");
-        return;
+      if (!currentUser) return alert("Debes iniciar sesión.");
+
+      const observacion = prompt("Ingresa la observación:");
+      if (!observacion || !observacion.trim()) {
+        return alert("Debes ingresar una observación válida.");
       }
 
-      // Pedir la observación al usuario
-      const observacion = prompt("Ingresa la observación:");
-      if (!observacion || observacion.trim() === "") {
-        alert("Debes ingresar una observación.");
-        return;
-      }
+      const updatedData = {
+        backgroundColor: "#ffcccc",
+        status: "con_observacion",
+        observations: observacion.trim(),
+        observationAt: new Date().toISOString(),
+      };
 
       try {
-        const updatedData = {
-          backgroundColor: "#ffcccc",
-          status: "con_observacion",
-          observations: observacion.trim(),
-          observationAt: new Date().toISOString(),
-          currentUserId: currentUser._id,
-          currentUserRole: currentUser.role,
-        };
+        await updateDoc(doc(db, "services", this.service.id), updatedData);
 
-        const response = await api.put(
-          `/services/${this.service._id}`,
-          updatedData
-        );
-
-        // Actualizar el servicio en el store
         const index = this.$store.state.services.findIndex(
-          (s) => s._id === this.service._id
+          (s) => s.id === this.service.id
         );
         if (index !== -1) {
           this.$store.commit("updateService", {
             index,
-            data: response.data,
+            data: updatedData,
           });
         }
 
-        // Emitir evento para notificar al componente padre
-        this.$emit("mark-observation", response.data);
+        this.$emit("mark-observation", updatedData);
       } catch (err) {
-        console.error("Error al marcar con observación:", err);
-        alert(
-          "Error al marcar con observación: " +
-            (err.response?.data?.error || err.message)
-        );
+        console.error(err);
+        alert("Error al marcar con observación: " + err.message);
       }
     },
 
     async markAsFinalized() {
       const currentUser = this.$store.state.currentUser;
-      if (!currentUser) {
-        alert("Debes iniciar sesión.");
+      if (!currentUser) return alert("Debes iniciar sesión.");
+      if (!confirm("¿Estás seguro de marcar este servicio como terminado?"))
         return;
-      }
 
-      if (!confirm("¿Estás seguro de marcar este servicio como terminado?")) {
-        return;
-      }
+      const updatedData = {
+        backgroundColor: "lightblue",
+        status: "terminado",
+        finalizedAt: new Date().toISOString(),
+        finalizedBy: currentUser.name || currentUser.email,
+        finalizedById: currentUser.uid,
+      };
 
       try {
-        const updatedData = {
-          backgroundColor: "lightblue",
-          status: "terminado",
-          finalizedAt: new Date().toISOString(),
-          finalizedBy: currentUser.name || currentUser.email,
-          finalizedById: currentUser._id,
-          currentUserId: currentUser._id,
-          currentUserRole: currentUser.role,
-        };
+        await updateDoc(doc(db, "services", this.service.id), updatedData);
 
-        const response = await api.put(
-          `/services/${this.service._id}`,
-          updatedData
-        );
-
-        // Actualizar el servicio en el store
         const index = this.$store.state.services.findIndex(
-          (s) => s._id === this.service._id
+          (s) => s.id === this.service.id
         );
         if (index !== -1) {
           this.$store.commit("updateService", {
             index,
-            data: response.data,
+            data: updatedData,
           });
         }
 
-        // Emitir evento para notificar al componente padre
-        this.$emit("mark-finalized", response.data);
+        this.$emit("mark-finalized", updatedData);
       } catch (err) {
-        console.error("Error al marcar como terminado:", err);
-        alert(
-          "Error al marcar como terminado: " +
-            (err.response?.data?.error || err.message)
-        );
+        console.error(err);
+        alert("Error al marcar como terminado: " + err.message);
       }
     },
   },
@@ -208,7 +166,7 @@ export default {
 }
 
 .service-status-buttons button {
-  flex: 1 1 calc(33% - 16px); /* 3 botones por fila con espacio entre ellos */
+  flex: 1 1 calc(33% - 16px);
   min-width: 100px;
   font-size: 14px;
   border-radius: 4px;
@@ -220,27 +178,25 @@ export default {
   background-color: #4caf50;
   color: white;
   border: none;
-  padding: 6px 12px;
-  cursor: pointer;
 }
+
 .btn-observacion {
   background-color: #f44336;
   color: white;
   border: none;
-  padding: 6px 12px;
-  cursor: pointer;
 }
+
 .btn-terminado {
   background-color: #2196f3;
   color: white;
   border: none;
-  padding: 6px 12px;
-  cursor: pointer;
 }
+
 button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
+
 button:hover:not(:disabled) {
   opacity: 0.9;
 }

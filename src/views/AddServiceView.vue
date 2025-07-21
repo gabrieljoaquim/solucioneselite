@@ -65,8 +65,6 @@
 <script>
 import ServicePriceEditor from "../components/ServicePriceEditor.vue";
 import PdfNameDisplay from "../components/PdfNameDisplay.vue";
-import { collection, addDoc } from "firebase/firestore";
-import { db } from "@/firebase/firebaseConfig";
 import PdfUploader from "@/components/PdfUploader.vue";
 
 export default {
@@ -122,18 +120,35 @@ export default {
         this.loading = true;
         this.error = null;
 
-        // Guardar el servicio en Firestore
-        await addDoc(collection(db, "services"), {
+        const payload = {
           ...this.service,
           registrante: this.registrante,
-          createdAt: new Date().toISOString(),
-        });
+        };
 
+        const response = await fetch(
+          `${process.env.VUE_APP_API_URL}/services`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload),
+          }
+        );
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || "Error desconocido");
+        }
+
+        const newService = await response.json();
         alert("Servicio agregado con éxito");
-        this.resetForm(); // Limpia el formulario visualmente
+
+        this.resetForm(); // Limpia el formulario
         this.$router.push({ name: "add-services" });
       } catch (error) {
         this.error = "Error al agregar el servicio: " + error.message;
+        console.error(error);
       } finally {
         this.loading = false;
       }

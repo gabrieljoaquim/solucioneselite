@@ -19,6 +19,28 @@ router.get("/", async (req, res) => {
   }
 });
 
+// Crear un nuevo servicio
+router.post("/", async (req, res) => {
+  try {
+    const newService = req.body;
+
+    if (!newService.titulo || !newService.descripcion) {
+      return res.status(400).json({ error: "Faltan campos obligatorios." });
+    }
+
+    newService.createdAt = admin.firestore.FieldValue.serverTimestamp();
+
+    const docRef = await db.collection("services").add(newService);
+    const doc = await docRef.get();
+
+    res.status(201).json({ _id: doc.id, ...doc.data() });
+  } catch (error) {
+    console.error("Error al crear servicio:", error);
+    res.status(500).json({ error: "Error al crear servicio: " + error.message });
+  }
+});
+
+
 // Actualizar un servicio
 router.put("/:id", async (req, res) => {
   try {

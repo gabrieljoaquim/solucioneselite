@@ -383,3 +383,869 @@ Issues? Report them at https://github.com/firebase/firebase-tools/issues and att
 
 Issues? Report them at https://github.com/firebase/firebase-tools/issues and attach the *-debug.log files.
  
+[debug] [2025-07-21T18:50:58.493Z] [work-queue] {"queuedWork":["/servilinkstore-8f04c/us-central1/api/services-2025-07-21T18:50:58.492Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
+[debug] [2025-07-21T18:50:58.493Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/servilinkstore-8f04c/us-central1/api/services-2025-07-21T18:50:58.492Z"],"workRunningCount":1}
+[debug] [2025-07-21T18:50:58.494Z] Accepted request GET /servilinkstore-8f04c/us-central1/api/services --> us-central1-api
+[debug] [2025-07-21T18:50:58.499Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2025-07-21T18:50:58.500Z] [functions] Got req.url=/servilinkstore-8f04c/us-central1/api/services, mapping to path=/services {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/servilinkstore-8f04c/us-central1/api/services, mapping to path=/services"}}
+[debug] [2025-07-21T18:50:58.522Z] [worker-pool] addWorker(us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] addWorker(us-central1-api)"}}
+[debug] [2025-07-21T18:50:58.523Z] [worker-pool] Adding worker with key us-central1-api, total=1 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Adding worker with key us-central1-api, total=1"}}
+[debug] [2025-07-21T18:50:59.767Z] [runtime-status] [15132] Resolved module firebase-admin {"declared":true,"installed":true,"version":"12.7.0","resolution":"D:\\code\\AplicacionPrincipal\\solucioneselite - copia\\functions\\node_modules\\firebase-admin\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [15132] Resolved module firebase-admin {\"declared\":true,\"installed\":true,\"version\":\"12.7.0\",\"resolution\":\"D:\\\\code\\\\AplicacionPrincipal\\\\solucioneselite - copia\\\\functions\\\\node_modules\\\\firebase-admin\\\\lib\\\\index.js\"}"}}
+[debug] [2025-07-21T18:50:59.768Z] [runtime-status] [15132] Resolved module firebase-functions {"declared":true,"installed":true,"version":"6.3.2","resolution":"D:\\code\\AplicacionPrincipal\\solucioneselite - copia\\functions\\node_modules\\firebase-functions\\lib\\v2\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [15132] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"6.3.2\",\"resolution\":\"D:\\\\code\\\\AplicacionPrincipal\\\\solucioneselite - copia\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\v2\\\\index.js\"}"}}
+[debug] [2025-07-21T18:50:59.769Z] [runtime-status] [15132] Outgoing network have been stubbed. [{"name":"http","status":"mocked"},{"name":"http","status":"mocked"},{"name":"https","status":"mocked"},{"name":"https","status":"mocked"},{"name":"net","status":"mocked"}] {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [15132] Outgoing network have been stubbed. [{\"name\":\"http\",\"status\":\"mocked\"},{\"name\":\"http\",\"status\":\"mocked\"},{\"name\":\"https\",\"status\":\"mocked\"},{\"name\":\"https\",\"status\":\"mocked\"},{\"name\":\"net\",\"status\":\"mocked\"}]"}}
+[debug] [2025-07-21T18:50:59.770Z] [runtime-status] [15132] Resolved module firebase-functions {"declared":true,"installed":true,"version":"6.3.2","resolution":"D:\\code\\AplicacionPrincipal\\solucioneselite - copia\\functions\\node_modules\\firebase-functions\\lib\\v2\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [15132] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"6.3.2\",\"resolution\":\"D:\\\\code\\\\AplicacionPrincipal\\\\solucioneselite - copia\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\v2\\\\index.js\"}"}}
+[debug] [2025-07-21T18:51:00.232Z] [runtime-status] [15132] Checked functions.config() {"config":{}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [15132] Checked functions.config() {\"config\":{}}"}}
+[debug] [2025-07-21T18:51:00.233Z] [runtime-status] [15132] firebase-functions has been stubbed. {"functionsResolution":{"declared":true,"installed":true,"version":"6.3.2","resolution":"D:\\code\\AplicacionPrincipal\\solucioneselite - copia\\functions\\node_modules\\firebase-functions\\lib\\v2\\index.js"}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [15132] firebase-functions has been stubbed. {\"functionsResolution\":{\"declared\":true,\"installed\":true,\"version\":\"6.3.2\",\"resolution\":\"D:\\\\code\\\\AplicacionPrincipal\\\\solucioneselite - copia\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\v2\\\\index.js\"}}"}}
+[debug] [2025-07-21T18:51:00.233Z] [runtime-status] [15132] Resolved module firebase-functions {"declared":true,"installed":true,"version":"6.3.2","resolution":"D:\\code\\AplicacionPrincipal\\solucioneselite - copia\\functions\\node_modules\\firebase-functions\\lib\\v2\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [15132] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"6.3.2\",\"resolution\":\"D:\\\\code\\\\AplicacionPrincipal\\\\solucioneselite - copia\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\v2\\\\index.js\"}"}}
+[debug] [2025-07-21T18:51:00.308Z] [runtime-status] [15132] Resolved module firebase-admin {"declared":true,"installed":true,"version":"12.7.0","resolution":"D:\\code\\AplicacionPrincipal\\solucioneselite - copia\\functions\\node_modules\\firebase-admin\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [15132] Resolved module firebase-admin {\"declared\":true,\"installed\":true,\"version\":\"12.7.0\",\"resolution\":\"D:\\\\code\\\\AplicacionPrincipal\\\\solucioneselite - copia\\\\functions\\\\node_modules\\\\firebase-admin\\\\lib\\\\index.js\"}"}}
+[debug] [2025-07-21T18:51:00.311Z] [runtime-status] [15132] Resolved module firebase-functions {"declared":true,"installed":true,"version":"6.3.2","resolution":"D:\\code\\AplicacionPrincipal\\solucioneselite - copia\\functions\\node_modules\\firebase-functions\\lib\\v2\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [15132] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"6.3.2\",\"resolution\":\"D:\\\\code\\\\AplicacionPrincipal\\\\solucioneselite - copia\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\v2\\\\index.js\"}"}}
+[debug] [2025-07-21T18:51:00.311Z] [runtime-status] [15132] firebase-admin has been stubbed. {"adminResolution":{"declared":true,"installed":true,"version":"12.7.0","resolution":"D:\\code\\AplicacionPrincipal\\solucioneselite - copia\\functions\\node_modules\\firebase-admin\\lib\\index.js"}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [15132] firebase-admin has been stubbed. {\"adminResolution\":{\"declared\":true,\"installed\":true,\"version\":\"12.7.0\",\"resolution\":\"D:\\\\code\\\\AplicacionPrincipal\\\\solucioneselite - copia\\\\functions\\\\node_modules\\\\firebase-admin\\\\lib\\\\index.js\"}}"}}
+[debug] [2025-07-21T18:51:00.441Z] [runtime-status] [15132] initializeApp(DEFAULT) {"storageBucket":"servilinkstore-8f04c.firebasestorage.app","projectId":"servilinkstore-8f04c"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [15132] initializeApp(DEFAULT) {\"storageBucket\":\"servilinkstore-8f04c.firebasestorage.app\",\"projectId\":\"servilinkstore-8f04c\"}"}}
+[warn] !  functions: The Cloud Firestore emulator is not running, so calls to Firestore will affect production. {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"The Cloud Firestore emulator is not running, so calls to Firestore will affect production."}}
+[debug] [2025-07-21T18:51:00.452Z] [runtime-status] [15132] Functions runtime initialized. {"cwd":"D:\\code\\AplicacionPrincipal\\solucioneselite - copia\\functions","node_version":"22.17.0"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [15132] Functions runtime initialized. {\"cwd\":\"D:\\\\code\\\\AplicacionPrincipal\\\\solucioneselite - copia\\\\functions\",\"node_version\":\"22.17.0\"}"}}
+[debug] [2025-07-21T18:51:00.452Z] [runtime-status] [15132] Listening to port: \\?\pipe\fire_emu_eb446c6ac7bf6839 {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [15132] Listening to port: \\\\?\\pipe\\fire_emu_eb446c6ac7bf6839"}}
+[debug] [2025-07-21T18:51:00.489Z] [worker-us-central1-api-afbecb37-4259-402e-a311-ea7d02ef01e7]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-afbecb37-4259-402e-a311-ea7d02ef01e7]: IDLE"}}
+[debug] [2025-07-21T18:51:00.489Z] [worker-pool] submitRequest(triggerId=us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitRequest(triggerId=us-central1-api)"}}
+[info] i  functions: Beginning execution of "us-central1-api" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Beginning execution of \"us-central1-api\""}}
+[debug] [2025-07-21T18:51:00.490Z] [worker-us-central1-api-afbecb37-4259-402e-a311-ea7d02ef01e7]: BUSY {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-afbecb37-4259-402e-a311-ea7d02ef01e7]: BUSY"}}
+[warn] !  Google API requested!
+   - URL: "https://oauth2.googleapis.com/token"
+   - Be careful, this may be a production service. {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Google API requested!\n   - URL: \"https://oauth2.googleapis.com/token\"\n   - Be careful, this may be a production service."}}
+[debug] [2025-07-21T18:51:05.722Z] Finishing up request with event=pause {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=pause"}}
+[info] i  functions: Finished "us-central1-api" in 5232.2926ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finished \"us-central1-api\" in 5232.2926ms"}}
+[debug] [2025-07-21T18:51:05.723Z] [worker-us-central1-api-afbecb37-4259-402e-a311-ea7d02ef01e7]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-afbecb37-4259-402e-a311-ea7d02ef01e7]: IDLE"}}
+[debug] [2025-07-21T18:51:05.723Z] Finishing up request with event=finish {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=finish"}}
+[debug] [2025-07-21T18:51:05.723Z] Finishing up request with event=close {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=close"}}
+[debug] [2025-07-21T18:51:05.724Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
+[debug] [2025-07-21T18:51:46.885Z] [work-queue] {"queuedWork":["/servilinkstore-8f04c/us-central1/api/services-2025-07-21T18:51:46.885Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
+[debug] [2025-07-21T18:51:46.885Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/servilinkstore-8f04c/us-central1/api/services-2025-07-21T18:51:46.885Z"],"workRunningCount":1}
+[debug] [2025-07-21T18:51:46.885Z] Accepted request GET /servilinkstore-8f04c/us-central1/api/services --> us-central1-api
+[debug] [2025-07-21T18:51:46.888Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2025-07-21T18:51:46.888Z] [functions] Got req.url=/servilinkstore-8f04c/us-central1/api/services, mapping to path=/services {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/servilinkstore-8f04c/us-central1/api/services, mapping to path=/services"}}
+[debug] [2025-07-21T18:51:46.888Z] [worker-pool] submitRequest(triggerId=us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitRequest(triggerId=us-central1-api)"}}
+[info] i  functions: Beginning execution of "us-central1-api" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Beginning execution of \"us-central1-api\""}}
+[debug] [2025-07-21T18:51:46.889Z] [worker-us-central1-api-afbecb37-4259-402e-a311-ea7d02ef01e7]: BUSY {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-afbecb37-4259-402e-a311-ea7d02ef01e7]: BUSY"}}
+[debug] [2025-07-21T18:51:47.096Z] Finishing up request with event=pause {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=pause"}}
+[info] i  functions: Finished "us-central1-api" in 207.3743ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finished \"us-central1-api\" in 207.3743ms"}}
+[debug] [2025-07-21T18:51:47.096Z] [worker-us-central1-api-afbecb37-4259-402e-a311-ea7d02ef01e7]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-afbecb37-4259-402e-a311-ea7d02ef01e7]: IDLE"}}
+[debug] [2025-07-21T18:51:47.097Z] Finishing up request with event=finish {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=finish"}}
+[debug] [2025-07-21T18:51:47.097Z] Finishing up request with event=close {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=close"}}
+[debug] [2025-07-21T18:51:47.097Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
+[debug] [2025-07-21T18:51:53.809Z] [work-queue] {"queuedWork":["/servilinkstore-8f04c/us-central1/api/services-2025-07-21T18:51:53.809Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
+[debug] [2025-07-21T18:51:53.809Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/servilinkstore-8f04c/us-central1/api/services-2025-07-21T18:51:53.809Z"],"workRunningCount":1}
+[debug] [2025-07-21T18:51:53.809Z] Accepted request GET /servilinkstore-8f04c/us-central1/api/services --> us-central1-api
+[debug] [2025-07-21T18:51:53.811Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2025-07-21T18:51:53.811Z] [functions] Got req.url=/servilinkstore-8f04c/us-central1/api/services, mapping to path=/services {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/servilinkstore-8f04c/us-central1/api/services, mapping to path=/services"}}
+[debug] [2025-07-21T18:51:53.811Z] [worker-pool] submitRequest(triggerId=us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitRequest(triggerId=us-central1-api)"}}
+[info] i  functions: Beginning execution of "us-central1-api" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Beginning execution of \"us-central1-api\""}}
+[debug] [2025-07-21T18:51:53.811Z] [worker-us-central1-api-afbecb37-4259-402e-a311-ea7d02ef01e7]: BUSY {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-afbecb37-4259-402e-a311-ea7d02ef01e7]: BUSY"}}
+[debug] [2025-07-21T18:51:53.987Z] Finishing up request with event=pause {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=pause"}}
+[info] i  functions: Finished "us-central1-api" in 175.5961ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finished \"us-central1-api\" in 175.5961ms"}}
+[debug] [2025-07-21T18:51:53.987Z] [worker-us-central1-api-afbecb37-4259-402e-a311-ea7d02ef01e7]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-afbecb37-4259-402e-a311-ea7d02ef01e7]: IDLE"}}
+[debug] [2025-07-21T18:51:53.988Z] Finishing up request with event=finish {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=finish"}}
+[debug] [2025-07-21T18:51:53.988Z] Finishing up request with event=close {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=close"}}
+[debug] [2025-07-21T18:51:53.988Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
+[debug] [2025-07-21T19:39:11.147Z] [worker-us-central1-api-afbecb37-4259-402e-a311-ea7d02ef01e7]: exited {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-afbecb37-4259-402e-a311-ea7d02ef01e7]: exited"}}
+[debug] [2025-07-21T19:39:11.147Z] [worker-us-central1-api-afbecb37-4259-402e-a311-ea7d02ef01e7]: FINISHED {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-afbecb37-4259-402e-a311-ea7d02ef01e7]: FINISHED"}}
+[debug] [2025-07-21T19:39:11.148Z] Received signal SIGHUP 1
+[info]  
+[info] i  emulators: Received SIGHUP for the first time. Starting a clean shutdown. 
+[info] i  emulators: Please wait for a clean shutdown or send the SIGHUP signal again to stop right now. 
+[info] i  emulators: Shutting down emulators. {"metadata":{"emulator":{"name":"hub"},"message":"Shutting down emulators."}}
+[info] i  ui: Stopping Emulator UI {"metadata":{"emulator":{"name":"ui"},"message":"Stopping Emulator UI"}}
+[info] i  functions: Stopping Functions Emulator {"metadata":{"emulator":{"name":"functions"},"message":"Stopping Functions Emulator"}}
+[info] i  eventarc: Stopping Eventarc Emulator {"metadata":{"emulator":{"name":"eventarc"},"message":"Stopping Eventarc Emulator"}}
+[info] i  tasks: Stopping Cloud Tasks Emulator {"metadata":{"emulator":{"name":"tasks"},"message":"Stopping Cloud Tasks Emulator"}}
+[info] i  hub: Stopping emulator hub {"metadata":{"emulator":{"name":"hub"},"message":"Stopping emulator hub"}}
+[info] i  logging: Stopping Logging Emulator {"metadata":{"emulator":{"name":"logging"},"message":"Stopping Logging Emulator"}}
+[debug] [2025-07-21T19:39:11.160Z] Could not find VSCode notification endpoint: FetchError: request to http://localhost:40001/vscode/notify failed, reason: . If you are not running the Firebase Data Connect VSCode extension, this is expected and not an issue.
+[debug] [2025-07-21T19:39:27.487Z] ----------------------------------------------------------------------
+[debug] [2025-07-21T19:39:27.489Z] Command:       C:\Users\ASUS\AppData\Local\fnm_multishells\18136_1753126755361\node.exe C:\Users\ASUS\AppData\Local\fnm_multishells\18136_1753126755361\node_modules\firebase-tools\lib\bin\firebase.js emulators:start --only functions
+[debug] [2025-07-21T19:39:27.490Z] CLI Version:   14.10.1
+[debug] [2025-07-21T19:39:27.490Z] Platform:      win32
+[debug] [2025-07-21T19:39:27.490Z] Node Version:  v22.17.0
+[debug] [2025-07-21T19:39:27.490Z] Time:          Mon Jul 21 2025 14:39:27 GMT-0500 (hora estándar de Colombia)
+[debug] [2025-07-21T19:39:27.490Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-07-21T19:39:27.689Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-07-21T19:39:27.689Z] > authorizing via signed-in user (mensajoaquim@gmail.com)
+[info] i  emulators: Starting emulators: functions {"metadata":{"emulator":{"name":"hub"},"message":"Starting emulators: functions"}}
+[debug] [2025-07-21T19:39:27.697Z] [logging] Logging Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2025-07-21T19:39:27.697Z] assigned listening specs for emulators {"user":{"hub":[{"address":"127.0.0.1","family":"IPv4","port":4400},{"address":"::1","family":"IPv6","port":4400}],"ui":[{"address":"127.0.0.1","family":"IPv4","port":4000},{"address":"::1","family":"IPv6","port":4000}],"logging":[{"address":"127.0.0.1","family":"IPv4","port":4500}]},"metadata":{"message":"assigned listening specs for emulators"}}
+[debug] [2025-07-21T19:39:27.702Z] [hub] writing locator at C:\Users\ASUS\AppData\Local\Temp\hub-servilinkstore-8f04c.json
+[debug] [2025-07-21T19:39:27.717Z] [functions] Functions Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2025-07-21T19:39:27.717Z] [eventarc] Eventarc Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2025-07-21T19:39:27.717Z] [tasks] Cloud Tasks Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2025-07-21T19:39:27.718Z] late-assigned ports for functions and eventarc emulators {"user":{"hub":[{"address":"127.0.0.1","family":"IPv4","port":4400},{"address":"::1","family":"IPv6","port":4400}],"ui":[{"address":"127.0.0.1","family":"IPv4","port":4000},{"address":"::1","family":"IPv6","port":4000}],"logging":[{"address":"127.0.0.1","family":"IPv4","port":4500}],"functions":[{"address":"127.0.0.1","family":"IPv4","port":5001}],"eventarc":[{"address":"127.0.0.1","family":"IPv4","port":9299}],"tasks":[{"address":"127.0.0.1","family":"IPv4","port":9499}]},"metadata":{"message":"late-assigned ports for functions and eventarc emulators"}}
+[warn] !  functions: The following emulators are not running, calls to these services from the Functions emulator will affect production: apphosting, auth, firestore, database, hosting, pubsub, storage, dataconnect {"metadata":{"emulator":{"name":"functions"},"message":"The following emulators are not running, calls to these services from the Functions emulator will affect production: \u001b[1mapphosting, auth, firestore, database, hosting, pubsub, storage, dataconnect\u001b[22m"}}
+[debug] [2025-07-21T19:39:27.732Z] defaultcredentials: writing to file C:\Users\ASUS\AppData\Roaming\firebase\mensajoaquim_gmail_com_application_default_credentials.json
+[debug] [2025-07-21T19:39:27.733Z] Setting GAC to C:\Users\ASUS\AppData\Roaming\firebase\mensajoaquim_gmail_com_application_default_credentials.json {"metadata":{"emulator":{"name":"functions"},"message":"Setting GAC to C:\\Users\\ASUS\\AppData\\Roaming\\firebase\\mensajoaquim_gmail_com_application_default_credentials.json"}}
+[debug] [2025-07-21T19:39:27.734Z] Checked if tokens are valid: false, expires at: 1753126360810
+[debug] [2025-07-21T19:39:27.734Z] Checked if tokens are valid: false, expires at: 1753126360810
+[debug] [2025-07-21T19:39:27.734Z] > refreshing access token with scopes: []
+[debug] [2025-07-21T19:39:27.736Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2025-07-21T19:39:27.736Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-07-21T19:39:27.986Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2025-07-21T19:39:27.986Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-07-21T19:39:28.001Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/servilinkstore-8f04c/adminSdkConfig [none]
+[debug] [2025-07-21T19:39:28.573Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/servilinkstore-8f04c/adminSdkConfig 200
+[debug] [2025-07-21T19:39:28.573Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/servilinkstore-8f04c/adminSdkConfig {"projectId":"servilinkstore-8f04c","storageBucket":"servilinkstore-8f04c.firebasestorage.app"}
+[info] i  functions: Watching "D:\code\AplicacionPrincipal\solucioneselite - copia\functions" for Cloud Functions... {"metadata":{"emulator":{"name":"functions"},"message":"Watching \"D:\\code\\AplicacionPrincipal\\solucioneselite - copia\\functions\" for Cloud Functions..."}}
+[debug] [2025-07-21T19:39:28.597Z] Validating nodejs source
+[warn] !  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[debug] [2025-07-21T19:39:29.842Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "22"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "firebase-admin": "^12.6.0",
+    "firebase-functions": "^6.0.1"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^3.1.0"
+  },
+  "private": true
+}
+[debug] [2025-07-21T19:39:29.842Z] Building nodejs source
+[debug] [2025-07-21T19:39:29.842Z] Failed to find version of module node: reached end of search path D:\code\AplicacionPrincipal\solucioneselite - copia\functions\node_modules
+[info] +  functions: Using node@22 from host. 
+[debug] [2025-07-21T19:39:29.844Z] Could not find functions.yaml. Must use http discovery
+[debug] [2025-07-21T19:39:29.849Z] Found firebase-functions binary at 'D:\code\AplicacionPrincipal\solucioneselite - copia\functions\node_modules\.bin\firebase-functions'
+[info] Serving at port 8838
+
+[debug] [2025-07-21T19:39:30.674Z] Got response from /__/functions.yaml {"endpoints":{"api":{"availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"concurrency":null,"serviceAccountEmail":null,"vpc":null,"platform":"gcfv2","labels":{},"httpsTrigger":{},"entryPoint":"api"}},"specVersion":"v1alpha1","requiredAPIs":[],"extensions":{}}
+[info] +  functions: Loaded functions definitions from source: api. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: api."}}
+[info] +  functions[us-central1-api]: http function initialized (http://127.0.0.1:5001/servilinkstore-8f04c/us-central1/api). {"metadata":{"emulator":{"name":"functions"},"message":"\u001b[1mhttp\u001b[22m function initialized (http://127.0.0.1:5001/servilinkstore-8f04c/us-central1/api)."}}
+[debug] [2025-07-21T19:39:34.707Z] Could not find VSCode notification endpoint: FetchError: request to http://localhost:40001/vscode/notify failed, reason: . If you are not running the Firebase Data Connect VSCode extension, this is expected and not an issue.
+[info] 
+┌─────────────────────────────────────────────────────────────┐
+│ ✔  All emulators ready! It is now safe to connect your app. │
+│ i  View Emulator UI at http://127.0.0.1:4000/               │
+└─────────────────────────────────────────────────────────────┘
+
+┌───────────┬────────────────┬─────────────────────────────────┐
+│ Emulator  │ Host:Port      │ View in Emulator UI             │
+├───────────┼────────────────┼─────────────────────────────────┤
+│ Functions │ 127.0.0.1:5001 │ http://127.0.0.1:4000/functions │
+└───────────┴────────────────┴─────────────────────────────────┘
+  Emulator Hub host: 127.0.0.1 port: 4400
+  Other reserved ports: 4500
+
+Issues? Report them at https://github.com/firebase/firebase-tools/issues and attach the *-debug.log files.
+ 
+[debug] [2025-07-21T19:39:53.571Z] [work-queue] {"queuedWork":["/servilinkstore-8f04c/us-central1/api/services-2025-07-21T19:39:53.570Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
+[debug] [2025-07-21T19:39:53.571Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/servilinkstore-8f04c/us-central1/api/services-2025-07-21T19:39:53.570Z"],"workRunningCount":1}
+[debug] [2025-07-21T19:39:53.571Z] Accepted request OPTIONS /servilinkstore-8f04c/us-central1/api/services --> us-central1-api
+[debug] [2025-07-21T19:39:53.574Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2025-07-21T19:39:53.574Z] [functions] Got req.url=/servilinkstore-8f04c/us-central1/api/services, mapping to path=/services {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/servilinkstore-8f04c/us-central1/api/services, mapping to path=/services"}}
+[debug] [2025-07-21T19:39:53.586Z] [worker-pool] addWorker(us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] addWorker(us-central1-api)"}}
+[debug] [2025-07-21T19:39:53.587Z] [worker-pool] Adding worker with key us-central1-api, total=1 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Adding worker with key us-central1-api, total=1"}}
+[debug] [2025-07-21T19:39:54.631Z] [runtime-status] [9952] Resolved module firebase-admin {"declared":true,"installed":true,"version":"12.7.0","resolution":"D:\\code\\AplicacionPrincipal\\solucioneselite - copia\\functions\\node_modules\\firebase-admin\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [9952] Resolved module firebase-admin {\"declared\":true,\"installed\":true,\"version\":\"12.7.0\",\"resolution\":\"D:\\\\code\\\\AplicacionPrincipal\\\\solucioneselite - copia\\\\functions\\\\node_modules\\\\firebase-admin\\\\lib\\\\index.js\"}"}}
+[debug] [2025-07-21T19:39:54.632Z] [runtime-status] [9952] Resolved module firebase-functions {"declared":true,"installed":true,"version":"6.3.2","resolution":"D:\\code\\AplicacionPrincipal\\solucioneselite - copia\\functions\\node_modules\\firebase-functions\\lib\\v2\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [9952] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"6.3.2\",\"resolution\":\"D:\\\\code\\\\AplicacionPrincipal\\\\solucioneselite - copia\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\v2\\\\index.js\"}"}}
+[debug] [2025-07-21T19:39:54.633Z] [runtime-status] [9952] Outgoing network have been stubbed. [{"name":"http","status":"mocked"},{"name":"http","status":"mocked"},{"name":"https","status":"mocked"},{"name":"https","status":"mocked"},{"name":"net","status":"mocked"}] {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [9952] Outgoing network have been stubbed. [{\"name\":\"http\",\"status\":\"mocked\"},{\"name\":\"http\",\"status\":\"mocked\"},{\"name\":\"https\",\"status\":\"mocked\"},{\"name\":\"https\",\"status\":\"mocked\"},{\"name\":\"net\",\"status\":\"mocked\"}]"}}
+[debug] [2025-07-21T19:39:54.634Z] [runtime-status] [9952] Resolved module firebase-functions {"declared":true,"installed":true,"version":"6.3.2","resolution":"D:\\code\\AplicacionPrincipal\\solucioneselite - copia\\functions\\node_modules\\firebase-functions\\lib\\v2\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [9952] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"6.3.2\",\"resolution\":\"D:\\\\code\\\\AplicacionPrincipal\\\\solucioneselite - copia\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\v2\\\\index.js\"}"}}
+[debug] [2025-07-21T19:39:55.059Z] [runtime-status] [9952] Checked functions.config() {"config":{}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [9952] Checked functions.config() {\"config\":{}}"}}
+[debug] [2025-07-21T19:39:55.059Z] [runtime-status] [9952] firebase-functions has been stubbed. {"functionsResolution":{"declared":true,"installed":true,"version":"6.3.2","resolution":"D:\\code\\AplicacionPrincipal\\solucioneselite - copia\\functions\\node_modules\\firebase-functions\\lib\\v2\\index.js"}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [9952] firebase-functions has been stubbed. {\"functionsResolution\":{\"declared\":true,\"installed\":true,\"version\":\"6.3.2\",\"resolution\":\"D:\\\\code\\\\AplicacionPrincipal\\\\solucioneselite - copia\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\v2\\\\index.js\"}}"}}
+[debug] [2025-07-21T19:39:55.060Z] [runtime-status] [9952] Resolved module firebase-functions {"declared":true,"installed":true,"version":"6.3.2","resolution":"D:\\code\\AplicacionPrincipal\\solucioneselite - copia\\functions\\node_modules\\firebase-functions\\lib\\v2\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [9952] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"6.3.2\",\"resolution\":\"D:\\\\code\\\\AplicacionPrincipal\\\\solucioneselite - copia\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\v2\\\\index.js\"}"}}
+[debug] [2025-07-21T19:39:55.067Z] [runtime-status] [9952] Resolved module firebase-admin {"declared":true,"installed":true,"version":"12.7.0","resolution":"D:\\code\\AplicacionPrincipal\\solucioneselite - copia\\functions\\node_modules\\firebase-admin\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [9952] Resolved module firebase-admin {\"declared\":true,\"installed\":true,\"version\":\"12.7.0\",\"resolution\":\"D:\\\\code\\\\AplicacionPrincipal\\\\solucioneselite - copia\\\\functions\\\\node_modules\\\\firebase-admin\\\\lib\\\\index.js\"}"}}
+[debug] [2025-07-21T19:39:55.070Z] [runtime-status] [9952] Resolved module firebase-functions {"declared":true,"installed":true,"version":"6.3.2","resolution":"D:\\code\\AplicacionPrincipal\\solucioneselite - copia\\functions\\node_modules\\firebase-functions\\lib\\v2\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [9952] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"6.3.2\",\"resolution\":\"D:\\\\code\\\\AplicacionPrincipal\\\\solucioneselite - copia\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\v2\\\\index.js\"}"}}
+[debug] [2025-07-21T19:39:55.070Z] [runtime-status] [9952] firebase-admin has been stubbed. {"adminResolution":{"declared":true,"installed":true,"version":"12.7.0","resolution":"D:\\code\\AplicacionPrincipal\\solucioneselite - copia\\functions\\node_modules\\firebase-admin\\lib\\index.js"}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [9952] firebase-admin has been stubbed. {\"adminResolution\":{\"declared\":true,\"installed\":true,\"version\":\"12.7.0\",\"resolution\":\"D:\\\\code\\\\AplicacionPrincipal\\\\solucioneselite - copia\\\\functions\\\\node_modules\\\\firebase-admin\\\\lib\\\\index.js\"}}"}}
+[debug] [2025-07-21T19:39:55.194Z] [runtime-status] [9952] initializeApp(DEFAULT) {"storageBucket":"servilinkstore-8f04c.firebasestorage.app","projectId":"servilinkstore-8f04c"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [9952] initializeApp(DEFAULT) {\"storageBucket\":\"servilinkstore-8f04c.firebasestorage.app\",\"projectId\":\"servilinkstore-8f04c\"}"}}
+[warn] !  functions: The Cloud Firestore emulator is not running, so calls to Firestore will affect production. {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"The Cloud Firestore emulator is not running, so calls to Firestore will affect production."}}
+[debug] [2025-07-21T19:39:55.203Z] [runtime-status] [9952] Functions runtime initialized. {"cwd":"D:\\code\\AplicacionPrincipal\\solucioneselite - copia\\functions","node_version":"22.17.0"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [9952] Functions runtime initialized. {\"cwd\":\"D:\\\\code\\\\AplicacionPrincipal\\\\solucioneselite - copia\\\\functions\",\"node_version\":\"22.17.0\"}"}}
+[debug] [2025-07-21T19:39:55.203Z] [runtime-status] [9952] Listening to port: \\?\pipe\fire_emu_4796e35c5b9d5e43 {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [9952] Listening to port: \\\\?\\pipe\\fire_emu_4796e35c5b9d5e43"}}
+[debug] [2025-07-21T19:39:55.256Z] [worker-us-central1-api-76f1f252-e218-4d99-a5bc-94bc3ac78109]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-76f1f252-e218-4d99-a5bc-94bc3ac78109]: IDLE"}}
+[debug] [2025-07-21T19:39:55.256Z] [worker-pool] submitRequest(triggerId=us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitRequest(triggerId=us-central1-api)"}}
+[info] i  functions: Beginning execution of "us-central1-api" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Beginning execution of \"us-central1-api\""}}
+[debug] [2025-07-21T19:39:55.257Z] [worker-us-central1-api-76f1f252-e218-4d99-a5bc-94bc3ac78109]: BUSY {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-76f1f252-e218-4d99-a5bc-94bc3ac78109]: BUSY"}}
+[debug] [2025-07-21T19:39:55.260Z] Finishing up request with event=pause {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=pause"}}
+[info] i  functions: Finished "us-central1-api" in 3.1949ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finished \"us-central1-api\" in 3.1949ms"}}
+[debug] [2025-07-21T19:39:55.260Z] [worker-us-central1-api-76f1f252-e218-4d99-a5bc-94bc3ac78109]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-76f1f252-e218-4d99-a5bc-94bc3ac78109]: IDLE"}}
+[debug] [2025-07-21T19:39:55.260Z] Finishing up request with event=finish {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=finish"}}
+[debug] [2025-07-21T19:39:55.261Z] Finishing up request with event=close {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=close"}}
+[debug] [2025-07-21T19:39:55.261Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
+[debug] [2025-07-21T19:39:55.262Z] [work-queue] {"queuedWork":["/servilinkstore-8f04c/us-central1/api/services-2025-07-21T19:39:55.262Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
+[debug] [2025-07-21T19:39:55.262Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/servilinkstore-8f04c/us-central1/api/services-2025-07-21T19:39:55.262Z"],"workRunningCount":1}
+[debug] [2025-07-21T19:39:55.262Z] Accepted request GET /servilinkstore-8f04c/us-central1/api/services --> us-central1-api
+[debug] [2025-07-21T19:39:55.263Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2025-07-21T19:39:55.263Z] [functions] Got req.url=/servilinkstore-8f04c/us-central1/api/services, mapping to path=/services {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/servilinkstore-8f04c/us-central1/api/services, mapping to path=/services"}}
+[debug] [2025-07-21T19:39:55.263Z] [worker-pool] submitRequest(triggerId=us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitRequest(triggerId=us-central1-api)"}}
+[info] i  functions: Beginning execution of "us-central1-api" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Beginning execution of \"us-central1-api\""}}
+[debug] [2025-07-21T19:39:55.263Z] [worker-us-central1-api-76f1f252-e218-4d99-a5bc-94bc3ac78109]: BUSY {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-76f1f252-e218-4d99-a5bc-94bc3ac78109]: BUSY"}}
+[warn] !  Google API requested!
+   - URL: "https://oauth2.googleapis.com/token"
+   - Be careful, this may be a production service. {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Google API requested!\n   - URL: \"https://oauth2.googleapis.com/token\"\n   - Be careful, this may be a production service."}}
+[debug] [2025-07-21T19:39:56.325Z] Finishing up request with event=pause {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=pause"}}
+[info] i  functions: Finished "us-central1-api" in 1062.3911ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finished \"us-central1-api\" in 1062.3911ms"}}
+[debug] [2025-07-21T19:39:56.326Z] [worker-us-central1-api-76f1f252-e218-4d99-a5bc-94bc3ac78109]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-76f1f252-e218-4d99-a5bc-94bc3ac78109]: IDLE"}}
+[debug] [2025-07-21T19:39:56.326Z] Finishing up request with event=finish {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=finish"}}
+[debug] [2025-07-21T19:39:56.326Z] Finishing up request with event=close {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=close"}}
+[debug] [2025-07-21T19:39:56.327Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
+[debug] [2025-07-21T19:40:42.370Z] [work-queue] {"queuedWork":["/servilinkstore-8f04c/us-central1/api/services-2025-07-21T19:40:42.370Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
+[debug] [2025-07-21T19:40:42.371Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/servilinkstore-8f04c/us-central1/api/services-2025-07-21T19:40:42.370Z"],"workRunningCount":1}
+[debug] [2025-07-21T19:40:42.371Z] Accepted request OPTIONS /servilinkstore-8f04c/us-central1/api/services --> us-central1-api
+[debug] [2025-07-21T19:40:42.374Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2025-07-21T19:40:42.374Z] [functions] Got req.url=/servilinkstore-8f04c/us-central1/api/services, mapping to path=/services {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/servilinkstore-8f04c/us-central1/api/services, mapping to path=/services"}}
+[debug] [2025-07-21T19:40:42.374Z] [worker-pool] submitRequest(triggerId=us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitRequest(triggerId=us-central1-api)"}}
+[info] i  functions: Beginning execution of "us-central1-api" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Beginning execution of \"us-central1-api\""}}
+[debug] [2025-07-21T19:40:42.375Z] [worker-us-central1-api-76f1f252-e218-4d99-a5bc-94bc3ac78109]: BUSY {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-76f1f252-e218-4d99-a5bc-94bc3ac78109]: BUSY"}}
+[debug] [2025-07-21T19:40:42.377Z] Finishing up request with event=pause {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=pause"}}
+[info] i  functions: Finished "us-central1-api" in 2.4146ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finished \"us-central1-api\" in 2.4146ms"}}
+[debug] [2025-07-21T19:40:42.377Z] [worker-us-central1-api-76f1f252-e218-4d99-a5bc-94bc3ac78109]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-76f1f252-e218-4d99-a5bc-94bc3ac78109]: IDLE"}}
+[debug] [2025-07-21T19:40:42.378Z] Finishing up request with event=finish {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=finish"}}
+[debug] [2025-07-21T19:40:42.378Z] Finishing up request with event=close {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=close"}}
+[debug] [2025-07-21T19:40:42.378Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
+[debug] [2025-07-21T19:40:42.380Z] [work-queue] {"queuedWork":["/servilinkstore-8f04c/us-central1/api/services-2025-07-21T19:40:42.380Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
+[debug] [2025-07-21T19:40:42.381Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/servilinkstore-8f04c/us-central1/api/services-2025-07-21T19:40:42.380Z"],"workRunningCount":1}
+[debug] [2025-07-21T19:40:42.381Z] Accepted request GET /servilinkstore-8f04c/us-central1/api/services --> us-central1-api
+[debug] [2025-07-21T19:40:42.383Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2025-07-21T19:40:42.383Z] [functions] Got req.url=/servilinkstore-8f04c/us-central1/api/services, mapping to path=/services {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/servilinkstore-8f04c/us-central1/api/services, mapping to path=/services"}}
+[debug] [2025-07-21T19:40:42.384Z] [worker-pool] submitRequest(triggerId=us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitRequest(triggerId=us-central1-api)"}}
+[info] i  functions: Beginning execution of "us-central1-api" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Beginning execution of \"us-central1-api\""}}
+[debug] [2025-07-21T19:40:42.384Z] [worker-us-central1-api-76f1f252-e218-4d99-a5bc-94bc3ac78109]: BUSY {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-76f1f252-e218-4d99-a5bc-94bc3ac78109]: BUSY"}}
+[debug] [2025-07-21T19:40:42.633Z] Finishing up request with event=pause {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=pause"}}
+[info] i  functions: Finished "us-central1-api" in 248.889ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finished \"us-central1-api\" in 248.889ms"}}
+[debug] [2025-07-21T19:40:42.633Z] [worker-us-central1-api-76f1f252-e218-4d99-a5bc-94bc3ac78109]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-76f1f252-e218-4d99-a5bc-94bc3ac78109]: IDLE"}}
+[debug] [2025-07-21T19:40:42.633Z] Finishing up request with event=finish {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=finish"}}
+[debug] [2025-07-21T19:40:42.633Z] Finishing up request with event=close {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=close"}}
+[debug] [2025-07-21T19:40:42.633Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
+[debug] [2025-07-21T19:54:54.761Z] File D:\code\AplicacionPrincipal\solucioneselite - copia\functions\routes\auth.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File D:\\code\\AplicacionPrincipal\\solucioneselite - copia\\functions\\routes\\auth.js changed, reloading triggers"}}
+[debug] [2025-07-21T19:54:55.762Z] Validating nodejs source
+[warn] !  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[debug] [2025-07-21T19:54:56.871Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "22"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "firebase-admin": "^12.6.0",
+    "firebase-functions": "^6.0.1"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^3.1.0"
+  },
+  "private": true
+}
+[debug] [2025-07-21T19:54:56.871Z] Building nodejs source
+[debug] [2025-07-21T19:54:56.871Z] Failed to find version of module node: reached end of search path D:\code\AplicacionPrincipal\solucioneselite - copia\functions\node_modules
+[info] +  functions: Using node@22 from host. 
+[debug] [2025-07-21T19:54:56.872Z] Could not find functions.yaml. Must use http discovery
+[debug] [2025-07-21T19:54:56.877Z] Found firebase-functions binary at 'D:\code\AplicacionPrincipal\solucioneselite - copia\functions\node_modules\.bin\firebase-functions'
+[info] Serving at port 8267
+
+[debug] [2025-07-21T19:54:57.609Z] Got response from /__/functions.yaml {"endpoints":{"api":{"availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"concurrency":null,"serviceAccountEmail":null,"vpc":null,"platform":"gcfv2","labels":{},"httpsTrigger":{},"entryPoint":"api"}},"specVersion":"v1alpha1","requiredAPIs":[],"extensions":{}}
+[info] +  functions: Loaded functions definitions from source: api. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: api."}}
+[debug] [2025-07-21T19:55:01.633Z] [worker-pool] Shutting down IDLE worker (us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Shutting down IDLE worker (us-central1-api)"}}
+[debug] [2025-07-21T19:55:01.634Z] [worker-us-central1-api-76f1f252-e218-4d99-a5bc-94bc3ac78109]: FINISHING {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-76f1f252-e218-4d99-a5bc-94bc3ac78109]: FINISHING"}}
+[debug] [2025-07-21T19:55:01.643Z] [worker-us-central1-api-76f1f252-e218-4d99-a5bc-94bc3ac78109]: exited {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-76f1f252-e218-4d99-a5bc-94bc3ac78109]: exited"}}
+[debug] [2025-07-21T19:55:01.643Z] [worker-us-central1-api-76f1f252-e218-4d99-a5bc-94bc3ac78109]: FINISHED {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-76f1f252-e218-4d99-a5bc-94bc3ac78109]: FINISHED"}}
+[debug] [2025-07-21T21:48:25.035Z] File D:\code\AplicacionPrincipal\solucioneselite - copia\functions\index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File D:\\code\\AplicacionPrincipal\\solucioneselite - copia\\functions\\index.js changed, reloading triggers"}}
+[debug] [2025-07-21T21:48:26.039Z] Validating nodejs source
+[warn] !  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[debug] [2025-07-21T21:48:27.504Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "22"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "firebase-admin": "^12.6.0",
+    "firebase-functions": "^6.0.1"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^3.1.0"
+  },
+  "private": true
+}
+[debug] [2025-07-21T21:48:27.504Z] Building nodejs source
+[debug] [2025-07-21T21:48:27.504Z] Failed to find version of module node: reached end of search path D:\code\AplicacionPrincipal\solucioneselite - copia\functions\node_modules
+[info] +  functions: Using node@22 from host. 
+[debug] [2025-07-21T21:48:27.505Z] Could not find functions.yaml. Must use http discovery
+[debug] [2025-07-21T21:48:27.511Z] Found firebase-functions binary at 'D:\code\AplicacionPrincipal\solucioneselite - copia\functions\node_modules\.bin\firebase-functions'
+[info] Serving at port 8621
+
+[debug] [2025-07-21T21:48:28.503Z] Got response from /__/functions.yaml {"endpoints":{"api":{"availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"concurrency":null,"serviceAccountEmail":null,"vpc":null,"platform":"gcfv2","labels":{},"httpsTrigger":{},"entryPoint":"api"}},"specVersion":"v1alpha1","requiredAPIs":[],"extensions":{}}
+[info] +  functions: Loaded functions definitions from source: api. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: api."}}
+[debug] [2025-07-21T22:24:17.584Z] File D:\code\AplicacionPrincipal\solucioneselite - copia\functions\package.json changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File D:\\code\\AplicacionPrincipal\\solucioneselite - copia\\functions\\package.json changed, reloading triggers"}}
+[debug] [2025-07-21T22:24:17.691Z] File D:\code\AplicacionPrincipal\solucioneselite - copia\functions\package-lock.json changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File D:\\code\\AplicacionPrincipal\\solucioneselite - copia\\functions\\package-lock.json changed, reloading triggers"}}
+[debug] [2025-07-21T22:24:18.699Z] Validating nodejs source
+[warn] !  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[debug] [2025-07-21T22:24:19.770Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "22"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.0",
+    "express": "^4.18.2",
+    "firebase-admin": "^12.6.0",
+    "firebase-functions": "^6.0.1"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^3.1.0"
+  },
+  "private": true
+}
+[debug] [2025-07-21T22:24:19.770Z] Building nodejs source
+[debug] [2025-07-21T22:24:19.770Z] Failed to find version of module node: reached end of search path D:\code\AplicacionPrincipal\solucioneselite - copia\functions\node_modules
+[info] +  functions: Using node@22 from host. 
+[debug] [2025-07-21T22:24:19.780Z] Failed to validate key FIREBASE_API_KEY: Error: Key FIREBASE_API_KEY starts with a reserved prefix (X_GOOGLE_ FIREBASE_ EXT_)
+[debug] [2025-07-21T22:24:19.780Z] Failed to validate key FIREBASE_AUTH_DOMAIN: Error: Key FIREBASE_AUTH_DOMAIN starts with a reserved prefix (X_GOOGLE_ FIREBASE_ EXT_)
+[debug] [2025-07-21T22:24:19.780Z] Failed to validate key FIREBASE_PROJECT_ID: Error: Key FIREBASE_PROJECT_ID starts with a reserved prefix (X_GOOGLE_ FIREBASE_ EXT_)
+[debug] [2025-07-21T22:24:19.780Z] Failed to validate key FIREBASE_STORAGE_BUCKET: Error: Key FIREBASE_STORAGE_BUCKET starts with a reserved prefix (X_GOOGLE_ FIREBASE_ EXT_)
+[debug] [2025-07-21T22:24:19.780Z] Failed to validate key FIREBASE_MESSAGING_SENDER_ID: Error: Key FIREBASE_MESSAGING_SENDER_ID starts with a reserved prefix (X_GOOGLE_ FIREBASE_ EXT_)
+[debug] [2025-07-21T22:24:19.780Z] Failed to validate key FIREBASE_APP_ID: Error: Key FIREBASE_APP_ID starts with a reserved prefix (X_GOOGLE_ FIREBASE_ EXT_)
+[error] !!  functions: Failed to load function definition from source: FirebaseError: Failed to load environment variables from .env. {"metadata":{"emulator":{"name":"functions"},"message":"Failed to load function definition from source: FirebaseError: Failed to load environment variables from .env."}}
+[debug] [2025-07-21T22:25:00.703Z] File D:\code\AplicacionPrincipal\solucioneselite - copia\functions\index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File D:\\code\\AplicacionPrincipal\\solucioneselite - copia\\functions\\index.js changed, reloading triggers"}}
+[debug] [2025-07-21T22:25:01.712Z] Validating nodejs source
+[warn] !  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[debug] [2025-07-21T22:25:02.776Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "22"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.0",
+    "express": "^4.18.2",
+    "firebase-admin": "^12.6.0",
+    "firebase-functions": "^6.0.1"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^3.1.0"
+  },
+  "private": true
+}
+[debug] [2025-07-21T22:25:02.776Z] Building nodejs source
+[debug] [2025-07-21T22:25:02.776Z] Failed to find version of module node: reached end of search path D:\code\AplicacionPrincipal\solucioneselite - copia\functions\node_modules
+[info] +  functions: Using node@22 from host. 
+[debug] [2025-07-21T22:25:02.777Z] Failed to validate key FIREBASE_API_KEY: Error: Key FIREBASE_API_KEY starts with a reserved prefix (X_GOOGLE_ FIREBASE_ EXT_)
+[debug] [2025-07-21T22:25:02.778Z] Failed to validate key FIREBASE_AUTH_DOMAIN: Error: Key FIREBASE_AUTH_DOMAIN starts with a reserved prefix (X_GOOGLE_ FIREBASE_ EXT_)
+[debug] [2025-07-21T22:25:02.778Z] Failed to validate key FIREBASE_PROJECT_ID: Error: Key FIREBASE_PROJECT_ID starts with a reserved prefix (X_GOOGLE_ FIREBASE_ EXT_)
+[debug] [2025-07-21T22:25:02.778Z] Failed to validate key FIREBASE_STORAGE_BUCKET: Error: Key FIREBASE_STORAGE_BUCKET starts with a reserved prefix (X_GOOGLE_ FIREBASE_ EXT_)
+[debug] [2025-07-21T22:25:02.778Z] Failed to validate key FIREBASE_MESSAGING_SENDER_ID: Error: Key FIREBASE_MESSAGING_SENDER_ID starts with a reserved prefix (X_GOOGLE_ FIREBASE_ EXT_)
+[debug] [2025-07-21T22:25:02.778Z] Failed to validate key FIREBASE_APP_ID: Error: Key FIREBASE_APP_ID starts with a reserved prefix (X_GOOGLE_ FIREBASE_ EXT_)
+[error] !!  functions: Failed to load function definition from source: FirebaseError: Failed to load environment variables from .env. {"metadata":{"emulator":{"name":"functions"},"message":"Failed to load function definition from source: FirebaseError: Failed to load environment variables from .env."}}
+[debug] [2025-07-21T22:26:56.355Z] File D:\code\AplicacionPrincipal\solucioneselite - copia\functions\routes\auth.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File D:\\code\\AplicacionPrincipal\\solucioneselite - copia\\functions\\routes\\auth.js changed, reloading triggers"}}
+[debug] [2025-07-21T22:26:57.367Z] Validating nodejs source
+[warn] !  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[debug] [2025-07-21T22:26:58.365Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "22"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.0",
+    "express": "^4.18.2",
+    "firebase-admin": "^12.6.0",
+    "firebase-functions": "^6.0.1"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^3.1.0"
+  },
+  "private": true
+}
+[debug] [2025-07-21T22:26:58.365Z] Building nodejs source
+[debug] [2025-07-21T22:26:58.365Z] Failed to find version of module node: reached end of search path D:\code\AplicacionPrincipal\solucioneselite - copia\functions\node_modules
+[info] +  functions: Using node@22 from host. 
+[debug] [2025-07-21T22:26:58.366Z] Failed to validate key FIREBASE_API_KEY: Error: Key FIREBASE_API_KEY starts with a reserved prefix (X_GOOGLE_ FIREBASE_ EXT_)
+[debug] [2025-07-21T22:26:58.366Z] Failed to validate key FIREBASE_AUTH_DOMAIN: Error: Key FIREBASE_AUTH_DOMAIN starts with a reserved prefix (X_GOOGLE_ FIREBASE_ EXT_)
+[debug] [2025-07-21T22:26:58.366Z] Failed to validate key FIREBASE_PROJECT_ID: Error: Key FIREBASE_PROJECT_ID starts with a reserved prefix (X_GOOGLE_ FIREBASE_ EXT_)
+[debug] [2025-07-21T22:26:58.366Z] Failed to validate key FIREBASE_STORAGE_BUCKET: Error: Key FIREBASE_STORAGE_BUCKET starts with a reserved prefix (X_GOOGLE_ FIREBASE_ EXT_)
+[debug] [2025-07-21T22:26:58.366Z] Failed to validate key FIREBASE_MESSAGING_SENDER_ID: Error: Key FIREBASE_MESSAGING_SENDER_ID starts with a reserved prefix (X_GOOGLE_ FIREBASE_ EXT_)
+[debug] [2025-07-21T22:26:58.366Z] Failed to validate key FIREBASE_APP_ID: Error: Key FIREBASE_APP_ID starts with a reserved prefix (X_GOOGLE_ FIREBASE_ EXT_)
+[error] !!  functions: Failed to load function definition from source: FirebaseError: Failed to load environment variables from .env. {"metadata":{"emulator":{"name":"functions"},"message":"Failed to load function definition from source: FirebaseError: Failed to load environment variables from .env."}}
+[debug] [2025-07-21T22:31:22.778Z] [work-queue] {"queuedWork":["/servilinkstore-8f04c/us-central1/api/auth/login-2025-07-21T22:31:22.777Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
+[debug] [2025-07-21T22:31:22.778Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/servilinkstore-8f04c/us-central1/api/auth/login-2025-07-21T22:31:22.777Z"],"workRunningCount":1}
+[debug] [2025-07-21T22:31:22.778Z] Accepted request OPTIONS /servilinkstore-8f04c/us-central1/api/auth/login --> us-central1-api
+[debug] [2025-07-21T22:31:22.782Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2025-07-21T22:31:22.783Z] [functions] Got req.url=/servilinkstore-8f04c/us-central1/api/auth/login, mapping to path=/auth/login {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/servilinkstore-8f04c/us-central1/api/auth/login, mapping to path=/auth/login"}}
+[debug] [2025-07-21T22:31:22.783Z] [worker-pool] Cleaned up workers for us-central1-api: 1 --> 0 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Cleaned up workers for us-central1-api: 1 --> 0"}}
+[debug] [2025-07-21T22:31:22.784Z] Failed to validate key FIREBASE_API_KEY: Error: Key FIREBASE_API_KEY starts with a reserved prefix (X_GOOGLE_ FIREBASE_ EXT_)
+[debug] [2025-07-21T22:31:22.784Z] Failed to validate key FIREBASE_AUTH_DOMAIN: Error: Key FIREBASE_AUTH_DOMAIN starts with a reserved prefix (X_GOOGLE_ FIREBASE_ EXT_)
+[debug] [2025-07-21T22:31:22.784Z] Failed to validate key FIREBASE_PROJECT_ID: Error: Key FIREBASE_PROJECT_ID starts with a reserved prefix (X_GOOGLE_ FIREBASE_ EXT_)
+[debug] [2025-07-21T22:31:22.784Z] Failed to validate key FIREBASE_STORAGE_BUCKET: Error: Key FIREBASE_STORAGE_BUCKET starts with a reserved prefix (X_GOOGLE_ FIREBASE_ EXT_)
+[debug] [2025-07-21T22:31:22.784Z] Failed to validate key FIREBASE_MESSAGING_SENDER_ID: Error: Key FIREBASE_MESSAGING_SENDER_ID starts with a reserved prefix (X_GOOGLE_ FIREBASE_ EXT_)
+[debug] [2025-07-21T22:31:22.784Z] Failed to validate key FIREBASE_APP_ID: Error: Key FIREBASE_APP_ID starts with a reserved prefix (X_GOOGLE_ FIREBASE_ EXT_)
+[debug] [2025-07-21T22:31:22.784Z] Failed to load local environment variables Failed to load environment variables from .env. {"name":"FirebaseError","children":[{"key":"FIREBASE_API_KEY"},{"key":"FIREBASE_AUTH_DOMAIN"},{"key":"FIREBASE_PROJECT_ID"},{"key":"FIREBASE_STORAGE_BUCKET"},{"key":"FIREBASE_MESSAGING_SENDER_ID"},{"key":"FIREBASE_APP_ID"}],"exit":2,"message":"Failed to load environment variables from .env.","status":500}
+[debug] [2025-07-21T22:31:22.794Z] [worker-pool] addWorker(us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] addWorker(us-central1-api)"}}
+[debug] [2025-07-21T22:31:22.795Z] [worker-pool] Adding worker with key us-central1-api, total=1 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Adding worker with key us-central1-api, total=1"}}
+[debug] [2025-07-21T22:31:23.863Z] [runtime-status] [420] Resolved module firebase-admin {"declared":true,"installed":true,"version":"12.7.0","resolution":"D:\\code\\AplicacionPrincipal\\solucioneselite - copia\\functions\\node_modules\\firebase-admin\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [420] Resolved module firebase-admin {\"declared\":true,\"installed\":true,\"version\":\"12.7.0\",\"resolution\":\"D:\\\\code\\\\AplicacionPrincipal\\\\solucioneselite - copia\\\\functions\\\\node_modules\\\\firebase-admin\\\\lib\\\\index.js\"}"}}
+[debug] [2025-07-21T22:31:23.865Z] [runtime-status] [420] Resolved module firebase-functions {"declared":true,"installed":true,"version":"6.3.2","resolution":"D:\\code\\AplicacionPrincipal\\solucioneselite - copia\\functions\\node_modules\\firebase-functions\\lib\\v2\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [420] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"6.3.2\",\"resolution\":\"D:\\\\code\\\\AplicacionPrincipal\\\\solucioneselite - copia\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\v2\\\\index.js\"}"}}
+[debug] [2025-07-21T22:31:23.865Z] [runtime-status] [420] Outgoing network have been stubbed. [{"name":"http","status":"mocked"},{"name":"http","status":"mocked"},{"name":"https","status":"mocked"},{"name":"https","status":"mocked"},{"name":"net","status":"mocked"}] {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [420] Outgoing network have been stubbed. [{\"name\":\"http\",\"status\":\"mocked\"},{\"name\":\"http\",\"status\":\"mocked\"},{\"name\":\"https\",\"status\":\"mocked\"},{\"name\":\"https\",\"status\":\"mocked\"},{\"name\":\"net\",\"status\":\"mocked\"}]"}}
+[debug] [2025-07-21T22:31:23.866Z] [runtime-status] [420] Resolved module firebase-functions {"declared":true,"installed":true,"version":"6.3.2","resolution":"D:\\code\\AplicacionPrincipal\\solucioneselite - copia\\functions\\node_modules\\firebase-functions\\lib\\v2\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [420] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"6.3.2\",\"resolution\":\"D:\\\\code\\\\AplicacionPrincipal\\\\solucioneselite - copia\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\v2\\\\index.js\"}"}}
+[debug] [2025-07-21T22:31:24.311Z] [runtime-status] [420] Checked functions.config() {"config":{}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [420] Checked functions.config() {\"config\":{}}"}}
+[debug] [2025-07-21T22:31:24.312Z] [runtime-status] [420] firebase-functions has been stubbed. {"functionsResolution":{"declared":true,"installed":true,"version":"6.3.2","resolution":"D:\\code\\AplicacionPrincipal\\solucioneselite - copia\\functions\\node_modules\\firebase-functions\\lib\\v2\\index.js"}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [420] firebase-functions has been stubbed. {\"functionsResolution\":{\"declared\":true,\"installed\":true,\"version\":\"6.3.2\",\"resolution\":\"D:\\\\code\\\\AplicacionPrincipal\\\\solucioneselite - copia\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\v2\\\\index.js\"}}"}}
+[debug] [2025-07-21T22:31:24.313Z] [runtime-status] [420] Resolved module firebase-functions {"declared":true,"installed":true,"version":"6.3.2","resolution":"D:\\code\\AplicacionPrincipal\\solucioneselite - copia\\functions\\node_modules\\firebase-functions\\lib\\v2\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [420] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"6.3.2\",\"resolution\":\"D:\\\\code\\\\AplicacionPrincipal\\\\solucioneselite - copia\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\v2\\\\index.js\"}"}}
+[debug] [2025-07-21T22:31:24.321Z] [runtime-status] [420] Resolved module firebase-admin {"declared":true,"installed":true,"version":"12.7.0","resolution":"D:\\code\\AplicacionPrincipal\\solucioneselite - copia\\functions\\node_modules\\firebase-admin\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [420] Resolved module firebase-admin {\"declared\":true,\"installed\":true,\"version\":\"12.7.0\",\"resolution\":\"D:\\\\code\\\\AplicacionPrincipal\\\\solucioneselite - copia\\\\functions\\\\node_modules\\\\firebase-admin\\\\lib\\\\index.js\"}"}}
+[debug] [2025-07-21T22:31:24.325Z] [runtime-status] [420] Resolved module firebase-functions {"declared":true,"installed":true,"version":"6.3.2","resolution":"D:\\code\\AplicacionPrincipal\\solucioneselite - copia\\functions\\node_modules\\firebase-functions\\lib\\v2\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [420] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"6.3.2\",\"resolution\":\"D:\\\\code\\\\AplicacionPrincipal\\\\solucioneselite - copia\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\v2\\\\index.js\"}"}}
+[debug] [2025-07-21T22:31:24.325Z] [runtime-status] [420] firebase-admin has been stubbed. {"adminResolution":{"declared":true,"installed":true,"version":"12.7.0","resolution":"D:\\code\\AplicacionPrincipal\\solucioneselite - copia\\functions\\node_modules\\firebase-admin\\lib\\index.js"}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [420] firebase-admin has been stubbed. {\"adminResolution\":{\"declared\":true,\"installed\":true,\"version\":\"12.7.0\",\"resolution\":\"D:\\\\code\\\\AplicacionPrincipal\\\\solucioneselite - copia\\\\functions\\\\node_modules\\\\firebase-admin\\\\lib\\\\index.js\"}}"}}
+[info] >  [dotenv@17.2.0] injecting env (7) from .env (tip: 🛠️  run anywhere with `dotenvx run -- yourcommand`) {"user":"[dotenv@17.2.0] injecting env (7) from .env (tip: 🛠️  run anywhere with `dotenvx run -- yourcommand`)","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m [dotenv@17.2.0] injecting env (7) from .env (tip: 🛠️  run anywhere with `dotenvx run -- yourcommand`)"}}
+[debug] [2025-07-21T22:31:24.484Z] [runtime-status] [420] initializeApp(DEFAULT) {"storageBucket":"servilinkstore-8f04c.firebasestorage.app","projectId":"servilinkstore-8f04c"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [420] initializeApp(DEFAULT) {\"storageBucket\":\"servilinkstore-8f04c.firebasestorage.app\",\"projectId\":\"servilinkstore-8f04c\"}"}}
+[debug] [2025-07-21T22:31:24.573Z] [runtime-status] [420] Functions runtime initialized. {"cwd":"D:\\code\\AplicacionPrincipal\\solucioneselite - copia\\functions","node_version":"22.17.0"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [420] Functions runtime initialized. {\"cwd\":\"D:\\\\code\\\\AplicacionPrincipal\\\\solucioneselite - copia\\\\functions\",\"node_version\":\"22.17.0\"}"}}
+[debug] [2025-07-21T22:31:24.573Z] [runtime-status] [420] Listening to port: \\?\pipe\fire_emu_9ff61c642e828bfb {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [420] Listening to port: \\\\?\\pipe\\fire_emu_9ff61c642e828bfb"}}
+[debug] [2025-07-21T22:31:24.650Z] [worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: IDLE"}}
+[debug] [2025-07-21T22:31:24.651Z] [worker-pool] submitRequest(triggerId=us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitRequest(triggerId=us-central1-api)"}}
+[info] i  functions: Beginning execution of "us-central1-api" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Beginning execution of \"us-central1-api\""}}
+[debug] [2025-07-21T22:31:24.651Z] [worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: BUSY {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: BUSY"}}
+[debug] [2025-07-21T22:31:24.654Z] Finishing up request with event=pause {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=pause"}}
+[info] i  functions: Finished "us-central1-api" in 3.4017ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finished \"us-central1-api\" in 3.4017ms"}}
+[debug] [2025-07-21T22:31:24.655Z] [worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: IDLE"}}
+[debug] [2025-07-21T22:31:24.655Z] Finishing up request with event=finish {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=finish"}}
+[debug] [2025-07-21T22:31:24.655Z] Finishing up request with event=close {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=close"}}
+[debug] [2025-07-21T22:31:24.655Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
+[debug] [2025-07-21T22:31:24.657Z] [work-queue] {"queuedWork":["/servilinkstore-8f04c/us-central1/api/auth/login-2025-07-21T22:31:24.657Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
+[debug] [2025-07-21T22:31:24.657Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/servilinkstore-8f04c/us-central1/api/auth/login-2025-07-21T22:31:24.657Z"],"workRunningCount":1}
+[debug] [2025-07-21T22:31:24.657Z] Accepted request POST /servilinkstore-8f04c/us-central1/api/auth/login --> us-central1-api
+[debug] [2025-07-21T22:31:24.658Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2025-07-21T22:31:24.658Z] [functions] Got req.url=/servilinkstore-8f04c/us-central1/api/auth/login, mapping to path=/auth/login {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/servilinkstore-8f04c/us-central1/api/auth/login, mapping to path=/auth/login"}}
+[debug] [2025-07-21T22:31:24.658Z] [worker-pool] submitRequest(triggerId=us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitRequest(triggerId=us-central1-api)"}}
+[info] i  functions: Beginning execution of "us-central1-api" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Beginning execution of \"us-central1-api\""}}
+[debug] [2025-07-21T22:31:24.658Z] [worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: BUSY {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: BUSY"}}
+[warn] !  Google API requested!
+   - URL: "https://oauth2.googleapis.com/token"
+   - Be careful, this may be a production service. {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Google API requested!\n   - URL: \"https://oauth2.googleapis.com/token\"\n   - Be careful, this may be a production service."}}
+[debug] [2025-07-21T22:31:26.537Z] Finishing up request with event=pause {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=pause"}}
+[info] i  functions: Finished "us-central1-api" in 1879.2631000000001ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finished \"us-central1-api\" in 1879.2631000000001ms"}}
+[debug] [2025-07-21T22:31:26.538Z] [worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: IDLE"}}
+[debug] [2025-07-21T22:31:26.538Z] Finishing up request with event=finish {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=finish"}}
+[debug] [2025-07-21T22:31:26.538Z] Finishing up request with event=close {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=close"}}
+[debug] [2025-07-21T22:31:26.538Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
+[debug] [2025-07-21T22:39:45.261Z] [work-queue] {"queuedWork":["/servilinkstore-8f04c/us-central1/api/services-2025-07-21T22:39:45.261Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
+[debug] [2025-07-21T22:39:45.262Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/servilinkstore-8f04c/us-central1/api/services-2025-07-21T22:39:45.261Z"],"workRunningCount":1}
+[debug] [2025-07-21T22:39:45.262Z] Accepted request OPTIONS /servilinkstore-8f04c/us-central1/api/services --> us-central1-api
+[debug] [2025-07-21T22:39:45.264Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2025-07-21T22:39:45.264Z] [functions] Got req.url=/servilinkstore-8f04c/us-central1/api/services, mapping to path=/services {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/servilinkstore-8f04c/us-central1/api/services, mapping to path=/services"}}
+[debug] [2025-07-21T22:39:45.264Z] [worker-pool] submitRequest(triggerId=us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitRequest(triggerId=us-central1-api)"}}
+[info] i  functions: Beginning execution of "us-central1-api" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Beginning execution of \"us-central1-api\""}}
+[debug] [2025-07-21T22:39:45.264Z] [worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: BUSY {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: BUSY"}}
+[debug] [2025-07-21T22:39:45.267Z] Finishing up request with event=pause {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=pause"}}
+[info] i  functions: Finished "us-central1-api" in 2.5445ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finished \"us-central1-api\" in 2.5445ms"}}
+[debug] [2025-07-21T22:39:45.267Z] [worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: IDLE"}}
+[debug] [2025-07-21T22:39:45.267Z] Finishing up request with event=finish {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=finish"}}
+[debug] [2025-07-21T22:39:45.267Z] Finishing up request with event=close {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=close"}}
+[debug] [2025-07-21T22:39:45.267Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
+[debug] [2025-07-21T22:39:45.268Z] [work-queue] {"queuedWork":["/servilinkstore-8f04c/us-central1/api/services-2025-07-21T22:39:45.268Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
+[debug] [2025-07-21T22:39:45.268Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/servilinkstore-8f04c/us-central1/api/services-2025-07-21T22:39:45.268Z"],"workRunningCount":1}
+[debug] [2025-07-21T22:39:45.268Z] Accepted request GET /servilinkstore-8f04c/us-central1/api/services --> us-central1-api
+[debug] [2025-07-21T22:39:45.270Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2025-07-21T22:39:45.270Z] [functions] Got req.url=/servilinkstore-8f04c/us-central1/api/services, mapping to path=/services {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/servilinkstore-8f04c/us-central1/api/services, mapping to path=/services"}}
+[debug] [2025-07-21T22:39:45.270Z] [worker-pool] submitRequest(triggerId=us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitRequest(triggerId=us-central1-api)"}}
+[info] i  functions: Beginning execution of "us-central1-api" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Beginning execution of \"us-central1-api\""}}
+[debug] [2025-07-21T22:39:45.270Z] [worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: BUSY {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: BUSY"}}
+[debug] [2025-07-21T22:39:46.025Z] Finishing up request with event=pause {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=pause"}}
+[info] i  functions: Finished "us-central1-api" in 754.4464ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finished \"us-central1-api\" in 754.4464ms"}}
+[debug] [2025-07-21T22:39:46.026Z] [worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: IDLE"}}
+[debug] [2025-07-21T22:39:46.026Z] Finishing up request with event=finish {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=finish"}}
+[debug] [2025-07-21T22:39:46.026Z] Finishing up request with event=close {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=close"}}
+[debug] [2025-07-21T22:39:46.026Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
+[debug] [2025-07-21T22:46:04.500Z] File D:\code\AplicacionPrincipal\solucioneselite - copia\functions\routes\users.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File D:\\code\\AplicacionPrincipal\\solucioneselite - copia\\functions\\routes\\users.js changed, reloading triggers"}}
+[debug] [2025-07-21T22:46:05.515Z] Validating nodejs source
+[warn] !  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[debug] [2025-07-21T22:46:06.605Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "22"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.0",
+    "express": "^4.18.2",
+    "firebase-admin": "^12.6.0",
+    "firebase-functions": "^6.0.1"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^3.1.0"
+  },
+  "private": true
+}
+[debug] [2025-07-21T22:46:06.605Z] Building nodejs source
+[debug] [2025-07-21T22:46:06.605Z] Failed to find version of module node: reached end of search path D:\code\AplicacionPrincipal\solucioneselite - copia\functions\node_modules
+[info] +  functions: Using node@22 from host. 
+[debug] [2025-07-21T22:46:06.606Z] Failed to validate key FIREBASE_API_KEY: Error: Key FIREBASE_API_KEY starts with a reserved prefix (X_GOOGLE_ FIREBASE_ EXT_)
+[debug] [2025-07-21T22:46:06.606Z] Failed to validate key FIREBASE_AUTH_DOMAIN: Error: Key FIREBASE_AUTH_DOMAIN starts with a reserved prefix (X_GOOGLE_ FIREBASE_ EXT_)
+[debug] [2025-07-21T22:46:06.606Z] Failed to validate key FIREBASE_PROJECT_ID: Error: Key FIREBASE_PROJECT_ID starts with a reserved prefix (X_GOOGLE_ FIREBASE_ EXT_)
+[debug] [2025-07-21T22:46:06.606Z] Failed to validate key FIREBASE_STORAGE_BUCKET: Error: Key FIREBASE_STORAGE_BUCKET starts with a reserved prefix (X_GOOGLE_ FIREBASE_ EXT_)
+[debug] [2025-07-21T22:46:06.606Z] Failed to validate key FIREBASE_MESSAGING_SENDER_ID: Error: Key FIREBASE_MESSAGING_SENDER_ID starts with a reserved prefix (X_GOOGLE_ FIREBASE_ EXT_)
+[debug] [2025-07-21T22:46:06.606Z] Failed to validate key FIREBASE_APP_ID: Error: Key FIREBASE_APP_ID starts with a reserved prefix (X_GOOGLE_ FIREBASE_ EXT_)
+[error] !!  functions: Failed to load function definition from source: FirebaseError: Failed to load environment variables from .env. {"metadata":{"emulator":{"name":"functions"},"message":"Failed to load function definition from source: FirebaseError: Failed to load environment variables from .env."}}
+[debug] [2025-07-21T22:46:21.217Z] File D:\code\AplicacionPrincipal\solucioneselite - copia\functions\routes\services.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File D:\\code\\AplicacionPrincipal\\solucioneselite - copia\\functions\\routes\\services.js changed, reloading triggers"}}
+[debug] [2025-07-21T22:46:22.222Z] Validating nodejs source
+[warn] !  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[debug] [2025-07-21T22:46:23.210Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "22"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.0",
+    "express": "^4.18.2",
+    "firebase-admin": "^12.6.0",
+    "firebase-functions": "^6.0.1"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^3.1.0"
+  },
+  "private": true
+}
+[debug] [2025-07-21T22:46:23.210Z] Building nodejs source
+[debug] [2025-07-21T22:46:23.210Z] Failed to find version of module node: reached end of search path D:\code\AplicacionPrincipal\solucioneselite - copia\functions\node_modules
+[info] +  functions: Using node@22 from host. 
+[debug] [2025-07-21T22:46:23.211Z] Failed to validate key FIREBASE_API_KEY: Error: Key FIREBASE_API_KEY starts with a reserved prefix (X_GOOGLE_ FIREBASE_ EXT_)
+[debug] [2025-07-21T22:46:23.211Z] Failed to validate key FIREBASE_AUTH_DOMAIN: Error: Key FIREBASE_AUTH_DOMAIN starts with a reserved prefix (X_GOOGLE_ FIREBASE_ EXT_)
+[debug] [2025-07-21T22:46:23.211Z] Failed to validate key FIREBASE_PROJECT_ID: Error: Key FIREBASE_PROJECT_ID starts with a reserved prefix (X_GOOGLE_ FIREBASE_ EXT_)
+[debug] [2025-07-21T22:46:23.211Z] Failed to validate key FIREBASE_STORAGE_BUCKET: Error: Key FIREBASE_STORAGE_BUCKET starts with a reserved prefix (X_GOOGLE_ FIREBASE_ EXT_)
+[debug] [2025-07-21T22:46:23.211Z] Failed to validate key FIREBASE_MESSAGING_SENDER_ID: Error: Key FIREBASE_MESSAGING_SENDER_ID starts with a reserved prefix (X_GOOGLE_ FIREBASE_ EXT_)
+[debug] [2025-07-21T22:46:23.211Z] Failed to validate key FIREBASE_APP_ID: Error: Key FIREBASE_APP_ID starts with a reserved prefix (X_GOOGLE_ FIREBASE_ EXT_)
+[error] !!  functions: Failed to load function definition from source: FirebaseError: Failed to load environment variables from .env. {"metadata":{"emulator":{"name":"functions"},"message":"Failed to load function definition from source: FirebaseError: Failed to load environment variables from .env."}}
+[debug] [2025-07-21T22:50:41.102Z] [work-queue] {"queuedWork":["/servilinkstore-8f04c/us-central1/api/auth/register-2025-07-21T22:50:41.102Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
+[debug] [2025-07-21T22:50:41.103Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/servilinkstore-8f04c/us-central1/api/auth/register-2025-07-21T22:50:41.102Z"],"workRunningCount":1}
+[debug] [2025-07-21T22:50:41.103Z] Accepted request OPTIONS /servilinkstore-8f04c/us-central1/api/auth/register --> us-central1-api
+[debug] [2025-07-21T22:50:41.105Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2025-07-21T22:50:41.105Z] [functions] Got req.url=/servilinkstore-8f04c/us-central1/api/auth/register, mapping to path=/auth/register {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/servilinkstore-8f04c/us-central1/api/auth/register, mapping to path=/auth/register"}}
+[debug] [2025-07-21T22:50:41.105Z] [worker-pool] submitRequest(triggerId=us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitRequest(triggerId=us-central1-api)"}}
+[info] i  functions: Beginning execution of "us-central1-api" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Beginning execution of \"us-central1-api\""}}
+[debug] [2025-07-21T22:50:41.106Z] [worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: BUSY {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: BUSY"}}
+[debug] [2025-07-21T22:50:41.108Z] Finishing up request with event=pause {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=pause"}}
+[info] i  functions: Finished "us-central1-api" in 2.2482ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finished \"us-central1-api\" in 2.2482ms"}}
+[debug] [2025-07-21T22:50:41.108Z] [worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: IDLE"}}
+[debug] [2025-07-21T22:50:41.108Z] Finishing up request with event=finish {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=finish"}}
+[debug] [2025-07-21T22:50:41.108Z] Finishing up request with event=close {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=close"}}
+[debug] [2025-07-21T22:50:41.109Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
+[debug] [2025-07-21T22:50:41.112Z] [work-queue] {"queuedWork":["/servilinkstore-8f04c/us-central1/api/auth/register-2025-07-21T22:50:41.112Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
+[debug] [2025-07-21T22:50:41.113Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/servilinkstore-8f04c/us-central1/api/auth/register-2025-07-21T22:50:41.112Z"],"workRunningCount":1}
+[debug] [2025-07-21T22:50:41.113Z] Accepted request POST /servilinkstore-8f04c/us-central1/api/auth/register --> us-central1-api
+[debug] [2025-07-21T22:50:41.114Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2025-07-21T22:50:41.114Z] [functions] Got req.url=/servilinkstore-8f04c/us-central1/api/auth/register, mapping to path=/auth/register {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/servilinkstore-8f04c/us-central1/api/auth/register, mapping to path=/auth/register"}}
+[debug] [2025-07-21T22:50:41.115Z] [worker-pool] submitRequest(triggerId=us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitRequest(triggerId=us-central1-api)"}}
+[info] i  functions: Beginning execution of "us-central1-api" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Beginning execution of \"us-central1-api\""}}
+[debug] [2025-07-21T22:50:41.115Z] [worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: BUSY {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: BUSY"}}
+[debug] [2025-07-21T22:50:41.119Z] Finishing up request with event=pause {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=pause"}}
+[info] i  functions: Finished "us-central1-api" in 4.1768ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finished \"us-central1-api\" in 4.1768ms"}}
+[debug] [2025-07-21T22:50:41.119Z] [worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: IDLE"}}
+[debug] [2025-07-21T22:50:41.120Z] Finishing up request with event=finish {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=finish"}}
+[debug] [2025-07-21T22:50:41.120Z] Finishing up request with event=close {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=close"}}
+[debug] [2025-07-21T22:50:41.120Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
+[debug] [2025-07-21T22:51:13.463Z] [work-queue] {"queuedWork":["/servilinkstore-8f04c/us-central1/api/auth/login-2025-07-21T22:51:13.463Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
+[debug] [2025-07-21T22:51:13.464Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/servilinkstore-8f04c/us-central1/api/auth/login-2025-07-21T22:51:13.463Z"],"workRunningCount":1}
+[debug] [2025-07-21T22:51:13.464Z] Accepted request OPTIONS /servilinkstore-8f04c/us-central1/api/auth/login --> us-central1-api
+[debug] [2025-07-21T22:51:13.465Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2025-07-21T22:51:13.466Z] [functions] Got req.url=/servilinkstore-8f04c/us-central1/api/auth/login, mapping to path=/auth/login {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/servilinkstore-8f04c/us-central1/api/auth/login, mapping to path=/auth/login"}}
+[debug] [2025-07-21T22:51:13.466Z] [worker-pool] submitRequest(triggerId=us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitRequest(triggerId=us-central1-api)"}}
+[info] i  functions: Beginning execution of "us-central1-api" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Beginning execution of \"us-central1-api\""}}
+[debug] [2025-07-21T22:51:13.466Z] [worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: BUSY {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: BUSY"}}
+[debug] [2025-07-21T22:51:13.468Z] Finishing up request with event=pause {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=pause"}}
+[info] i  functions: Finished "us-central1-api" in 2.3281ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finished \"us-central1-api\" in 2.3281ms"}}
+[debug] [2025-07-21T22:51:13.469Z] [worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: IDLE"}}
+[debug] [2025-07-21T22:51:13.469Z] Finishing up request with event=finish {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=finish"}}
+[debug] [2025-07-21T22:51:13.469Z] Finishing up request with event=close {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=close"}}
+[debug] [2025-07-21T22:51:13.469Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
+[debug] [2025-07-21T22:51:13.472Z] [work-queue] {"queuedWork":["/servilinkstore-8f04c/us-central1/api/auth/login-2025-07-21T22:51:13.472Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
+[debug] [2025-07-21T22:51:13.472Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/servilinkstore-8f04c/us-central1/api/auth/login-2025-07-21T22:51:13.472Z"],"workRunningCount":1}
+[debug] [2025-07-21T22:51:13.472Z] Accepted request POST /servilinkstore-8f04c/us-central1/api/auth/login --> us-central1-api
+[debug] [2025-07-21T22:51:13.475Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2025-07-21T22:51:13.475Z] [functions] Got req.url=/servilinkstore-8f04c/us-central1/api/auth/login, mapping to path=/auth/login {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/servilinkstore-8f04c/us-central1/api/auth/login, mapping to path=/auth/login"}}
+[debug] [2025-07-21T22:51:13.475Z] [worker-pool] submitRequest(triggerId=us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitRequest(triggerId=us-central1-api)"}}
+[info] i  functions: Beginning execution of "us-central1-api" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Beginning execution of \"us-central1-api\""}}
+[debug] [2025-07-21T22:51:13.475Z] [worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: BUSY {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: BUSY"}}
+[info] >  Error en login: { {"user":"Error en login: {","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m Error en login: {"}}
+[info] >    error: { {"user":"  error: {","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m   error: {"}}
+[info] >      code: 400, {"user":"    code: 400,","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m     code: 400,"}}
+[info] >      message: 'INVALID_LOGIN_CREDENTIALS', {"user":"    message: 'INVALID_LOGIN_CREDENTIALS',","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m     message: 'INVALID_LOGIN_CREDENTIALS',"}}
+[info] >      errors: [ [Object] ] {"user":"    errors: [ [Object] ]","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m     errors: [ [Object] ]"}}
+[info] >    } {"user":"  }","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m   }"}}
+[info] >  } {"user":"}","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m }"}}
+[debug] [2025-07-21T22:51:13.779Z] Finishing up request with event=pause {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=pause"}}
+[info] i  functions: Finished "us-central1-api" in 303.8719ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finished \"us-central1-api\" in 303.8719ms"}}
+[debug] [2025-07-21T22:51:13.780Z] [worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: IDLE"}}
+[debug] [2025-07-21T22:51:13.780Z] Finishing up request with event=finish {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=finish"}}
+[debug] [2025-07-21T22:51:13.780Z] Finishing up request with event=close {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=close"}}
+[debug] [2025-07-21T22:51:13.780Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
+[debug] [2025-07-21T22:52:07.560Z] [work-queue] {"queuedWork":["/servilinkstore-8f04c/us-central1/api/auth/register-2025-07-21T22:52:07.560Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
+[debug] [2025-07-21T22:52:07.561Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/servilinkstore-8f04c/us-central1/api/auth/register-2025-07-21T22:52:07.560Z"],"workRunningCount":1}
+[debug] [2025-07-21T22:52:07.561Z] Accepted request OPTIONS /servilinkstore-8f04c/us-central1/api/auth/register --> us-central1-api
+[debug] [2025-07-21T22:52:07.562Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2025-07-21T22:52:07.562Z] [functions] Got req.url=/servilinkstore-8f04c/us-central1/api/auth/register, mapping to path=/auth/register {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/servilinkstore-8f04c/us-central1/api/auth/register, mapping to path=/auth/register"}}
+[debug] [2025-07-21T22:52:07.562Z] [worker-pool] submitRequest(triggerId=us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitRequest(triggerId=us-central1-api)"}}
+[info] i  functions: Beginning execution of "us-central1-api" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Beginning execution of \"us-central1-api\""}}
+[debug] [2025-07-21T22:52:07.563Z] [worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: BUSY {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: BUSY"}}
+[debug] [2025-07-21T22:52:07.565Z] Finishing up request with event=pause {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=pause"}}
+[info] i  functions: Finished "us-central1-api" in 2.2788ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finished \"us-central1-api\" in 2.2788ms"}}
+[debug] [2025-07-21T22:52:07.565Z] [worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: IDLE"}}
+[debug] [2025-07-21T22:52:07.566Z] Finishing up request with event=finish {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=finish"}}
+[debug] [2025-07-21T22:52:07.566Z] Finishing up request with event=close {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=close"}}
+[debug] [2025-07-21T22:52:07.566Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
+[debug] [2025-07-21T22:52:07.567Z] [work-queue] {"queuedWork":["/servilinkstore-8f04c/us-central1/api/auth/register-2025-07-21T22:52:07.567Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
+[debug] [2025-07-21T22:52:07.567Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/servilinkstore-8f04c/us-central1/api/auth/register-2025-07-21T22:52:07.567Z"],"workRunningCount":1}
+[debug] [2025-07-21T22:52:07.567Z] Accepted request POST /servilinkstore-8f04c/us-central1/api/auth/register --> us-central1-api
+[debug] [2025-07-21T22:52:07.569Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2025-07-21T22:52:07.569Z] [functions] Got req.url=/servilinkstore-8f04c/us-central1/api/auth/register, mapping to path=/auth/register {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/servilinkstore-8f04c/us-central1/api/auth/register, mapping to path=/auth/register"}}
+[debug] [2025-07-21T22:52:07.569Z] [worker-pool] submitRequest(triggerId=us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitRequest(triggerId=us-central1-api)"}}
+[info] i  functions: Beginning execution of "us-central1-api" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Beginning execution of \"us-central1-api\""}}
+[debug] [2025-07-21T22:52:07.569Z] [worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: BUSY {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: BUSY"}}
+[debug] [2025-07-21T22:52:07.572Z] Finishing up request with event=pause {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=pause"}}
+[info] i  functions: Finished "us-central1-api" in 2.6644ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finished \"us-central1-api\" in 2.6644ms"}}
+[debug] [2025-07-21T22:52:07.572Z] [worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: IDLE"}}
+[debug] [2025-07-21T22:52:07.572Z] Finishing up request with event=finish {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=finish"}}
+[debug] [2025-07-21T22:52:07.572Z] Finishing up request with event=close {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=close"}}
+[debug] [2025-07-21T22:52:07.573Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
+[debug] [2025-07-21T22:53:00.383Z] [work-queue] {"queuedWork":["/servilinkstore-8f04c/us-central1/api/auth/register-2025-07-21T22:53:00.383Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
+[debug] [2025-07-21T22:53:00.384Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/servilinkstore-8f04c/us-central1/api/auth/register-2025-07-21T22:53:00.383Z"],"workRunningCount":1}
+[debug] [2025-07-21T22:53:00.384Z] Accepted request OPTIONS /servilinkstore-8f04c/us-central1/api/auth/register --> us-central1-api
+[debug] [2025-07-21T22:53:00.385Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2025-07-21T22:53:00.385Z] [functions] Got req.url=/servilinkstore-8f04c/us-central1/api/auth/register, mapping to path=/auth/register {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/servilinkstore-8f04c/us-central1/api/auth/register, mapping to path=/auth/register"}}
+[debug] [2025-07-21T22:53:00.385Z] [worker-pool] submitRequest(triggerId=us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitRequest(triggerId=us-central1-api)"}}
+[info] i  functions: Beginning execution of "us-central1-api" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Beginning execution of \"us-central1-api\""}}
+[debug] [2025-07-21T22:53:00.386Z] [worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: BUSY {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: BUSY"}}
+[debug] [2025-07-21T22:53:00.387Z] Finishing up request with event=pause {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=pause"}}
+[info] i  functions: Finished "us-central1-api" in 1.5852ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finished \"us-central1-api\" in 1.5852ms"}}
+[debug] [2025-07-21T22:53:00.388Z] [worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: IDLE"}}
+[debug] [2025-07-21T22:53:00.388Z] Finishing up request with event=finish {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=finish"}}
+[debug] [2025-07-21T22:53:00.388Z] Finishing up request with event=close {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=close"}}
+[debug] [2025-07-21T22:53:00.388Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
+[debug] [2025-07-21T22:53:00.389Z] [work-queue] {"queuedWork":["/servilinkstore-8f04c/us-central1/api/auth/register-2025-07-21T22:53:00.389Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
+[debug] [2025-07-21T22:53:00.389Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/servilinkstore-8f04c/us-central1/api/auth/register-2025-07-21T22:53:00.389Z"],"workRunningCount":1}
+[debug] [2025-07-21T22:53:00.389Z] Accepted request POST /servilinkstore-8f04c/us-central1/api/auth/register --> us-central1-api
+[debug] [2025-07-21T22:53:00.391Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2025-07-21T22:53:00.391Z] [functions] Got req.url=/servilinkstore-8f04c/us-central1/api/auth/register, mapping to path=/auth/register {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/servilinkstore-8f04c/us-central1/api/auth/register, mapping to path=/auth/register"}}
+[debug] [2025-07-21T22:53:00.391Z] [worker-pool] submitRequest(triggerId=us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitRequest(triggerId=us-central1-api)"}}
+[info] i  functions: Beginning execution of "us-central1-api" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Beginning execution of \"us-central1-api\""}}
+[debug] [2025-07-21T22:53:00.391Z] [worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: BUSY {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: BUSY"}}
+[debug] [2025-07-21T22:53:00.393Z] Finishing up request with event=pause {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=pause"}}
+[info] i  functions: Finished "us-central1-api" in 1.9748ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finished \"us-central1-api\" in 1.9748ms"}}
+[debug] [2025-07-21T22:53:00.394Z] [worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: IDLE"}}
+[debug] [2025-07-21T22:53:00.394Z] Finishing up request with event=finish {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=finish"}}
+[debug] [2025-07-21T22:53:00.394Z] Finishing up request with event=close {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=close"}}
+[debug] [2025-07-21T22:53:00.394Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
+[debug] [2025-07-21T22:53:32.378Z] [work-queue] {"queuedWork":["/servilinkstore-8f04c/us-central1/api/auth/register-2025-07-21T22:53:32.377Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
+[debug] [2025-07-21T22:53:32.378Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/servilinkstore-8f04c/us-central1/api/auth/register-2025-07-21T22:53:32.377Z"],"workRunningCount":1}
+[debug] [2025-07-21T22:53:32.378Z] Accepted request OPTIONS /servilinkstore-8f04c/us-central1/api/auth/register --> us-central1-api
+[debug] [2025-07-21T22:53:32.380Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2025-07-21T22:53:32.380Z] [functions] Got req.url=/servilinkstore-8f04c/us-central1/api/auth/register, mapping to path=/auth/register {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/servilinkstore-8f04c/us-central1/api/auth/register, mapping to path=/auth/register"}}
+[debug] [2025-07-21T22:53:32.380Z] [worker-pool] submitRequest(triggerId=us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitRequest(triggerId=us-central1-api)"}}
+[info] i  functions: Beginning execution of "us-central1-api" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Beginning execution of \"us-central1-api\""}}
+[debug] [2025-07-21T22:53:32.380Z] [worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: BUSY {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: BUSY"}}
+[debug] [2025-07-21T22:53:32.382Z] Finishing up request with event=pause {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=pause"}}
+[info] i  functions: Finished "us-central1-api" in 1.7307ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finished \"us-central1-api\" in 1.7307ms"}}
+[debug] [2025-07-21T22:53:32.382Z] [worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: IDLE"}}
+[debug] [2025-07-21T22:53:32.382Z] Finishing up request with event=finish {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=finish"}}
+[debug] [2025-07-21T22:53:32.382Z] Finishing up request with event=close {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=close"}}
+[debug] [2025-07-21T22:53:32.382Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
+[debug] [2025-07-21T22:53:32.384Z] [work-queue] {"queuedWork":["/servilinkstore-8f04c/us-central1/api/auth/register-2025-07-21T22:53:32.384Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
+[debug] [2025-07-21T22:53:32.384Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/servilinkstore-8f04c/us-central1/api/auth/register-2025-07-21T22:53:32.384Z"],"workRunningCount":1}
+[debug] [2025-07-21T22:53:32.384Z] Accepted request POST /servilinkstore-8f04c/us-central1/api/auth/register --> us-central1-api
+[debug] [2025-07-21T22:53:32.386Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2025-07-21T22:53:32.386Z] [functions] Got req.url=/servilinkstore-8f04c/us-central1/api/auth/register, mapping to path=/auth/register {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/servilinkstore-8f04c/us-central1/api/auth/register, mapping to path=/auth/register"}}
+[debug] [2025-07-21T22:53:32.386Z] [worker-pool] submitRequest(triggerId=us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitRequest(triggerId=us-central1-api)"}}
+[info] i  functions: Beginning execution of "us-central1-api" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Beginning execution of \"us-central1-api\""}}
+[debug] [2025-07-21T22:53:32.386Z] [worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: BUSY {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: BUSY"}}
+[debug] [2025-07-21T22:53:32.388Z] Finishing up request with event=pause {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=pause"}}
+[info] i  functions: Finished "us-central1-api" in 2.1873ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finished \"us-central1-api\" in 2.1873ms"}}
+[debug] [2025-07-21T22:53:32.389Z] [worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: IDLE"}}
+[debug] [2025-07-21T22:53:32.389Z] Finishing up request with event=finish {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=finish"}}
+[debug] [2025-07-21T22:53:32.389Z] Finishing up request with event=close {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=close"}}
+[debug] [2025-07-21T22:53:32.389Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
+[debug] [2025-07-21T22:57:51.188Z] File D:\code\AplicacionPrincipal\solucioneselite - copia\functions\routes\auth.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File D:\\code\\AplicacionPrincipal\\solucioneselite - copia\\functions\\routes\\auth.js changed, reloading triggers"}}
+[debug] [2025-07-21T22:57:52.202Z] Validating nodejs source
+[warn] !  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[debug] [2025-07-21T22:57:53.369Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "22"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.0",
+    "express": "^4.18.2",
+    "firebase-admin": "^12.6.0",
+    "firebase-functions": "^6.0.1"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^3.1.0"
+  },
+  "private": true
+}
+[debug] [2025-07-21T22:57:53.369Z] Building nodejs source
+[debug] [2025-07-21T22:57:53.369Z] Failed to find version of module node: reached end of search path D:\code\AplicacionPrincipal\solucioneselite - copia\functions\node_modules
+[info] +  functions: Using node@22 from host. 
+[debug] [2025-07-21T22:57:53.370Z] Failed to validate key FIREBASE_API_KEY: Error: Key FIREBASE_API_KEY starts with a reserved prefix (X_GOOGLE_ FIREBASE_ EXT_)
+[debug] [2025-07-21T22:57:53.370Z] Failed to validate key FIREBASE_AUTH_DOMAIN: Error: Key FIREBASE_AUTH_DOMAIN starts with a reserved prefix (X_GOOGLE_ FIREBASE_ EXT_)
+[debug] [2025-07-21T22:57:53.370Z] Failed to validate key FIREBASE_PROJECT_ID: Error: Key FIREBASE_PROJECT_ID starts with a reserved prefix (X_GOOGLE_ FIREBASE_ EXT_)
+[debug] [2025-07-21T22:57:53.370Z] Failed to validate key FIREBASE_STORAGE_BUCKET: Error: Key FIREBASE_STORAGE_BUCKET starts with a reserved prefix (X_GOOGLE_ FIREBASE_ EXT_)
+[debug] [2025-07-21T22:57:53.370Z] Failed to validate key FIREBASE_MESSAGING_SENDER_ID: Error: Key FIREBASE_MESSAGING_SENDER_ID starts with a reserved prefix (X_GOOGLE_ FIREBASE_ EXT_)
+[debug] [2025-07-21T22:57:53.370Z] Failed to validate key FIREBASE_APP_ID: Error: Key FIREBASE_APP_ID starts with a reserved prefix (X_GOOGLE_ FIREBASE_ EXT_)
+[error] !!  functions: Failed to load function definition from source: FirebaseError: Failed to load environment variables from .env. {"metadata":{"emulator":{"name":"functions"},"message":"Failed to load function definition from source: FirebaseError: Failed to load environment variables from .env."}}
+[debug] [2025-07-21T22:59:09.349Z] [work-queue] {"queuedWork":["/servilinkstore-8f04c/us-central1/api/auth/register-2025-07-21T22:59:09.349Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
+[debug] [2025-07-21T22:59:09.349Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/servilinkstore-8f04c/us-central1/api/auth/register-2025-07-21T22:59:09.349Z"],"workRunningCount":1}
+[debug] [2025-07-21T22:59:09.349Z] Accepted request OPTIONS /servilinkstore-8f04c/us-central1/api/auth/register --> us-central1-api
+[debug] [2025-07-21T22:59:09.350Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2025-07-21T22:59:09.351Z] [functions] Got req.url=/servilinkstore-8f04c/us-central1/api/auth/register, mapping to path=/auth/register {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/servilinkstore-8f04c/us-central1/api/auth/register, mapping to path=/auth/register"}}
+[debug] [2025-07-21T22:59:09.351Z] [worker-pool] submitRequest(triggerId=us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitRequest(triggerId=us-central1-api)"}}
+[info] i  functions: Beginning execution of "us-central1-api" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Beginning execution of \"us-central1-api\""}}
+[debug] [2025-07-21T22:59:09.351Z] [worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: BUSY {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: BUSY"}}
+[debug] [2025-07-21T22:59:09.353Z] Finishing up request with event=pause {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=pause"}}
+[info] i  functions: Finished "us-central1-api" in 2.2784ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finished \"us-central1-api\" in 2.2784ms"}}
+[debug] [2025-07-21T22:59:09.354Z] [worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: IDLE"}}
+[debug] [2025-07-21T22:59:09.354Z] Finishing up request with event=finish {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=finish"}}
+[debug] [2025-07-21T22:59:09.354Z] Finishing up request with event=close {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=close"}}
+[debug] [2025-07-21T22:59:09.354Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
+[debug] [2025-07-21T22:59:09.356Z] [work-queue] {"queuedWork":["/servilinkstore-8f04c/us-central1/api/auth/register-2025-07-21T22:59:09.356Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
+[debug] [2025-07-21T22:59:09.356Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/servilinkstore-8f04c/us-central1/api/auth/register-2025-07-21T22:59:09.356Z"],"workRunningCount":1}
+[debug] [2025-07-21T22:59:09.356Z] Accepted request POST /servilinkstore-8f04c/us-central1/api/auth/register --> us-central1-api
+[debug] [2025-07-21T22:59:09.357Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2025-07-21T22:59:09.357Z] [functions] Got req.url=/servilinkstore-8f04c/us-central1/api/auth/register, mapping to path=/auth/register {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/servilinkstore-8f04c/us-central1/api/auth/register, mapping to path=/auth/register"}}
+[debug] [2025-07-21T22:59:09.358Z] [worker-pool] submitRequest(triggerId=us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitRequest(triggerId=us-central1-api)"}}
+[info] i  functions: Beginning execution of "us-central1-api" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Beginning execution of \"us-central1-api\""}}
+[debug] [2025-07-21T22:59:09.358Z] [worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: BUSY {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: BUSY"}}
+[debug] [2025-07-21T22:59:09.360Z] Finishing up request with event=pause {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=pause"}}
+[info] i  functions: Finished "us-central1-api" in 2.0406ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finished \"us-central1-api\" in 2.0406ms"}}
+[debug] [2025-07-21T22:59:09.360Z] [worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: IDLE"}}
+[debug] [2025-07-21T22:59:09.360Z] Finishing up request with event=finish {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=finish"}}
+[debug] [2025-07-21T22:59:09.361Z] Finishing up request with event=close {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=close"}}
+[debug] [2025-07-21T22:59:09.361Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
+[debug] [2025-07-21T22:59:42.408Z] [work-queue] {"queuedWork":["/servilinkstore-8f04c/us-central1/api/auth/register-2025-07-21T22:59:42.408Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
+[debug] [2025-07-21T22:59:42.408Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/servilinkstore-8f04c/us-central1/api/auth/register-2025-07-21T22:59:42.408Z"],"workRunningCount":1}
+[debug] [2025-07-21T22:59:42.408Z] Accepted request OPTIONS /servilinkstore-8f04c/us-central1/api/auth/register --> us-central1-api
+[debug] [2025-07-21T22:59:42.410Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2025-07-21T22:59:42.410Z] [functions] Got req.url=/servilinkstore-8f04c/us-central1/api/auth/register, mapping to path=/auth/register {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/servilinkstore-8f04c/us-central1/api/auth/register, mapping to path=/auth/register"}}
+[debug] [2025-07-21T22:59:42.410Z] [worker-pool] submitRequest(triggerId=us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitRequest(triggerId=us-central1-api)"}}
+[info] i  functions: Beginning execution of "us-central1-api" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Beginning execution of \"us-central1-api\""}}
+[debug] [2025-07-21T22:59:42.411Z] [worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: BUSY {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: BUSY"}}
+[debug] [2025-07-21T22:59:42.413Z] Finishing up request with event=pause {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=pause"}}
+[info] i  functions: Finished "us-central1-api" in 2.4076ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finished \"us-central1-api\" in 2.4076ms"}}
+[debug] [2025-07-21T22:59:42.414Z] [worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: IDLE"}}
+[debug] [2025-07-21T22:59:42.414Z] Finishing up request with event=finish {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=finish"}}
+[debug] [2025-07-21T22:59:42.414Z] Finishing up request with event=close {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=close"}}
+[debug] [2025-07-21T22:59:42.414Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
+[debug] [2025-07-21T22:59:42.416Z] [work-queue] {"queuedWork":["/servilinkstore-8f04c/us-central1/api/auth/register-2025-07-21T22:59:42.416Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
+[debug] [2025-07-21T22:59:42.416Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/servilinkstore-8f04c/us-central1/api/auth/register-2025-07-21T22:59:42.416Z"],"workRunningCount":1}
+[debug] [2025-07-21T22:59:42.416Z] Accepted request POST /servilinkstore-8f04c/us-central1/api/auth/register --> us-central1-api
+[debug] [2025-07-21T22:59:42.417Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2025-07-21T22:59:42.418Z] [functions] Got req.url=/servilinkstore-8f04c/us-central1/api/auth/register, mapping to path=/auth/register {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/servilinkstore-8f04c/us-central1/api/auth/register, mapping to path=/auth/register"}}
+[debug] [2025-07-21T22:59:42.418Z] [worker-pool] submitRequest(triggerId=us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitRequest(triggerId=us-central1-api)"}}
+[info] i  functions: Beginning execution of "us-central1-api" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Beginning execution of \"us-central1-api\""}}
+[debug] [2025-07-21T22:59:42.418Z] [worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: BUSY {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: BUSY"}}
+[debug] [2025-07-21T22:59:42.421Z] Finishing up request with event=pause {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=pause"}}
+[info] i  functions: Finished "us-central1-api" in 3.2922ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finished \"us-central1-api\" in 3.2922ms"}}
+[debug] [2025-07-21T22:59:42.422Z] [worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: IDLE"}}
+[debug] [2025-07-21T22:59:42.422Z] Finishing up request with event=finish {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=finish"}}
+[debug] [2025-07-21T22:59:42.422Z] Finishing up request with event=close {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=close"}}
+[debug] [2025-07-21T22:59:42.422Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
+[debug] [2025-07-21T23:09:25.873Z] [work-queue] {"queuedWork":["/servilinkstore-8f04c/us-central1/api/auth/login-2025-07-21T23:09:25.873Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
+[debug] [2025-07-21T23:09:25.874Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/servilinkstore-8f04c/us-central1/api/auth/login-2025-07-21T23:09:25.873Z"],"workRunningCount":1}
+[debug] [2025-07-21T23:09:25.874Z] Accepted request OPTIONS /servilinkstore-8f04c/us-central1/api/auth/login --> us-central1-api
+[debug] [2025-07-21T23:09:25.876Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2025-07-21T23:09:25.876Z] [functions] Got req.url=/servilinkstore-8f04c/us-central1/api/auth/login, mapping to path=/auth/login {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/servilinkstore-8f04c/us-central1/api/auth/login, mapping to path=/auth/login"}}
+[debug] [2025-07-21T23:09:25.876Z] [worker-pool] submitRequest(triggerId=us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitRequest(triggerId=us-central1-api)"}}
+[info] i  functions: Beginning execution of "us-central1-api" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Beginning execution of \"us-central1-api\""}}
+[debug] [2025-07-21T23:09:25.877Z] [worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: BUSY {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: BUSY"}}
+[debug] [2025-07-21T23:09:25.879Z] Finishing up request with event=pause {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=pause"}}
+[info] i  functions: Finished "us-central1-api" in 1.7683ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finished \"us-central1-api\" in 1.7683ms"}}
+[debug] [2025-07-21T23:09:25.879Z] [worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: IDLE"}}
+[debug] [2025-07-21T23:09:25.879Z] Finishing up request with event=finish {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=finish"}}
+[debug] [2025-07-21T23:09:25.879Z] Finishing up request with event=close {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=close"}}
+[debug] [2025-07-21T23:09:25.879Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
+[debug] [2025-07-21T23:09:25.883Z] [work-queue] {"queuedWork":["/servilinkstore-8f04c/us-central1/api/auth/login-2025-07-21T23:09:25.883Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
+[debug] [2025-07-21T23:09:25.883Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/servilinkstore-8f04c/us-central1/api/auth/login-2025-07-21T23:09:25.883Z"],"workRunningCount":1}
+[debug] [2025-07-21T23:09:25.883Z] Accepted request POST /servilinkstore-8f04c/us-central1/api/auth/login --> us-central1-api
+[debug] [2025-07-21T23:09:25.884Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2025-07-21T23:09:25.885Z] [functions] Got req.url=/servilinkstore-8f04c/us-central1/api/auth/login, mapping to path=/auth/login {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/servilinkstore-8f04c/us-central1/api/auth/login, mapping to path=/auth/login"}}
+[debug] [2025-07-21T23:09:25.885Z] [worker-pool] submitRequest(triggerId=us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitRequest(triggerId=us-central1-api)"}}
+[info] i  functions: Beginning execution of "us-central1-api" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Beginning execution of \"us-central1-api\""}}
+[debug] [2025-07-21T23:09:25.885Z] [worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: BUSY {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: BUSY"}}
+[debug] [2025-07-21T23:09:26.555Z] Finishing up request with event=pause {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=pause"}}
+[info] i  functions: Finished "us-central1-api" in 669.9481ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finished \"us-central1-api\" in 669.9481ms"}}
+[debug] [2025-07-21T23:09:26.555Z] [worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-342b5f21-aa39-415f-8b22-2bae4391ac42]: IDLE"}}
+[debug] [2025-07-21T23:09:26.555Z] Finishing up request with event=finish {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=finish"}}
+[debug] [2025-07-21T23:09:26.555Z] Finishing up request with event=close {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=close"}}
+[debug] [2025-07-21T23:09:26.555Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}

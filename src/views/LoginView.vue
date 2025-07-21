@@ -40,53 +40,99 @@ export default {
   methods: {
     async loginUser() {
       try {
-        const user = await loginWithEmail(
-          this.credentials.email,
-          this.credentials.password
+        const response = await fetch(
+          `${process.env.VUE_APP_API_URL}/auth/login`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              email: this.credentials.email,
+              password: this.credentials.password,
+            }),
+          }
         );
 
-        // 1. Obtener el role desde Firestore
-        const db = getFirestore();
-        const userRef = doc(db, "users", user.uid);
-        const userSnap = await getDoc(userRef);
-
-        if (!userSnap.exists()) {
-          throw new Error(
-            "El usuario no tiene un perfil registrado en Firestore."
-          );
+        if (!response.ok) {
+          const { error } = await response.json();
+          throw new Error(error);
         }
 
-        const userData = userSnap.data();
-        const role = userData.role || "cliente"; // por defecto "cliente"
+        const data = await response.json();
 
-        // 2. Obtener deviceId
         const deviceId = getOrCreateDeviceId();
 
-        // 3. Guardar todo en localStorage
         localStorage.setItem(
           "session",
           JSON.stringify({
-            userId: user.uid,
-            email: user.email,
-            role: role,
+            userId: data.uid,
+            email: data.email,
+            role: data.role,
             deviceId: deviceId,
+            idToken: data.idToken, // opcional: puedes usarlo para futuras llamadas autenticadas
           })
         );
 
-        // 4. Guardar en el store de Vuex
         this.$store.commit("setCurrentUser", {
-          uid: user.uid,
-          email: user.email,
-          role: role,
+          uid: data.uid,
+          email: data.email,
+          role: data.role,
         });
 
-        alert(`Bienvenido, ${user.email}`);
+        alert(`Bienvenido, ${data.email}`);
         this.$router.push({ name: "home" });
       } catch (error) {
         alert("Error al iniciar sesión: " + error.message);
       }
-      await this.$store.dispatch("observeAuthState");
     },
+    // async loginUser() {
+    //   try {
+    //     const user = await loginWithEmail(
+    //       this.credentials.email,
+    //       this.credentials.password
+    //     );
+
+    //     // 1. Obtener el role desde Firestore
+    //     const db = getFirestore();
+    //     const userRef = doc(db, "users", user.uid);
+    //     const userSnap = await getDoc(userRef);
+
+    //     if (!userSnap.exists()) {
+    //       throw new Error(
+    //         "El usuario no tiene un perfil registrado en Firestore."
+    //       );
+    //     }
+
+    //     const userData = userSnap.data();
+    //     const role = userData.role || "cliente"; // por defecto "cliente"
+
+    //     // 2. Obtener deviceId
+    //     const deviceId = getOrCreateDeviceId();
+
+    //     // 3. Guardar todo en localStorage
+    //     localStorage.setItem(
+    //       "session",
+    //       JSON.stringify({
+    //         userId: user.uid,
+    //         email: user.email,
+    //         role: role,
+    //         deviceId: deviceId,
+    //       })
+    //     );
+
+    //     // 4. Guardar en el store de Vuex
+    //     this.$store.commit("setCurrentUser", {
+    //       uid: user.uid,
+    //       email: user.email,
+    //       role: role,
+    //     });
+
+    //     alert(`Bienvenido, ${user.email}`);
+    //     this.$router.push({ name: "home" });
+    //   } catch (error) {
+    //     alert("Error al iniciar sesión: " + error.message);
+    //   }
+    //   await this.$store.dispatch("observeAuthState");
+    // },
     forgotPassword() {
       alert("Se ha enviado un enlace de recuperación a su correo electrónico.");
       // Aquí puedes implementar la lógica para enviar un correo de recuperación

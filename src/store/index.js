@@ -1,15 +1,13 @@
 import { createStore } from "vuex";
-import { collection, getDocs, doc, getDoc, setDoc } from "firebase/firestore";
-import { db, auth } from "@/firebase/firebaseConfig";
-import { onAuthStateChanged } from "firebase/auth";
+import { getOrCreateDeviceId } from "@/utils/device";
 
 export default createStore({
   state: {
     users: [],
     services: [],
-    currentUser: null, // Incluye uid, email, role, etc.
+    currentUser: null,
     user: {
-      profilePhoto: "", // Puedes usar esto en vistas
+      profilePhoto: "",
     },
   },
   mutations: {
@@ -46,71 +44,81 @@ export default createStore({
     },
   },
   actions: {
+    // ✅ Mover todo por el backend
+
     async fetchUsers({ commit }) {
       try {
-        const snapshot = await getDocs(collection(db, "users"));
-        const users = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
+        const res = await fetch(`${process.env.VUE_APP_API_URL}/users`);
+        const users = await res.json();
         commit("setUsers", users);
       } catch (error) {
-        console.error("Error fetching users:", error);
+        console.error("Error al obtener usuarios:", error);
       }
     },
+
     async fetchServices({ commit }) {
       try {
-        const snapshot = await getDocs(collection(db, "services"));
-        const services = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
+        const res = await fetch(`${process.env.VUE_APP_API_URL}/services`);
+        const services = await res.json();
         commit("setServices", services);
       } catch (error) {
-        console.error("Error fetching services:", error);
+        console.error("Error al obtener servicios:", error);
       }
     },
+
     async addUser({ commit }, user) {
       try {
-        const userRef = doc(collection(db, "users"));
-        await setDoc(userRef, user);
-        commit("addUser", { id: userRef.id, ...user });
+        const res = await fetch(`${process.env.VUE_APP_API_URL}/users`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(user),
+        });
+        const newUser = await res.json();
+        commit("addUser", newUser);
       } catch (error) {
-        console.error("Error adding user:", error);
+        console.error("Error al agregar usuario:", error);
       }
     },
+
     async addService({ commit }, service) {
       try {
-        const serviceRef = doc(collection(db, "services"));
-        await setDoc(serviceRef, service);
-        commit("addService", { id: serviceRef.id, ...service });
+        const res = await fetch(`${process.env.VUE_APP_API_URL}/services`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(service),
+        });
+        const newService = await res.json();
+        commit("addService", newService);
       } catch (error) {
-        console.error("Error adding service:", error);
+        console.error("Error al agregar servicio:", error);
       }
     },
 
-    // 👇 Esta es la más importante
-    observeAuthState({ commit }) {
-      onAuthStateChanged(auth, async (user) => {
-        if (user) {
-          try {
-            const userDoc = await getDoc(doc(db, "users", user.uid));
-            const userData = userDoc.exists() ? userDoc.data() : {};
+    // 🔁 Migrar observeAuthState → usa localStorage y backend
+    async observeAuthState({ commit }) {
+      const session = localStorage.getItem("session");
 
-            commit("setCurrentUser", {
-              uid: user.uid,
-              email: user.email,
-              role: userData.role || "cliente", // <- Default si no hay
-              ...userData, // Agrega otros campos útiles como name, phone, etc.
-            });
-          } catch (err) {
-            console.error("Error al cargar el perfil del usuario:", err);
-            commit("setCurrentUser", null);
-          }
-        } else {
-          commit("setCurrentUser", null);
-        }
-      });
+      if (!session) {
+        commit("setCurrentUser", null);
+        return;
+      }
+
+      try {
+        const sessionData = JSON.parse(session);
+        const { userId, email, role } = sessionData;
+
+        // Aquí podrías validar el token con el backend si lo deseas
+        // También podrías cargar el perfil completo si hiciera falta
+
+        commit("setCurrentUser", {
+          uid: userId,
+          email,
+          role,
+        });
+      } catch (err) {
+        console.error("Error cargando sesión del usuario:", err);
+        commit("setCurrentUser", null);
+      }
     },
   },
   modules: {},

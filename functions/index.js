@@ -2,6 +2,7 @@ const functions = require("firebase-functions");
 const express = require("express");
 const cors = require("cors");
 const admin = require("firebase-admin");
+require("dotenv").config();
 
 admin.initializeApp();
 
@@ -20,6 +21,9 @@ app.use(cors({
 }));
 
 app.use(express.json());
+
+const authRouter = require("./routes/auth");
+app.use("/auth", authRouter);
 
 // Importar rutas
 const servicesRouter = require("./routes/services");

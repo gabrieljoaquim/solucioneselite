@@ -185,7 +185,6 @@ import PdfNameDisplay from "../components/PdfNameDisplay.vue";
 import ServiceStatusButtons from "../components/ServiceStatusButtons.vue";
 import AdminServiceControl from "../components/AdminServiceControl.vue";
 import WorkerRating from "../components/WorkerRating.vue";
-
 import { collection, getDocs, doc, deleteDoc } from "firebase/firestore";
 import { db } from "@/firebase/firebaseConfig";
 import api from "@/api";

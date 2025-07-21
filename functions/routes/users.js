@@ -19,6 +19,26 @@ router.get("/", async (req, res) => {
   }
 });
 
+// Crear un nuevo usuario
+router.post("/", async (req, res) => {
+  try {
+    const newUser = req.body;
+
+    if (!newUser.email) {
+      return res.status(400).json({ error: "El campo 'email' es requerido." });
+    }
+
+    const docRef = await db.collection("users").add(newUser);
+    const doc = await docRef.get();
+
+    res.status(201).json({ _id: doc.id, ...doc.data() });
+  } catch (error) {
+    console.error("Error al crear usuario:", error);
+    res.status(500).json({ error: "Error al crear usuario: " + error.message });
+  }
+});
+
+
 // Actualizar usuario
 router.put("/:id", async (req, res) => {
   try {

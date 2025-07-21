@@ -29,9 +29,7 @@
 </template>
 
 <script>
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
-import { auth, db } from "@/firebase/firebaseConfig";
+import axios from "axios";
 
 export default {
   data() {
@@ -46,7 +44,7 @@ export default {
         specialty: [],
         experience: 0,
         description: "",
-        role: "cliente", // predeterminado (puedes cambiarlo si lo deseas)
+        role: "cliente",
         profilePhoto: "",
       },
     };
@@ -61,34 +59,35 @@ export default {
         alert("Las contraseñas no coinciden");
         return;
       }
-      if (!this.user.email || !this.user.email.includes("@")) {
+      if (!this.user.email.includes("@")) {
         alert("Por favor, ingresa un correo electrónico válido.");
         return;
       }
-      try {
-        const userCredential = await createUserWithEmailAndPassword(
-          auth,
-          this.user.email,
-          this.user.password
-        );
-        const userId = userCredential.user.uid;
 
-        // Guardar información adicional en Firestore
-        await setDoc(doc(db, "users", userId), {
-          name: this.user.name,
-          email: this.user.email,
-          phone: this.user.phone,
-          zone: this.user.zone,
-          specialty: this.user.specialty,
-          experience: this.user.experience,
-          description: this.user.description,
-          role: this.user.role, // predeterminado (puedes cambiarlo si lo deseas)
-          profilePhoto: this.user.profilePhoto,
-        });
+      try {
+        // Llamada al backend
+        await axios.post(
+          `${
+            import.meta.env.VITE_API_URL || process.env.VUE_APP_API_URL
+          }/auth/register`,
+          {
+            name: this.user.name,
+            email: this.user.email,
+            password: this.user.password,
+            phone: this.user.phone,
+            zone: this.user.zone,
+            specialty: this.user.specialty,
+            experience: this.user.experience,
+            description: this.user.description,
+            role: this.user.role,
+            profilePhoto: this.user.profilePhoto,
+          }
+        );
 
         alert("Usuario registrado con éxito");
         this.$router.push({ name: "home" });
-        // Limpiar campos
+
+        // Limpiar formulario
         this.user = {
           name: "",
           email: "",
@@ -103,8 +102,9 @@ export default {
           profilePhoto: "",
         };
       } catch (error) {
-        alert("Error al registrar usuario: " + error.message);
-        // Limpiar campos si hay error
+        const msg =
+          error.response?.data?.error || "Error desconocido al registrar.";
+        alert("Error al registrar usuario: " + msg);
         this.user.password = "";
         this.user.confirmPassword = "";
       }
